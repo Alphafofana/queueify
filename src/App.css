@@ -38,6 +38,60 @@
 }
 
 /* Starting CSS */
+
+.jumbotron {
+	/* background: #040404; */
+	height: 100vh;
+	min-height: 100vh;
+	align-items: center;
+	justify-content: center;
+	background: #833ab4; /* fallback for old browsers */
+	background: -webkit-linear-gradient(
+		#fcb045,
+		#fd1d1d,
+		#833ab4
+	); /* Chrome 10-25, Safari 5.1-6 */ /*
+	background: linear-gradient(
+		to right,
+		#fcb045,
+		#fd1d1d,
+		#833ab4
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: linear-gradient(136deg, black, #e66465, #9198e5, black);
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+.welcomeView img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.welcomeView h1 {
+	text-align: center;
+}
+
+.welcomeView p {
+	text-align: center;
+}
+.btn-success {
+	border-radius: 60px / 60px;
+	background-color: #1aa34a;
+	border-color: #1aa34a;
+	padding: 19px 56px 21px;
+	font-size: 20px;
+}
+.btn-circle:hover {
+	border-color: #1ed760;
+	background-color: #1ed760;
+	transition: 0.4s;
+	border-color: 0;
+}
+
 .landingpage {
 	/* background: #040404; */
 	background: gray;
