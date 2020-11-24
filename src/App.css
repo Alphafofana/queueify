@@ -57,7 +57,7 @@
 		#fd1d1d,
 		#833ab4
 	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	background: linear-gradient(136deg, black, #e66465, #9198e5, black);
+	background: linear-gradient(136deg, #333333, #fefeff, #6e6e6e, #333333);
 }
 
 .container {
