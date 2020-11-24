@@ -1,0 +1,19 @@
+<svg width="459" height="500" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="502" width="461" y="-1" x="-1"/>
+  <g display="none" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%" id="svg_2"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path stroke="#000" id="svg_1" d="m5.35253,284.25229l0,0c0,-107.97203 92.90146,-195.50067 207.50119,-195.50067l0,0c55.03272,0 107.81148,20.59732 146.72548,57.26081c38.91403,36.66349 60.77572,86.38984 60.77572,138.23986l0,0c0,107.97201 -92.90146,195.50067 -207.5012,195.50067l0,0c-114.59972,0 -207.50119,-87.52866 -207.50119,-195.50067zm103.7506,0l0,0c0,53.986 46.45076,97.75033 103.75059,97.75033c57.29989,0 103.7506,-43.76433 103.7506,-97.75033c0,-53.98601 -46.45074,-97.75034 -103.7506,-97.75034l0,0c-57.29983,0 -103.75059,43.76435 -103.75059,97.75034z" stroke-width="0" fill="#1db954"/>
+  <rect stroke="#000" id="svg_5" height="91.3339" width="280.00366" y="388.00192" x="174.94813" stroke-opacity="null" stroke-width="0" fill="#1db954" rx="40"/>
+  <ellipse fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" cx="209.00115" cy="285.16765" id="svg_3" rx="45" ry="45"/>
+  <text fill="#000000" stroke-width="0" stroke-opacity="null" x="840.31083" y="218.93718" id="svg_12" font-size="24" font-family="'Courier New', Courier, monospace" text-anchor="start" xml:space="preserve" transform="rotate(90.43950653076172 220.8335266113281,130.68704223632812) matrix(11.6157391496495,0,0,11.301923930082394,-9623.596150506139,-2271.41327398755) " stroke="#000" font-weight="bold">(</text>
+  <text fill="#000000" stroke-width="0" stroke-opacity="null" x="833.0328" y="214.42155" id="svg_13" font-size="24" font-family="'Courier New', Courier, monospace" text-anchor="start" xml:space="preserve" transform="rotate(90.43950653076172 229.89111328125,34.0205307006836) matrix(17.25582387355701,0,0,18.62597896964312,-14269.045269499684,-3840.910672367348) " stroke="#000" font-weight="bold">(</text>
+ </g>
+</svg>
