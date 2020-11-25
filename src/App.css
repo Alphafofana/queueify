@@ -39,13 +39,13 @@
 
 /* Starting CSS */
 
-.jumbotron {
-	/* background: #040404; */
+/* .jumbotron {
+	/* background: #040404; */ /*
 	height: 100vh;
 	min-height: 100vh;
 	align-items: center;
 	justify-content: center;
-	background: #833ab4; /* fallback for old browsers */
+	background: #833ab4; /* fallback for old browsers */ /*
 	background: -webkit-linear-gradient(
 		#fcb045,
 		#fd1d1d,
@@ -56,7 +56,7 @@
 		#fcb045,
 		#fd1d1d,
 		#833ab4
-	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ /*
 	background: linear-gradient(
 			217deg,
 			rgba(255, 254, 254, 0.8),
@@ -72,7 +72,13 @@
 			rgba(197, 197, 201, 0.459),
 			rgb(235, 235, 236) 70.71%
 		);
+} */
+
+.jumbotron {
+	background-image: url("https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80");
+	background-size: cover;
 }
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -144,23 +150,21 @@
 	text-align: center;
 }
 
-
-.welcomePage{
-	color:white; 
+.welcomePage {
+	color: white;
 	text-align: center;
 }
 
-
-.headerWelcome{
+.headerWelcome {
 	padding: 30px;
 	text-align: center;
-	color: white;
+	color: black;
 	font-size: 30px;
 }
 
-.button1{
-	height: 100px; 	
+.button1 {
+	height: 100px;
 }
-.button2{
+.button2 {
 	height: 100px;
 }

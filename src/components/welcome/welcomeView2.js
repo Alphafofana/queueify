@@ -1,11 +1,10 @@
 import React from "react";
-import logo from "../../assets/queueify_logo3.svg";
+import logo from "../../assets/queueify_logo2.svg";
 import { Jumbotron, Button } from "react-bootstrap";
-//queueify_logo1.svg
 
-const Welcome = () => {
+const WelcomeView = () => {
 	return (
-		<div className="welcomePage">
+		<div className="welcomeView">
 			<Jumbotron fluid>
 				<img
 					alt=""
@@ -14,12 +13,8 @@ const Welcome = () => {
 					height="100"
 					className="welcome-logo"
 				/>
-
-				<div className="headerWelcome">
-					<h1>Welcome!</h1>
-					<p>Login</p>
-				</div>
-
+				<h1>Hello and Welcome!</h1>
+				<h1>Please login</h1>
 				<p>
 					<Button variant="success" className="btn-circle">
 						Login as Guest
@@ -30,11 +25,9 @@ const Welcome = () => {
 						Login as Host
 					</Button>
 				</p>
-
-				<a href="url">Create new account</a>
 			</Jumbotron>
 		</div>
 	);
 };
 
-export default Welcome;
+export default WelcomeView;
