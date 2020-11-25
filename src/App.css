@@ -57,9 +57,22 @@
 		#fd1d1d,
 		#833ab4
 	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	background: linear-gradient(136deg, #333333, #fefeff, #6e6e6e, #333333);
+	background: linear-gradient(
+			217deg,
+			rgba(255, 254, 254, 0.8),
+			rgb(155, 153, 153) 70.71%
+		),
+		linear-gradient(
+			127deg,
+			rgba(161, 163, 161, 0.959),
+			rgba(180, 180, 180, 0.527) 70.71%
+		),
+		linear-gradient(
+			336deg,
+			rgba(197, 197, 201, 0.459),
+			rgb(235, 235, 236) 70.71%
+		);
 }
-
 .container {
 	display: flex;
 	flex-direction: column;
