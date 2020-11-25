@@ -42,7 +42,7 @@
 	/* background: #040404; */
 	background: gray;
 	height: 100vh;
-	min-height: 100vh;
+	min-height: 50vh;
 }
 
 .application {
@@ -74,4 +74,26 @@
 .queueify-logo {
 	height: 11vmin;
 	pointer-events: none;
+	text-align: center;
+}
+
+
+.welcomePage{
+	color:white; 
+	text-align: center;
+}
+
+
+.headerWelcome{
+	padding: 30px;
+	text-align: center;
+	color: white;
+	font-size: 30px;
+}
+
+.button1{
+	height: 100px; 	
+}
+.button2{
+	height: 100px;
 }
