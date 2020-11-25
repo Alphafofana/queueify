@@ -31,3 +31,5 @@ const Main = () => (
 );
 
 export default Main;
+//<Navbar />
+//<Sidebar />
