@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import WelcomeView from "./welcomeView";
 import WelcomeHostView from "./welcomeHostView";
 import WelcomeGuestView from "./welcomeGuestView";
@@ -23,3 +24,24 @@ function Welcome() {
 }
 
 export default Welcome;
+=======
+const { default: WelcomeGuestView } = require("./welcomeGuestView");
+const { default: WelcomeHostView } = require("./welcomeHostView");
+
+function WelcomeGuest({}) {
+
+
+    return h(WelcomeGuestView, {
+           
+    });
+}
+
+function WelcomeHost({}) {
+
+
+
+    return h(WelcomeHostView, {
+     
+    });
+}
+>>>>>>> 758fe98633f54e1606185add232e2c6dde0dc7e1
