@@ -3,6 +3,7 @@ import React from "react";
 //import Navbar from "./navbar/navbar";
 import {
 	//HashRouter,
+	Redirect,
 	Switch,
 	Route,
 	BrowserRouter,
@@ -14,18 +15,18 @@ const Main = () => (
 	<BrowserRouter>
 		<Switch>
 			<Route exact path="/">
+				<Redirect to="/login" />
+			</Route>
+			<Route exact path="/login">
 				<React.Fragment>
-					<div className="landingpage">
-						<div className="application">
-							<Welcome />
-							{/* <Navbar />
-				<Sidebar /> */}
-						</div>
-					</div>
+					<Welcome />
 				</React.Fragment>
 			</Route>
-			<PrivateRoute path="/test1" component={() => <h1>test1</h1>} />
-			<Route path="/test2" component={() => <h1>test2</h1>} />
+			<PrivateRoute
+				path="/privateRoute"
+				component={() => <h1>This is a Private Route!</h1>}
+			/>
+			<Route path="/route" component={() => <h1>This is a route</h1>} />
 		</Switch>
 	</BrowserRouter>
 );

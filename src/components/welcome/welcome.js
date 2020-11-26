@@ -1,33 +1,25 @@
 import WelcomeView from "./welcomeView";
-import WelcomeView2 from "./welcomeView2";
-//import WelcomeHostView from "./welcomeHostView";
-//import WelcomeGuestView from "./welcomeGuestView";
-const fakeAuth = {
-	isAuthenticated: false,
-	authenticate(callback, type) {
-		this.isAuthenticated = true;
-		setTimeout(callback, 100); // fake async
-	},
-	signout(callback) {
-		this.isAuthenticated = false;
-		setTimeout(callback, 100); // fake async
-	},
-};
+import WelcomeHostView from "./welcomeHostView";
+import WelcomeGuestView from "./welcomeGuestView";
 
-const Welcome = () => {
-	return !fakeAuth.isAuthenticated ? (
+function Welcome() {
+	return !localStorage.getItem("isAuthenticated") ? (
 		<WelcomeView
-		//loginhost={fakeAuth.authenticate("host")}
-		//loginguest={fakeAuth.authenticate("guest")}
+			loginhost={() => {
+				localStorage.setItem("isAuthenticated", true);
+				localStorage.setItem("userType", "host");
+			}}
+			loginguest={() => {
+				localStorage.setItem("isAuthenticated", true);
+				localStorage.setItem("userType", "guest");
+			}}
 		/>
 	) : (
-		(fakeAuth.isAuthenticated === "host" && (
-			<h1>WelcomeHostView</h1> // <WelcomeHostView />
-		)) ||
-			(fakeAuth.isAuthenticated === "guest" && (
-				<h1>WelcomeGuestView</h1> //<WelcomeGuestView />
+		(localStorage.getItem("userType") === "host" && <WelcomeHostView />) ||
+			(localStorage.getItem("userType") === "guest" && (
+				<WelcomeGuestView />
 			))
 	);
-};
+}
 
 export default Welcome;

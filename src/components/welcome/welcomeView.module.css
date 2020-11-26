@@ -1,0 +1,45 @@
+/* .jumbotron {
+	/* background: #040404; */ /*
+	height: 100vh;
+	min-height: 100vh;
+	align-items: center;
+	justify-content: center;
+	background: #833ab4; /* fallback for old browsers */ /*
+	background: -webkit-linear-gradient(
+		#fcb045,
+		#fd1d1d,
+		#833ab4
+	); /* Chrome 10-25, Safari 5.1-6 */ /*
+	background: linear-gradient(
+		to right,
+		#fcb045,
+		#fd1d1d,
+		#833ab4
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ /*
+	background: linear-gradient(
+			217deg,
+			rgba(255, 254, 254, 0.8),
+			rgb(155, 153, 153) 70.71%
+		),
+		linear-gradient(
+			127deg,
+			rgba(161, 163, 161, 0.959),
+			rgba(180, 180, 180, 0.527) 70.71%
+		),
+		linear-gradient(
+			336deg,
+			rgba(197, 197, 201, 0.459),
+			rgb(235, 235, 236) 70.71%
+		);
+} */
+
+.welcomePage {
+	text-align: center;
+	font-family: "Montserrat", sans-serif;
+	min-height: 100vh;
+}
+.headerWelcome {
+	font-size: 30px;
+	color: black;
+	padding: 30px;
+}
