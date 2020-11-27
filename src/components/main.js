@@ -17,10 +17,8 @@ const Main = () => (
 			<Route exact path="/">
 				<Redirect to="/login" />
 			</Route>
-			<Route exact path="/login">
-				<React.Fragment>
-					<Welcome />
-				</React.Fragment>
+			<Route path="/login">
+				<Welcome />
 			</Route>
 			<PrivateRoute
 				path="/privateRoute"

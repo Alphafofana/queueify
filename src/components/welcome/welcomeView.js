@@ -33,7 +33,7 @@ const Welcome = ({ loginhost, loginguest }) => {
 					<Button
 						variant="success"
 						onClick={() => {
-							loginhost();
+							loginguest();
 							document.location.reload();
 						}}
 					>
@@ -44,7 +44,7 @@ const Welcome = ({ loginhost, loginguest }) => {
 					<Button
 						variant="success"
 						onClick={() => {
-							loginguest();
+							loginhost();
 							document.location.reload();
 						}}
 					>
