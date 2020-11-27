@@ -4,10 +4,7 @@ import background from "../../assets/unsplash-background2.jpg";
 import { Jumbotron, Button } from "react-bootstrap";
 import css from "./welcomeView.module.css";
 
-
-
 const welcomeView = ({ loginhost, loginguest }) => {
-
 	return (
 		<div className={css.welcomePage}>
 			<Jumbotron
@@ -33,24 +30,12 @@ const welcomeView = ({ loginhost, loginguest }) => {
 				</div>
 
 				<p>
-					<Button
-						variant="success"
-						onClick={() => {
-							loginguest();
-							document.location.reload();
-						}}
-					>
+					<Button variant="success" onClick={loginguest()}>
 						Login as Guest
 					</Button>
 				</p>
 				<p>
-					<Button
-						variant="success"
-						onClick={() => {
-							loginhost();
-							document.location.reload();
-						}}
-					>
+					<Button variant="success" onClick={loginhost()}>
 						Login as Host
 					</Button>
 				</p>
