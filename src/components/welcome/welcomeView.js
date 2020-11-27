@@ -4,7 +4,10 @@ import background from "../../assets/unsplash-background2.jpg";
 import { Jumbotron, Button } from "react-bootstrap";
 import css from "./welcomeView.module.css";
 
-const Welcome = ({ loginhost, loginguest }) => {
+
+
+const welcomeView = ({ loginhost, loginguest }) => {
+
 	return (
 		<div className={css.welcomePage}>
 			<Jumbotron
@@ -57,4 +60,4 @@ const Welcome = ({ loginhost, loginguest }) => {
 	);
 };
 
-export default Welcome;
+export default welcomeView;
