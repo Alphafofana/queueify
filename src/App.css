@@ -38,16 +38,10 @@
 }
 
 /* Starting CSS */
-.landingpage {
-	/* background: #040404; */
-	background: gray;
-	height: 100vh;
-	min-height: 100vh;
-}
 
-.application {
-	background: #131313;
-	height: 100vh;
+.container {
+	display: flex;
+	flex-direction: column;
 }
 
 .sidebar {
@@ -74,4 +68,21 @@
 .queueify-logo {
 	height: 11vmin;
 	pointer-events: none;
+	text-align: center;
+}
+
+/*Global button CSS*/
+.btn-success {
+	border-radius: 60px / 60px;
+	background-color: #1db954;
+	border-color: #1db954;
+	padding: 14px 56px 16px;
+	font-size: 17px;
+	font-family: "Montserrat", sans-serif;
+}
+.btn-success:hover {
+	border-color: #1ed760;
+	background-color: #1ed760;
+	transition: 0.4s;
+	border-color: 0;
 }

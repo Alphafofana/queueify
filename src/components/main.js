@@ -1,16 +1,34 @@
 import React from "react";
-import Sidebar from "./sidebar/sidebar";
-import Navbar from "./navbar/navbar";
+//import Sidebar from "./sidebar/sidebar";
+//import Navbar from "./navbar/navbar";
+import {
+	//HashRouter,
+	Redirect,
+	Switch,
+	Route,
+	BrowserRouter,
+} from "react-router-dom";
+import Welcome from "./welcome/welcome";
+import PrivateRoute from "./router/privateRoute";
 
 const Main = () => (
-	<React.Fragment>
-		<div className="landingpage">
-			<div className="application">
-				<Navbar />
-				<Sidebar />
-			</div>
-		</div>
-	</React.Fragment>
+	<BrowserRouter>
+		<Switch>
+			<Route exact path="/">
+				<Redirect to="/login" />
+			</Route>
+			<Route path="/login">
+				<Welcome />
+			</Route>
+			<PrivateRoute
+				path="/privateRoute"
+				component={() => <h1>This is a Private Route!</h1>}
+			/>
+			<Route path="/route" component={() => <h1>This is a route</h1>} />
+		</Switch>
+	</BrowserRouter>
 );
 
 export default Main;
+//<Navbar />
+//<Sidebar />
