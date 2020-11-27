@@ -1,30 +1,17 @@
 import WelcomeView from "./welcomeView";
 import WelcomeHostView from "./welcomeHostView";
 import WelcomeGuestView from "./welcomeGuestView";
-import { useAuth } from "../../contexts/AuthContext"
-import { useState } from 'react'
+import { signInWithGoogle } from '../../services/firebase.js';
+
 
 function Welcome() {
-	console.log(useAuth())
-	const { signIn } = useAuth()
-	const [error, setError] = useState("")
 
-	async function handleSubmit(e) {
-		e.preventDefault()
-	
-		try {
-		  setError("")
-		  await signIn("ella@mail.com", "password")
-		} catch {
-		  setError("Failed to log in")
-		}
-		  }
 
 
 	return !localStorage.getItem("isAuthenticated") ? (
 		<WelcomeView
-			loginhost={handleSubmit}
-			loginguest={handleSubmit}
+			loginhost={signInWithGoogle}
+			loginguest={signInWithGoogle}
 		/>
 	) : (
 		(localStorage.getItem("userType") === "host" && <WelcomeHostView />) ||
