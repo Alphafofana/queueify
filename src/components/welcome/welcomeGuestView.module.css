@@ -1,0 +1,12 @@
+.welcome {
+	display: flex;
+	flex-direction: row;
+}
+
+.welcomeJumbo {
+	padding-top: 2rem;
+}
+
+.navComponent {
+	flex-direction: row;
+}
