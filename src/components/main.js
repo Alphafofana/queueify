@@ -1,6 +1,7 @@
 import React from "react";
-//import Sidebar from "./sidebar/sidebar";
-//import Navbar from "./navbar/navbar";
+import Welcome from "./welcome/welcome";
+import PrivateRoute from "./router/privateRoute";
+import { AuthProvider } from "../contexts/AuthContext";
 import {
 	//HashRouter,
 	Redirect,
@@ -8,9 +9,6 @@ import {
 	Route,
 	BrowserRouter,
 } from "react-router-dom";
-import Welcome from "./welcome/welcome";
-import PrivateRoute from "./router/privateRoute";
-import { AuthProvider } from "../contexts/AuthContext";
 
 const Main = () => (
 	<BrowserRouter>
@@ -36,5 +34,3 @@ const Main = () => (
 );
 
 export default Main;
-//<Navbar />
-//<Sidebar />

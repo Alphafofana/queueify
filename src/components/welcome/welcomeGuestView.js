@@ -1,13 +1,10 @@
 import React from "react";
-import { Col, Container, Button, Jumbotron, Nav } from "react-bootstrap";
 import Sidebar from "../sidebar/sidebar";
-import css from "./welcomeGuestView.module.css";
-import logo from "../../assets/queueify_logo1_mini.svg";
 import Navbar from "../navbar/navbar";
+import css from "./welcomeGuestView.module.css";
+import { Col, Container, Button, Jumbotron, Nav } from "react-bootstrap";
 
 const WelcomeGuestView = ({ user, logout }) => {
-	//console.log("View: " + JSON.stringify(user));
-
 	return (
 		<Container fluid className={css.welcome}>
 			<Sidebar />

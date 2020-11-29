@@ -1,7 +1,7 @@
+import React, { useState } from "react";
 import WelcomeView from "./welcomeView";
 import WelcomeHostView from "./welcomeHostView";
 import WelcomeGuestView from "./welcomeGuestView";
-import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
 function Welcome() {
@@ -63,7 +63,7 @@ function Welcome() {
 			handleShowGuesLogin={handleShowGuesLogin}
 			handleShowHostLogin={handleShowHostLogin}
 			loginguest={handleLogin}
-			loginhost={() => console.log("not implemented!")}
+			loginhost={() => console.log("not implemented!")} //TODO: Implemet this function
 			showGuestLogin={showGuestLogin}
 			showHostLogin={showHostLogin}
 			loading={loading}

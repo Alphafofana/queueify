@@ -41,7 +41,7 @@
 .headerWelcome {
 	font-size: 30px;
 	color: black;
-	padding: 30px;
+	margin-top: 25px;
 }
 .modal {
 	max-width: 25%;

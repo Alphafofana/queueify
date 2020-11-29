@@ -1,8 +1,8 @@
 import React from "react";
+import css from "./welcomeView.module.css";
 import logo from "../../assets/queueify_logo3.svg";
 import background from "../../assets/unsplash-background2.jpg";
-import { Modal, Jumbotron, Button } from "react-bootstrap";
-import css from "./welcomeView.module.css";
+import { Alert, Modal, Jumbotron, Button, Row, Col } from "react-bootstrap";
 
 const welcomeView = ({
 	loginhost,
@@ -12,6 +12,7 @@ const welcomeView = ({
 	handleShowHostLogin,
 	showGuestLogin,
 	showHostLogin,
+	error,
 }) => {
 	return (
 		<div className={css.welcomePage}>
@@ -24,37 +25,52 @@ const welcomeView = ({
 					minHeight: "100vh",
 				}}
 			>
-				<img
-					alt=""
-					src={logo}
-					width="300"
-					height="100"
-					className={`${css.welcomeLogo} "mb-0"`}
-				/>
-
-				<div className={css.headerWelcome}>
-					<h1>Welcome!</h1>
-					<p>Login</p>
-				</div>
-
-				<p>
-					<Button
-						disabled={loading}
-						variant="success"
-						onClick={handleShowGuesLogin}
-					>
-						Login as Guest
-					</Button>
-				</p>
-				<p>
-					<Button
-						disabled={loading}
-						variant="success"
-						onClick={handleShowHostLogin}
-					>
-						Login as Host
-					</Button>
-				</p>
+				<Row>
+					<Col>
+						<img
+							alt=""
+							src={logo}
+							width="300"
+							height="100"
+							className={`${css.welcomeLogo} "mb-0"`}
+						/>
+					</Col>
+				</Row>
+				<Row>
+					<Col>
+						<div className={css.headerWelcome}>
+							<h1>Welcome!</h1>
+							<p>Login</p>
+						</div>
+					</Col>
+				</Row>
+				<Row>
+					<Col lg={{ span: 4, offset: 4 }}>
+						{error && <Alert variant="danger">{error}</Alert>}
+					</Col>
+				</Row>
+				<Row>
+					<Col>
+						<p>
+							<Button
+								disabled={loading}
+								variant="success"
+								onClick={handleShowGuesLogin}
+							>
+								Login as Guest
+							</Button>
+						</p>
+						<p>
+							<Button
+								disabled={loading}
+								variant="success"
+								onClick={handleShowHostLogin}
+							>
+								Login as Host
+							</Button>
+						</p>
+					</Col>
+				</Row>
 				<a href="url">Create new account</a>
 			</Jumbotron>
 
@@ -123,7 +139,11 @@ const welcomeView = ({
 					<Button
 						className="mr-auto"
 						variant="outline-success"
-						onClick={handleShowHostLogin}
+						onClick={(e) => {
+							//TODO: Fix Warning: findDOMNode is deprecated
+							handleShowGuesLogin();
+							loginhost(e, "facebook");
+						}}
 					>
 						<i class="fab fa-spotify"></i> Spotify
 					</Button>
