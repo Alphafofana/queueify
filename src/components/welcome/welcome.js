@@ -63,7 +63,10 @@ function Welcome() {
 			handleShowGuesLogin={handleShowGuesLogin}
 			handleShowHostLogin={handleShowHostLogin}
 			loginguest={handleLogin}
-			loginhost={() => console.log("not implemented!")} //TODO: Implemet this function
+			loginhost={() => {
+				console.log("not implemented!");
+				setError("not implemented!");
+			}} //TODO: Implemet this function
 			showGuestLogin={showGuestLogin}
 			showHostLogin={showHostLogin}
 			loading={loading}

@@ -71,7 +71,8 @@ const welcomeView = ({
 						</p>
 					</Col>
 				</Row>
-				<a href="url">Create new account</a>
+
+				<a href="">Create new account</a>
 			</Jumbotron>
 
 			<Modal
@@ -118,7 +119,6 @@ const welcomeView = ({
 					</Button>
 				</Modal.Footer>
 			</Modal>
-
 			<Modal size="sm" show={showHostLogin} onHide={handleShowHostLogin}>
 				<Modal.Header closeButton>
 					<Modal.Title>Login as Host</Modal.Title>
@@ -141,7 +141,7 @@ const welcomeView = ({
 						variant="outline-success"
 						onClick={(e) => {
 							//TODO: Fix Warning: findDOMNode is deprecated
-							handleShowGuesLogin();
+							handleShowHostLogin();
 							loginhost(e, "facebook");
 						}}
 					>
