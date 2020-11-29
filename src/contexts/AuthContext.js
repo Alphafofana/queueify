@@ -16,9 +16,15 @@ export function AuthProvider({ children }) {
 		return auth.createUserWithEmailAndPassword(email, password);
 	}
 
-	function login() {
-		const provider = new firebase.auth.GoogleAuthProvider();
-		return auth.signInWithPopup(provider);
+	function login(provider) {
+		const providers = {
+			google: firebase.auth.GoogleAuthProvider,
+			facebook: firebase.auth.FacebookAuthProvider,
+		};
+		//const provider = "google";
+		return auth.signInWithPopup(new providers[provider]());
+		//const provider = new firebase.auth.GoogleAuthProvider();
+		//return auth.signInWithPopup(provider);
 	}
 
 	function logout() {

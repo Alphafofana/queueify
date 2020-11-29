@@ -87,9 +87,10 @@
 	font-size: 17px;
 	font-family: "Montserrat", sans-serif;
 }
-.btn-success:hover {
+.btn-outline-success:hover {
 	border-color: #1ed760;
-	background-color: #1ed760;
-	transition: 0.4s;
-	border-color: 0;
+}
+
+.btn-outline-success {
+	border-radius: 60px / 60px;
 }

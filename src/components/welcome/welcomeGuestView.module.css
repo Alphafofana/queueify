@@ -1,12 +1,14 @@
 .welcome {
 	display: flex;
 	flex-direction: row;
+	padding: 0;
+	background: #121212;
 }
 
 .welcomeJumbo {
-	padding-top: 2rem;
+	margin-top: 4rem;
 }
 
 .navComponent {
-	flex-direction: row;
+	flex-direction: rown;
 }

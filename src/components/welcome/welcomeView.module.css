@@ -43,3 +43,6 @@
 	color: black;
 	padding: 30px;
 }
+.modal {
+	max-width: 25%;
+}
