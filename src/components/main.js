@@ -1,5 +1,6 @@
 import React from "react";
 import Welcome from "./welcome/welcome";
+import CurrentSession from "./currentSession/currentSession";
 import PrivateRoute from "./router/privateRoute";
 import { AuthProvider } from "../contexts/AuthContext";
 import {
@@ -20,6 +21,9 @@ const Main = () => (
 				<Route path="/login">
 					<Welcome />
 				</Route>
+				<PrivateRoute path="/currentsession">
+					<CurrentSession />
+				</PrivateRoute>
 				<PrivateRoute
 					path="/privateRoute"
 					component={() => <h1>This is a Private Route!</h1>}

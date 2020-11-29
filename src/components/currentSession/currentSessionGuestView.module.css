@@ -1,0 +1,20 @@
+.currentSession {
+	display: flex;
+	flex-direction: row;
+	padding: 0;
+	background: #121212;
+	font-family: "Montserrat", sans-serif;
+}
+.sessionInfo {
+	margin-top: 70px;
+}
+
+.sessionDetails {
+	color: white;
+	padding: 14px 56px 16px;
+	font-size: 17px;
+}
+
+.queue tbody {
+	font-size: 13px;
+}
