@@ -1,15 +1,11 @@
 import React from "react";
-import Sidebar from "../sidebar/sidebar";
-import Navbar from "../navbar/navbar";
 import css from "./joinSessionView.module.css";
 import { Col, Container, Button, Jumbotron } from "react-bootstrap";
 
 const JoinSessionView = ({ user, logout }) => {
 	return (
 		<Container fluid className={css.sessionContainer}>
-			<Sidebar />
 			<Col>
-				<Navbar user={user} logout={logout} />
 				<Jumbotron className={css.sessionJumbo}>
 					<h1>Hello, @{user.displayName}!</h1>
 					<p>

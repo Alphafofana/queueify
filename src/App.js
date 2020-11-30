@@ -1,27 +1,57 @@
-//import logo from "./logo.svg";
 import "./App.css";
-import Main from "./components/main";
+import React from "react";
+import { Row, Col } from "react-bootstrap";
+import Login from "./components/login/login";
+import SessionHandler from "./components/sessionHandler/sessionHandler";
+import Navbar from "./components/navbar/navbar";
+import Sidebar from "./components/sidebar/sidebar";
+//import PrivateRoute from "./components/router/privateRouteComponent";
+import PrivateRoute from "./components/router/privateRouteChildren";
+import { AuthProvider } from "./contexts/AuthContext";
+import {
+	//HashRouter,
+	Redirect,
+	Switch,
+	Route,
+	BrowserRouter,
+} from "react-router-dom";
 
 function App() {
-	/* return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  ); */
-	return <Main />;
+	return (
+		<BrowserRouter>
+			<AuthProvider>
+				<Switch>
+					<Route exact path="/">
+						<Redirect to="/login" />
+					</Route>
+					<Route path="/login">
+						<Login />
+					</Route>
+					<PrivateRoute path="/session">
+						<div className="pageContainer">
+							<Navbar />
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar />
+								</Col>
+								<Col className="pageCol">
+									<SessionHandler />
+								</Col>
+							</Row>
+						</div>
+					</PrivateRoute>
+					<PrivateRoute
+						path="/privateRoute"
+						component={() => <h1>This is a Private Route!</h1>}
+					/>
+					<Route
+						path="/route"
+						component={() => <h1>This is a route</h1>}
+					/>
+				</Switch>
+			</AuthProvider>
+		</BrowserRouter>
+	);
 }
 
 export default App;
