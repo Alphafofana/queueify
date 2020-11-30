@@ -21,9 +21,11 @@ const Main = () => (
 				<Route path="/login">
 					<Welcome />
 				</Route>
-				<PrivateRoute path="/currentsession">
-					<CurrentSession />
-				</PrivateRoute>
+				<PrivateRoute
+					component={CurrentSession}
+					path="/currentsession"
+				/>
+
 				<PrivateRoute
 					path="/privateRoute"
 					component={() => <h1>This is a Private Route!</h1>}
