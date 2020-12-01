@@ -15,7 +15,7 @@ function Search({}){
       fetch("https://api.spotify.com/v1/search?q=" + query + "&type=track", {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + "BQA8ZdlFG49N6iHu_m2kq5rEmv-HM103eCeumOncmFxqHCvkKOKzKYFDz0t2fVexWnp2JQQPKN9NHXE_0suaEd4VEkq0BY9sJt6JiTmLkv7qgbbzjJU_i2mSiCw1Vl0L1HYizADVbzQrjhk2UsIBcH3Gd3mxtgYru3PAjBErbiWCC6I8EluqYOJZblx2bEMpqBOGyA",
+          Authorization: "Bearer " + "BQAYizhq_U5-t23f9jO9_yfor2w91b8Tn2ds75quciLxLRW3lHk8dvQM8ftSC0rABVBJTREh5MNmWaF59NzjHVvdxhkD3lBVTFu9CMyb5LUn4OCoYdFqKQMxVMZIrq0j5pWXXVhE",
         },
       })
         .then((response) => response.json())
@@ -30,7 +30,7 @@ function Search({}){
           }
         );
         console.log(items);
-    }
+    }  
   
     function addSong(track) {
       return track;
@@ -38,11 +38,10 @@ function Search({}){
 
 return(
    <SearchView
-   items = {items}
+   items = {items.items}
    onText = { x => setQuery(x)  }
-   onSearch ={ () => setPromise() }
+   onSearch ={ (e) => searchSong(e) }
    addTrack = {track=> addSong(track) } //add song function in model 
-   
    />	
     ); 
 }

@@ -29,7 +29,17 @@ function App() {
 						<Login />
 					</Route>
 					<Route path="/search">
-						<Search/>
+					<div className="pageContainer">
+							<Navbar />
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar />
+								</Col>
+								<Col className="pageCol">
+									<Search />
+								</Col>
+							</Row>
+						</div>
 						</Route>
 					<PrivateRoute path="/session">
 						<div className="pageContainer">

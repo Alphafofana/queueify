@@ -1,31 +1,43 @@
 import React from "react";
-import {Button, FormControl, Form, Jumbotron} from "react-bootstrap";
+import {Button, FormControl, Form, Jumbotron, Table} from "react-bootstrap";
 
-const searchView =({items,onText,onSearch,addTrack}) => {
+const searchView =({items, onText, onSearch, addTrack}) => {
 	return(
 	<div className="searchView">
   <body className="search">
-  <a href="#" class="previous">&laquo; Previous</a>
-      
+
     <Form inline>
+    <Button href="#" variant="outline-secondary">&laquo; Return</Button>
     <div className="searchArtist">
       <FormControl as='input' type="text" placeholder="Search For Artists" className="mr-sm-2" 
       onChange={e => onText(e.target.value)} />
       
-      <Button variant="outline-info" onClick ={() => onSearch()} >Search</Button>
+      <Button variant="outline-dark" onClick ={onSearch} >Search</Button>
       </div>
     </Form>
    
- <Jumbotron className="jumbo">{
-        items.map(item => 
-        <span></span>
-        )}
-  <ul>
-<li>Selena Gomez<button class="add">+</button></li>
-<li>Britney Spears<span class="add">+</span></li>
-<li>Charlie Puth<span class="add">+</span></li>
-<li>Imagine Dragons<span class="add">+</span></li>
-</ul>
+ <Jumbotron className="jumbo">
+ <Table striped bordered hover variant="dark">
+  <thead>
+    <tr>
+      <th>Artist</th>
+      <th>Song Title</th>
+      <th>Add</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+    items&&items.map(item =>
+        <span>
+        <tr>
+            <td>{item.map(artists => artists.name)}</td>
+            <td>{item.name}</td>
+            <td><button>x</button></td>
+        </tr>
+        </span>
+    )}
+  </tbody>
+</Table>
 </Jumbotron>
 
     </body>
