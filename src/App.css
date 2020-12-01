@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* .container {
 	display: flex;
 	flex-direction: column;
@@ -14,27 +15,15 @@
 .sidebar-nav {
 	margin-top: 30px;
 	padding: 0;
+=======
+/* Starting CSS */
+.sidebarCol {
+	padding-right: 0;
+>>>>>>> decc9865f1a8262a4b171ef0a6f46dfdd23f9fd0
 }
-
-.sidebar-nav a {
-	color: #b3b3b3;
-	border-radius: 5px;
-	padding: 1rem;
-}
-.nav-link.active {
-	background-color: #282828 !important;
-}
-
-/* .navbar {
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-} */
-
-.queueify-logo {
-	height: 11vmin;
-	pointer-events: none;
-	text-align: center;
+.pageCol {
+	margin-top: 54px;
+	padding-left: 0;
 }
 
 /*Global button CSS*/
