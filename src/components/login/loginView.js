@@ -1,10 +1,10 @@
 import React from "react";
-import css from "./welcomeView.module.css";
+import css from "./loginView.module.css";
 import logo from "../../assets/queueify_logo3.svg";
 import background from "../../assets/unsplash-background2.jpg";
 import { Alert, Modal, Jumbotron, Button, Row, Col } from "react-bootstrap";
 
-const welcomeView = ({
+const LoginView = ({
 	loginhost,
 	loginguest,
 	loading,
@@ -15,7 +15,7 @@ const welcomeView = ({
 	error,
 }) => {
 	return (
-		<div className={css.welcomePage}>
+		<div className={css.loginPage}>
 			<Jumbotron
 				fluid
 				style={{
@@ -32,13 +32,13 @@ const welcomeView = ({
 							src={logo}
 							width="300"
 							height="100"
-							className={`${css.welcomeLogo} "mb-0"`}
+							className={`${css.loginLogo} "mb-0"`}
 						/>
 					</Col>
 				</Row>
 				<Row>
 					<Col>
-						<div className={css.headerWelcome}>
+						<div className={css.headerLogin}>
 							<h1>Welcome!</h1>
 							<p>Login</p>
 						</div>
@@ -72,7 +72,7 @@ const welcomeView = ({
 					</Col>
 				</Row>
 
-				<a href="">Create new account</a>
+				<a href="/">Create new account</a>
 			</Jumbotron>
 
 			<Modal
@@ -153,4 +153,4 @@ const welcomeView = ({
 	);
 };
 
-export default welcomeView;
+export default LoginView;

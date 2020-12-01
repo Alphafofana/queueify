@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import WelcomeView from "./welcomeView";
-import WelcomeHostView from "./welcomeHostView";
-import WelcomeGuestView from "./welcomeGuestView";
+import { useHistory, Redirect } from "react-router-dom";
+import LoginView from "./loginView";
 import { useAuth } from "../../contexts/AuthContext";
 
-function Welcome() {
-	const { logout, login, currentUser } = useAuth();
+function Login() {
+	const { login, currentUser } = useAuth();
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const history = useHistory();
 
 	const [showGuestLogin, setLoginGues] = useState(false);
 	const [showHostLogin, setLoginHost] = useState(false);
@@ -25,22 +25,10 @@ function Welcome() {
 				//Collect data!
 				//console.log(result);
 			});
+			history.push("/session");
 		} catch {
 			console.error("Failed to log in!");
 			setError("Failed to log in");
-		}
-
-		setLoading(false);
-	}
-
-	async function handleLogout() {
-		setError("");
-
-		try {
-			await logout();
-		} catch {
-			console.error("Failed to log out!");
-			setError("Failed to log out");
 		}
 	}
 
@@ -59,7 +47,7 @@ function Welcome() {
 	printCurrentUser(); */
 
 	return !currentUser ? (
-		<WelcomeView
+		<LoginView
 			handleShowGuesLogin={handleShowGuesLogin}
 			handleShowHostLogin={handleShowHostLogin}
 			loginguest={handleLogin}
@@ -73,20 +61,8 @@ function Welcome() {
 			error={error}
 		/>
 	) : (
-		(currentUser.providerData[0].providerId === "spotify.com" && (
-			<WelcomeHostView
-				user={currentUser.providerData[0]}
-				logout={handleLogout}
-			/>
-		)) ||
-			((currentUser.providerData[0].providerId === "google.com" ||
-				currentUser.providerData[0].providerId === "facebook.com") && (
-				<WelcomeGuestView
-					user={currentUser.providerData[0]}
-					logout={handleLogout}
-				/>
-			))
+		<Redirect to="/session" />
 	);
 }
 
-export default Welcome;
+export default Login;

@@ -33,12 +33,12 @@
 		);
 } */
 
-.welcomePage {
+.loginPage {
 	text-align: center;
 	font-family: "Montserrat", sans-serif;
 	min-height: 100vh;
 }
-.headerWelcome {
+.headerLogin {
 	font-size: 30px;
 	color: black;
 	margin-top: 25px;

@@ -1,5 +1,6 @@
 import React from "react";
-import Welcome from "./welcome/welcome";
+import Login from "./login/login";
+import SessionHandler from "./sessionHandler/sessionHandler";
 import PrivateRoute from "./router/privateRoute";
 import { AuthProvider } from "../contexts/AuthContext";
 import {
@@ -18,8 +19,9 @@ const Main = () => (
 					<Redirect to="/login" />
 				</Route>
 				<Route path="/login">
-					<Welcome />
+					<Login />
 				</Route>
+				<PrivateRoute path="/session" component={SessionHandler} />
 				<PrivateRoute
 					path="/privateRoute"
 					component={() => <h1>This is a Private Route!</h1>}
