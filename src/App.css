@@ -1,25 +1,6 @@
-<<<<<<< HEAD
-/* .container {
-	display: flex;
-	flex-direction: column;
-} */
-
-.sidebar {
-	width: 250px;
-	height: 100%;
-	background: #040404;
-	padding: 10px;
-	min-height: 100vh;
-}
-
-.sidebar-nav {
-	margin-top: 30px;
-	padding: 0;
-=======
 /* Starting CSS */
 .sidebarCol {
 	padding-right: 0;
->>>>>>> decc9865f1a8262a4b171ef0a6f46dfdd23f9fd0
 }
 .pageCol {
 	margin-top: 54px;

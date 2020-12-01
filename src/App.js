@@ -17,9 +17,6 @@ import {
 } from "react-router-dom";
 
 function App() {
-<<<<<<< HEAD
-	return <Main />;
-=======
 	return (
 		<BrowserRouter>
 			<AuthProvider>
@@ -55,7 +52,6 @@ function App() {
 			</AuthProvider>
 		</BrowserRouter>
 	);
->>>>>>> decc9865f1a8262a4b171ef0a6f46dfdd23f9fd0
 }
 
 export default App;
