@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, FormControl, Form, Jumbotron} from "react-bootstrap";
 
-const searchView =({onText,onSearch,addTrack}) => {
+const searchView =({items,onText,onSearch,addTrack}) => {
 	return(
 	<div className="searchView">
   <body className="search">
@@ -16,7 +16,10 @@ const searchView =({onText,onSearch,addTrack}) => {
       </div>
     </Form>
    
- <Jumbotron className="jumbo">
+ <Jumbotron className="jumbo">{
+        items.map(item => 
+        <span></span>
+        )}
   <ul>
 <li>Selena Gomez<button class="add">+</button></li>
 <li>Britney Spears<span class="add">+</span></li>

@@ -6,9 +6,9 @@ const { default: searchView } = require("./searchView");
 function Search({}){
     const [query, setQuery]= React.useState("");
     const [promise, setPromise]= React.useState(null);
-    const [error, setError] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [items, setItems] = useState([]);
+    const [error, setError] = React.useState(null);
+    const [isLoaded, setIsLoaded] = React.useState(false);
+    const [items, setItems] = React.useState([]);
   
     function searchSong(e) {
       e.preventDefault();
@@ -29,7 +29,7 @@ function Search({}){
             setError(error);
           }
         );
-      console.log(items);
+        console.log(items);
     }
   
     function addSong(track) {
@@ -38,6 +38,7 @@ function Search({}){
 
 return(
    <SearchView
+   items = {items}
    onText = { x => setQuery(x)  }
    onSearch ={ () => setPromise() }
    addTrack = {track=> addSong(track) } //add song function in model 

@@ -5,6 +5,7 @@ import Login from "./components/login/login";
 import SessionHandler from "./components/sessionHandler/sessionHandler";
 import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
+import Search from "./components/search/search";
 //import PrivateRoute from "./components/router/privateRouteComponent";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -27,6 +28,9 @@ function App() {
 					<Route path="/login">
 						<Login />
 					</Route>
+					<Route path="/search">
+						<Search/>
+						</Route>
 					<PrivateRoute path="/session">
 						<div className="pageContainer">
 							<Navbar />
