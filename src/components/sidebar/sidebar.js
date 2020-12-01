@@ -16,15 +16,15 @@ const Sidebar = () => {
 			>
 				<Nav.Link eventKey="link1">
 					{" "}
-					<i class="fas fa-home" /> Home
+					<i className="fas fa-home" /> Home
 				</Nav.Link>
 				<Nav.Link eventKey="link2">
 					{" "}
-					<i class="fas fa-search" /> Search
+					<i className="fas fa-search" /> Search
 				</Nav.Link>
 				<Nav.Link eventKey="link3">
 					{" "}
-					<i class="fas fa-book" /> Your Library
+					<i className="fas fa-book" /> Your Library
 				</Nav.Link>
 			</Nav>
 		</div>

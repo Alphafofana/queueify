@@ -1,37 +1,43 @@
 import React from "react";
-import logo from "../../assets/queueify_logo1_mini.svg";
-import { Container, Button, Nav, Navbar } from "react-bootstrap";
+import { Col, Container, Button, Nav, Navbar } from "react-bootstrap";
 
-const Navibar = () => {
+const Navibar = ({ user, logout }) => {
 	return (
-		<div className="navbar">
-			<Navbar
-				fixed="top"
-				expand="lg"
-				bg="dark"
-				variant="dark"
-				style={{ marginLeft: "250px" }}
-			>
-				<Container>
-					<Navbar.Brand href="#home">
+		<Navbar
+			fixed="top"
+			expand="lg"
+			bg="dark"
+			variant="dark"
+			style={{ marginLeft: "250px", padding: 0 }}
+		>
+			<Container>
+				<Col lg={7}>
+					<Nav className="mr-auto"></Nav>
+				</Col>
+				<Col lg={2}>
+					<Navbar.Text>User: {user.displayName}</Navbar.Text>
+				</Col>
+				<Col lg={1}>
+					<Navbar.Text>
+						{" "}
 						<img
 							alt=""
-							src={logo}
+							src={user.photoURL}
 							width="30"
 							height="30"
 							className="d-inline-block align-top"
-						/>{" "}
-						Queueify
-					</Navbar.Brand>
-					<Nav className="mr-auto">
-						<Nav.Link href="#home">Home</Nav.Link>
-						<Nav.Link href="#search">Search</Nav.Link>
-						<Nav.Link href="#yourlibrary">Your Library</Nav.Link>
-					</Nav>
-					<Button variant="outline-light">Login</Button>
-				</Container>
-			</Navbar>
-		</div>
+						/>
+					</Navbar.Text>
+				</Col>
+				<Col lg={2}>
+					<Navbar.Text>
+						<Button onClick={logout} variant="outline-light">
+							Log out
+						</Button>
+					</Navbar.Text>
+				</Col>
+			</Container>
+		</Navbar>
 	);
 };
 

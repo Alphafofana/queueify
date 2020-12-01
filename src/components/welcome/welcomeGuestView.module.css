@@ -1,0 +1,14 @@
+.welcome {
+	display: flex;
+	flex-direction: row;
+	padding: 0;
+	background: #121212;
+}
+
+.welcomeJumbo {
+	margin-top: 4rem;
+}
+
+.navComponent {
+	flex-direction: rown;
+}
