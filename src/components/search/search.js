@@ -1,3 +1,11 @@
+/**
+ * search.js
+ * Authors: Marta Hansbo, Leila Arman, Ella Söderberg, Alpha Fofana
+ * 
+ * Presenter for search view.
+ * 
+ */
+
 import React from "react";
 import SearchView from "./searchView"; 
 const { default: searchView } = require("./searchView");

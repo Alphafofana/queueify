@@ -1,3 +1,11 @@
+/**
+ * searchView.js
+ * Authors: Marta Hansbo, Leila Arman, Ella Söderberg, Alpha Fofana
+ * 
+ * Search view.
+ * 
+ */
+
 import React from "react";
 import {Button, FormControl, Form, Jumbotron, Table} from "react-bootstrap";
 
