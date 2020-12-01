@@ -1,44 +1,31 @@
-import React from "react";
-import { Col, Container, Button, Nav, Navbar } from "react-bootstrap";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import NavbarView from "./navbarView";
+import { useAuth } from "../../contexts/AuthContext";
 
-const Navibar = ({ user, logout }) => {
+function Navbar() {
+	const { logout, currentUser } = useAuth();
+	const [error, setError] = useState("");
+	const history = useHistory();
+
+	async function handleLogout() {
+		setError("");
+
+		try {
+			await logout();
+			history.push("/login");
+		} catch {
+			console.error("Failed to log out!");
+			setError("Failed to log out");
+		}
+	}
 	return (
-		<Navbar
-			fixed="top"
-			expand="lg"
-			bg="dark"
-			variant="dark"
-			style={{ marginLeft: "250px", padding: 0 }}
-		>
-			<Container>
-				<Col lg={7}>
-					<Nav className="mr-auto"></Nav>
-				</Col>
-				<Col lg={2}>
-					<Navbar.Text>User: {user.displayName}</Navbar.Text>
-				</Col>
-				<Col lg={1}>
-					<Navbar.Text>
-						{" "}
-						<img
-							alt=""
-							src={user.photoURL}
-							width="30"
-							height="30"
-							className="d-inline-block align-top"
-						/>
-					</Navbar.Text>
-				</Col>
-				<Col lg={2}>
-					<Navbar.Text>
-						<Button onClick={logout} variant="outline-light">
-							Log out
-						</Button>
-					</Navbar.Text>
-				</Col>
-			</Container>
-		</Navbar>
+		<NavbarView
+			user={currentUser.providerData[0]}
+			logout={handleLogout}
+			error={error}
+		/>
 	);
-};
+}
 
-export default Navibar;
+export default Navbar;

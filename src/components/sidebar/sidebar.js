@@ -1,34 +1,31 @@
-import React from "react";
-import logo from "../../assets/queueify_logo1.svg";
-import { Nav } from "react-bootstrap";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import SidebarView from "./sidebarView";
+import { useAuth } from "../../contexts/AuthContext";
 
-const Sidebar = () => {
+function Sidebar() {
+	const { logout, currentUser } = useAuth();
+	const [error, setError] = useState("");
+	const history = useHistory();
+
+	async function handleLogout() {
+		setError("");
+
+		try {
+			await logout();
+			history.push("/login");
+		} catch {
+			console.error("Failed to log out!");
+			setError("Failed to log out");
+		}
+	}
 	return (
-		<div className="sidebar">
-			<div className="logo">
-				<img src={logo} className="queueify-logo" alt="logo" />
-			</div>
-
-			<Nav
-				variant="pills"
-				defaultActiveKey="/home"
-				className="flex-column sidebar-nav"
-			>
-				<Nav.Link eventKey="link1">
-					{" "}
-					<i className="fas fa-home" /> Home
-				</Nav.Link>
-				<Nav.Link eventKey="link2">
-					{" "}
-					<i className="fas fa-search" /> Search
-				</Nav.Link>
-				<Nav.Link eventKey="link3">
-					{" "}
-					<i className="fas fa-book" /> Your Library
-				</Nav.Link>
-			</Nav>
-		</div>
+		<SidebarView
+			user={currentUser.providerData[0]}
+			logout={handleLogout}
+			error={error}
+		/>
 	);
-};
+}
 
 export default Sidebar;
