@@ -6,7 +6,6 @@ import SessionHandler from "./components/sessionHandler/sessionHandler";
 import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
 import Search from "./components/search/search";
-import DataSourceTest from "./dataSourceTest";
 //import PrivateRoute from "./components/router/privateRouteComponent";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -29,10 +28,7 @@ function App() {
 					<Route path="/login">
 						<Login />
 					</Route>
-					<Route path="/test">
-						<DataSourceTest/>
-					</Route>
-					<Route path="/search">
+					<PrivateRoute path="/search">
 					<div className="pageContainer">
 							<Navbar />
 							<Row>
@@ -44,7 +40,7 @@ function App() {
 								</Col>
 							</Row>
 						</div>
-						</Route>
+						</PrivateRoute>
 					<PrivateRoute path="/session">
 						<div className="pageContainer">
 							<Navbar />

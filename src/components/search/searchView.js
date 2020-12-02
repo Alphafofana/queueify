@@ -42,7 +42,7 @@ export const SearchViewResult = ({searchResult}) =>{
   <tbody>
     {
     searchResult&&searchResult.map(item =>
-        <tr>
+        <tr key= {item.href}>
         <td>{item.artists.map(artists => artists.name )}</td>
             <td>{item.name}</td>
             <td><button>+</button></td>
