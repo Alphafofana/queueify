@@ -1,20 +1,23 @@
 /**
  * search.js
- * Authors: Marta Hansbo, Leila Arman, Ella Söderberg, Alpha Fofana
+ * Authors: Marta Hansbo, Laila Arman, Ella Söderberg, Alpha Fofana
  * 
  * Presenter for search view.
  * 
  */
 
 import React from "react";
-import SearchView from "./searchView"; 
-const { default: searchView } = require("./searchView");
+import SearchViewForm, { SearchViewResult} from "./searchView"; 
+import dataSource from "../../dataSource";
+import usePromise from "./usePromise";
+import PromiseNoData from "./promiseNoData";
+
 
 
 function Search({}){
     const [query, setQuery]= React.useState("");
     const [promise, setPromise]= React.useState(null);
-    const [error, setError] = React.useState(null);
+    /*const [error, setError] = React.useState(null);
     const [isLoaded, setIsLoaded] = React.useState(false);
     const [items, setItems] = React.useState([]);
   
@@ -38,24 +41,23 @@ function Search({}){
           }
         );
         console.log(items);
-    }  
-    /*
-    React.useEffect(()=>setPromise(searchSong({})),
+    }  */
+    
+    React.useEffect(()=>setPromise(dataSource.searchSong('carola')),
      []);
 
-    const [data, errorp]= usePromise(promise);*/
+    const [data, error]= usePromise(promise);
 
-    function addSong(track) {
-      return track;
-    }
 
-return(
-   <SearchView
-   items = {items.items}
+return(<React.Fragment>
+   <SearchViewForm
    onText = { x => setQuery(x)  }
-   onSearch ={ (e) => searchSong(e) }
-   addTrack = {track=> addSong(track) } //add song function in model 
+   onSearch ={ () =>setPromise(dataSource.searchSong(query))}
+   />
+   {PromiseNoData(promise, data, error)}<SearchViewResult
+   searchResult = {data&&data.tracks.items}
    />	
-    ); 
+   </React.Fragment>
+   ); 
 }
 export default Search;

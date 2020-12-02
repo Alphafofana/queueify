@@ -9,20 +9,28 @@
 import React from "react";
 import {Button, FormControl, Form, Jumbotron, Table} from "react-bootstrap";
 
-const searchView =({items, onText, onSearch, addTrack}) => {
+const SearchViewForm =({onText, onSearch}) => {
 	return(
 	<div className="searchView">
     <Form inline>
     <Button href="#" variant="outline-secondary">&laquo; Return</Button>
     <div className="searchArtist">
       <FormControl as='input' type="text" placeholder="Search For Artists" className="mr-sm-2" 
-      onChange={e => onText(e.target.value)} />
+      onChange={e => onText(JSON.stringify(e.target.value))} />
       
       <Button variant="outline-dark" onClick ={onSearch} >Search</Button>
       </div>
     </Form>
-   
- <Jumbotron className="jumbo">
+	</div>
+    )
+};
+
+export default SearchViewForm;
+
+
+export const SearchViewResult = ({searchResult}) =>{
+ return(
+    <Jumbotron className="jumbo">
  <Table striped bordered hover variant="dark">
   <thead>
     <tr>
@@ -33,21 +41,15 @@ const searchView =({items, onText, onSearch, addTrack}) => {
   </thead>
   <tbody>
     {
-    items&&items.map(item =>
-        <span>
+    searchResult&&searchResult.map(item =>
         <tr>
-            <td>{item.map(artists => artists.name)}</td>
+        <td>{item.artists.map(artists => artists.name )}</td>
             <td>{item.name}</td>
-            <td><button>x</button></td>
+            <td><button>+</button></td>
         </tr>
-        </span>
     )}
   </tbody>
 </Table>
 </Jumbotron>
-
-	</div>
-    )
-};
-
-export default searchView; 
+ );
+}
