@@ -23,7 +23,7 @@ function Search({}){
       fetch("https://api.spotify.com/v1/search?q=" + query + "&type=track", {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + "BQAYizhq_U5-t23f9jO9_yfor2w91b8Tn2ds75quciLxLRW3lHk8dvQM8ftSC0rABVBJTREh5MNmWaF59NzjHVvdxhkD3lBVTFu9CMyb5LUn4OCoYdFqKQMxVMZIrq0j5pWXXVhE",
+          Authorization: "Bearer " + "BQADTC0Q510-ekD42AV1fSegIsr6SihUoqecwEuFljrK0VyVoyCQHJZk2fHpFdHFBgA3pAxzK85G0ExvzXnQ7GBK9Z8pn17sgUwi5W9Zy0GXBpI0wVaubE2e85USGHHrkL4L4ETZ",
         },
       })
         .then((response) => response.json())
@@ -39,7 +39,12 @@ function Search({}){
         );
         console.log(items);
     }  
-  
+    /*
+    React.useEffect(()=>setPromise(searchSong({})),
+     []);
+
+    const [data, errorp]= usePromise(promise);*/
+
     function addSong(track) {
       return track;
     }

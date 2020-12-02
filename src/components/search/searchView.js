@@ -1,6 +1,6 @@
 /**
  * searchView.js
- * Authors: Marta Hansbo, Leila Arman, Ella Söderberg, Alpha Fofana
+ * Authors: Marta Hansbo, Laila Arman, Ella Söderberg, Alpha Fofana
  * 
  * Search view.
  * 
@@ -12,8 +12,6 @@ import {Button, FormControl, Form, Jumbotron, Table} from "react-bootstrap";
 const searchView =({items, onText, onSearch, addTrack}) => {
 	return(
 	<div className="searchView">
-  <body className="search">
-
     <Form inline>
     <Button href="#" variant="outline-secondary">&laquo; Return</Button>
     <div className="searchArtist">
@@ -48,8 +46,7 @@ const searchView =({items, onText, onSearch, addTrack}) => {
 </Table>
 </Jumbotron>
 
-    </body>
-		</div>
+	</div>
     )
 };
 
