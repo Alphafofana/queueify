@@ -43,7 +43,7 @@ function Search(){
         console.log(items);
     }  */
     
-    React.useEffect(()=>setPromise(dataSource.searchSong('carola')),
+    React.useEffect(()=>setPromise(dataSource.searchSong('')),
      []);
 
     const [data, error]= usePromise(promise);

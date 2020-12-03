@@ -18,7 +18,7 @@ const SearchViewForm =({onText, onSearch}) => {
     <Form inline onSubmit={e => { e.preventDefault();}}>
     <Button href="#" variant="outline-secondary">&laquo; Return</Button>
     <div className="searchArtist">
-      <FormControl as='input' type="text" placeholder="Search For Artists" 
+      <FormControl as='input' type="text" placeholder="Search For Artists, Songs..." 
       onChange={e => onText(JSON.stringify(e.target.value))} />
       
       <Button type='submit' variant="outline-dark" onClick ={onSearch}>Search</Button>
