@@ -44,7 +44,7 @@ export const SearchViewResult = ({searchResult}) =>{
   </thead>
   <tbody>
     {
-    searchResult&&searchResult.map(item =>
+    searchResult&&searchResult.hasOwnProperty('tracks', 'items')&&searchResult.tracks.items.map(item =>
         <tr key= {item.href}>
         <td>{item.artists.map(artists => artists.name )}</td>
             <td>{item.name}</td>

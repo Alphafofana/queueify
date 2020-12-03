@@ -14,7 +14,7 @@ import PromiseNoData from "./promiseNoData";
 
 
 
-function Search({}){
+function Search(){
     const [query, setQuery]= React.useState("");
     const [promise, setPromise]= React.useState(null);
     /*const [error, setError] = React.useState(null);
@@ -55,7 +55,7 @@ return(<React.Fragment>
    onSearch ={ () =>setPromise(dataSource.searchSong(query))}
    />
    {PromiseNoData(promise, data, error)}<SearchViewResult
-   searchResult = {data&&data.tracks.items}
+   searchResult = {data}
    />	
    </React.Fragment>
    ); 
