@@ -9,16 +9,19 @@
 import React from "react";
 import {Button, FormControl, Form, Jumbotron, Table} from "react-bootstrap";
 
+
+
 const SearchViewForm =({onText, onSearch}) => {
+
 	return(
 	<div className="searchView">
-    <Form inline>
+    <Form inline onSubmit={e => { e.preventDefault();}}>
     <Button href="#" variant="outline-secondary">&laquo; Return</Button>
     <div className="searchArtist">
-      <FormControl as='input' type="text" placeholder="Search For Artists" className="mr-sm-2" 
+      <FormControl as='input' type="text" placeholder="Search For Artists" 
       onChange={e => onText(JSON.stringify(e.target.value))} />
       
-      <Button variant="outline-dark" onClick ={onSearch} >Search</Button>
+      <Button type='submit' variant="outline-dark" onClick ={onSearch}>Search</Button>
       </div>
     </Form>
 	</div>
