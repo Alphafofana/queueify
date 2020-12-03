@@ -141,8 +141,14 @@ const LoginView = ({
 						variant="outline-success"
 						onClick={(e) => {
 							//TODO: Fix Warning: findDOMNode is deprecated
+							e.preventDefault();
 							handleShowHostLogin();
-							loginhost(e, "facebook");
+							//loginhost(); // TODO: Implement this
+							window.open(
+								"popup.html",
+								"name",
+								"height=585,width=400"
+							);
 						}}
 					>
 						<i class="fab fa-spotify"></i> Spotify
