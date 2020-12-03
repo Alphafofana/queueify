@@ -37,8 +37,8 @@ export const SearchViewResult = ({searchResult}) =>{
  <Table striped bordered hover variant="dark">
   <thead>
     <tr>
-      <th>Artist</th>
       <th>Song Title</th>
+      <th>Artist</th>
       <th>Add</th>
     </tr>
   </thead>
@@ -46,9 +46,9 @@ export const SearchViewResult = ({searchResult}) =>{
     {
     searchResult&&searchResult.hasOwnProperty('tracks', 'items')&&searchResult.tracks.items.map(item =>
         <tr key= {item.href}>
-        <td>{item.artists.map(artists => artists.name )}</td>
-            <td>{item.name}</td>
-            <td><button>+</button></td>
+          <td>{item.name}</td>
+        <td>{item.artists.map(artists => " / " + artists.name )} / </td>
+            <td><Button variant="outline-light">+</Button></td>
         </tr>
     )}
   </tbody>
