@@ -33,7 +33,7 @@ function Login() {
 	}
 
 	//Printout for debug
-	function printCurrentUser() {
+	/* 	function printCurrentUser() {
 		if (currentUser != null) {
 			currentUser.providerData.forEach(function (profile) {
 				console.log("Sign-in provider: " + profile.providerId);
@@ -46,7 +46,7 @@ function Login() {
 			console.log("not signed in!");
 		}
 	}
-	printCurrentUser();
+	printCurrentUser(); */
 
 	return !currentUser ? (
 		<LoginView
@@ -54,8 +54,13 @@ function Login() {
 			handleShowHostLogin={handleShowHostLogin}
 			loginguest={handleLogin}
 			loginhost={() => {
-				console.log("not implemented!");
-				setError("not implemented!");
+				/* 				window.open(
+					window.location + "/popup",
+					"name",
+					"height=585,width=400"
+				); */
+				//console.log("not implemented!");
+				//setError("not implemented!");
 			}} //TODO: Implemet this function */
 			showGuestLogin={showGuestLogin}
 			showHostLogin={showHostLogin}
