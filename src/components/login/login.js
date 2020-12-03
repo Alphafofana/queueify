@@ -47,18 +47,21 @@ function Login() {
 		}
 	}
 	printCurrentUser(); */
-
+	function HandlePopupResult(result) {
+		alert("Login/result of popup is: " + result);
+	}
 	return !currentUser ? (
 		<LoginView
 			handleShowGuesLogin={handleShowGuesLogin}
 			handleShowHostLogin={handleShowHostLogin}
 			loginguest={handleLogin}
 			loginhost={() => {
-				/* 				window.open(
-					window.location + "/popup",
+				window.open(
+					//window.location + "/popup",
+					"https://test-queueify.herokuapp.com/popup",
 					"name",
 					"height=585,width=400"
-				); */
+				);
 				//console.log("not implemented!");
 				//setError("not implemented!");
 			}} //TODO: Implemet this function */
