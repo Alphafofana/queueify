@@ -33,7 +33,7 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const Spotify = new SpotifyWebApi({
 	clientId: functions.config().spotify.client_id,
 	clientSecret: functions.config().spotify.client_secret,
-	redirectUri: `https://test-queueify.herokuapp.com/popup`,
+	redirectUri: `http://localhost:3000/login/popup`,
 });
 
 // Scopes to request.

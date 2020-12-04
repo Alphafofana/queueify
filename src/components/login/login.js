@@ -57,8 +57,7 @@ function Login() {
 			loginguest={handleLogin}
 			loginhost={() => {
 				window.open(
-					//window.location + "/popup",
-					"https://test-queueify.herokuapp.com/popup",
+					window.location + "/popup",
 					"name",
 					"height=585,width=400"
 				);

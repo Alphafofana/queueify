@@ -29,7 +29,7 @@ function App() {
 					<Route exact path="/login">
 						<Login />
 					</Route>
-					<Route path="/popup">
+					<Route path="/login/popup">
 						<Popup />
 					</Route>
 					<PrivateRoute path="/session">
