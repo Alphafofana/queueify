@@ -21,25 +21,20 @@ function SessionHandler() {
 			setError("Failed to log out");
 		}
 	}
-	//Printout for debug
 
-	return <h1> {JSON.stringify(currentUser)}</h1>;
+	// Printout of current user for debug
+	//return <div> {JSON.stringify(currentUser)}</div>;
 
-	/* currentUser &&
-		((currentUser.providerData[0].providerId === "spotify.com" && (
-			<NewSessionView
-				user={currentUser.providerData[0]}
-				logout={handleLogout}
-			/>
+	return (
+		currentUser &&
+		((currentUser.uid.includes("spotify") && (
+			<NewSessionView user={currentUser} logout={handleLogout} />
 		)) ||
 			((currentUser.providerData[0].providerId === "google.com" ||
 				currentUser.providerData[0].providerId === "facebook.com") && (
-				<JoinSessionView
-					user={currentUser.providerData[0]}
-					logout={handleLogout}
-				/>
+				<JoinSessionView user={currentUser} logout={handleLogout} />
 			)))
-	); */
+	);
 }
 
 export default SessionHandler;

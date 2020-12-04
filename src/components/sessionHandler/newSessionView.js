@@ -1,22 +1,24 @@
 import React from "react";
-import { Button, Jumbotron } from "react-bootstrap";
-
-const NewSessionView = () => {
+import css from "./newSessionView.module.css";
+import { Col, Container, Button, Jumbotron } from "react-bootstrap";
+const NewSessionView = ({ user, logout }) => {
 	return (
-		<div className="welcome">
-			<Jumbotron className="welcome-jumbo">
-				<h1>Hello, @username!</h1>
-				<p>
-					Thank you for using Queueify, if you klick the button below
-					you can create a new Session.
-				</p>
-				<p>
-					<Button variant="outline-success" href="#createsession">
-						Create a Session
-					</Button>
-				</p>
-			</Jumbotron>
-		</div>
+		<Container fluid className={css.sessionContainer}>
+			<Col>
+				<Jumbotron className={css.sessionJumbo}>
+					<h1>Hello, @{user.displayName}!</h1>
+					<p>
+						Thank you for using Queueify, if you klick the button
+						below you can join your Hosts Session.
+					</p>
+					<p>
+						<Button variant="outline-success" href="#joinsession">
+							Join a Session
+						</Button>
+					</p>
+				</Jumbotron>
+			</Col>
+		</Container>
 	);
 };
 
