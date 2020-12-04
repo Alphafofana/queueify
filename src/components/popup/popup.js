@@ -35,12 +35,13 @@ function Popup() {
 				"Error in the token Function: " + data.error;
 		}
 	} */
-
 	function tokenReceived(data) {
 		if (data.token) {
 			try {
-				console.log("tokenReceived, Token: " + data.token);
-				window.opener.HandlePopupResult(data.token);
+				console.log("tokenReceived: " + data.token);
+				app.auth()
+					.signInWithCustomToken(data.token)
+					.then(() => window.close());
 			} catch (err) {}
 			//window.close(); //TODO: Close window
 		} else {
@@ -49,6 +50,7 @@ function Popup() {
 				"Error in the token Function: " + data.error;
 		}
 	}
+	window.tokenReceived = tokenReceived;
 
 	var code = getURLParameter("code");
 	var state = getURLParameter("state");
@@ -63,6 +65,7 @@ function Popup() {
 			".cloudfunctions.net/redirect";
 	} else {
 		// Use JSONP to load the 'token' Firebase Function to exchange the auth code against a Firebase custom token.
+		console.log("Use JSONP to load the 'token'");
 		const script = document.createElement("script");
 		script.type = "text/javascript";
 		// This is the URL to the HTTP triggered 'token' Firebase Function.
@@ -79,6 +82,7 @@ function Popup() {
 			encodeURIComponent(state) +
 			"&callback=" +
 			tokenReceived.name;
+		console.log("appended script.src: " + script.src);
 		document.head.appendChild(script);
 	}
 	return <PopupView />;

@@ -15,14 +15,14 @@ const Navibar = ({ user, logout }) => {
 					<Nav className="mr-auto"></Nav>
 				</Col>
 				<Col lg={2}>
-					<Navbar.Text>User: {user.displayName}</Navbar.Text>
+					<Navbar.Text>User: {user && user.displayName}</Navbar.Text>
 				</Col>
 				<Col lg={1}>
 					<Navbar.Text>
 						{" "}
 						<img
 							alt=""
-							src={user.photoURL}
+							src={user && user.photoURL}
 							width="30"
 							height="30"
 							className="d-inline-block align-top"

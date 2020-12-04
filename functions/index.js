@@ -118,6 +118,7 @@ exports.token = functions.https.onRequest((req, res) => {
 						accessToken
 					);
 					// Serve an HTML page that signs the user in and updates the user profile.
+
 					res.jsonp({ token: firebaseToken });
 				});
 			});
@@ -125,6 +126,7 @@ exports.token = functions.https.onRequest((req, res) => {
 	} catch (error) {
 		return res.jsonp({ error: error.toString });
 	}
+
 	return null;
 });
 

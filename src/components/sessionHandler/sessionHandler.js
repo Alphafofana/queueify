@@ -21,9 +21,11 @@ function SessionHandler() {
 			setError("Failed to log out");
 		}
 	}
+	//Printout for debug
 
-	return (
-		currentUser &&
+	return <h1> {JSON.stringify(currentUser)}</h1>;
+
+	/* currentUser &&
 		((currentUser.providerData[0].providerId === "spotify.com" && (
 			<NewSessionView
 				user={currentUser.providerData[0]}
@@ -37,7 +39,7 @@ function SessionHandler() {
 					logout={handleLogout}
 				/>
 			)))
-	);
+	); */
 }
 
 export default SessionHandler;
