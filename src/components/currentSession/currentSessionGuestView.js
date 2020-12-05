@@ -46,7 +46,7 @@ const CurrentSessionGuestView = ({
 							<tbody>
 								{currSession.hasOwnProperty('tracks')&&currSession.tracks.items.map((item, index)=> 
 								<tr key= {item.track.href}>
-								<td>{index}</td>
+								<td>{index+1}</td>
 								<td>{item.track.name}</td>
 								<td>{/*todo*/ }todo</td>
 								<td>{msToTime(item.track.duration_ms)}</td>
