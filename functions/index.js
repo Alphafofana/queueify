@@ -33,7 +33,7 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const Spotify = new SpotifyWebApi({
 	clientId: functions.config().spotify.client_id,
 	clientSecret: functions.config().spotify.client_secret,
-	redirectUri: `http://localhost:3000/login/popup`,
+	redirectUri: `https://test-queueify.herokuapp.com/login/popup`,
 });
 
 // Scopes to request.
@@ -149,9 +149,13 @@ async function createFirebaseAccount(
 
 	// Save the access token to the Firebase Realtime Database.
 	const databaseTask = admin
-		.database()
-		.ref(`/spotifyAccessToken/${uid}`)
-		.set(accessToken);
+		.firestore()
+		.collection("users")
+		.doc(uid)
+		.set({
+			"spotify-token": accessToken,
+			"user-tye": "host",
+		});
 
 	// Create or update the user account.
 	const userCreationTask = admin
