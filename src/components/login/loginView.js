@@ -146,7 +146,7 @@ const LoginView = ({
 							loginhost(); // TODO: Implement this
 						}}
 					>
-						<i class="fab fa-spotify"></i> Spotify
+						<i className="fab fa-spotify"></i> Spotify
 					</Button>
 				</Modal.Footer>
 			</Modal>
