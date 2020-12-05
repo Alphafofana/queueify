@@ -71,8 +71,6 @@ const LoginView = ({
 						</p>
 					</Col>
 				</Row>
-
-				<a href="/">Create new account</a>
 			</Jumbotron>
 
 			<Modal

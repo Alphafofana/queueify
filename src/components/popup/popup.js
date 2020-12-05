@@ -22,19 +22,6 @@ function Popup() {
 	/**
 	 * This callback is called by the JSONP callback of the 'token' Firebase Function with the Firebase auth token.
 	 */
-	/* 	function tokenReceived(data) {
-		if (data.token) {
-			app.auth()
-				.signInWithCustomToken(data.token)
-				.then(function () {
-					window.close();
-				});
-		} else {
-			console.error(data);
-			document.body.innerText =
-				"Error in the token Function: " + data.error;
-		}
-	} */
 	function tokenReceived(data) {
 		if (data.token) {
 			try {
