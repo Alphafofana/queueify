@@ -27,4 +27,5 @@ console.js
 notes.txt
 *.url
 **/*Config.js*
-*service-account.json
+*service-account-dev.json
+*service-account-prod.json

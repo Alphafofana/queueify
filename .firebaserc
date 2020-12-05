@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "queueify-development"
+    "default": "queueify-development",
+    "production": "queueify-spotify",
+    "development": "queueify-development"
   }
 }

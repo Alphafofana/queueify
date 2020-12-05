@@ -21,7 +21,7 @@ const crypto = require("crypto");
 
 // Firebase Setup
 const admin = require("firebase-admin");
-const serviceAccount = require("./service-account.json");
+const serviceAccount = require("./service-account-prod.json");
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 	databaseURL: `https://${process.env.GCLOUD_PROJECT}.firebaseio.com`,
@@ -33,7 +33,9 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const Spotify = new SpotifyWebApi({
 	clientId: functions.config().spotify.client_id,
 	clientSecret: functions.config().spotify.client_secret,
-	redirectUri: `http://localhost:3000/login/popup`,
+	//redirectUri: `http://localhost:3000/login/popup`,
+	//redirectUri: `https://test-queueify.herokuapp.com/login/popup`,
+	redirectUri: `https://queueify.herokuapp.com/login/popup`,
 });
 
 // Scopes to request.
