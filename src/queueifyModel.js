@@ -39,7 +39,7 @@ class QueueifyModel {
   }
 
   getUserType() {
-    console.log("current user, ", this.currentUser)
+    console.log("current user, ", this.currentUser);
     if (this.currentUser) {
       let userType = "";
       let data = this.getFirebaseData("users", this.currentUser.uid);
@@ -141,34 +141,62 @@ class QueueifyModel {
     }
   }
 
-  addSong(song) {
-    let playlist = this.getCurrentPlaylist();
-
+  addSong(songID) {
     /*
 		if song does not already exist
 		add song to session playlist 
-		votes is 0 and position is 0
+		votes is 0 and position is last (-1)
 		*/
+    let songRef = db.collection("playlist");
+    if (!songRef.where(songID, "in", [this.currentPlaylist])) {
+      db.collection("playlist")
+        .doc(this.currentPlaylist)
+        .collection("songs")
+        .doc(songID)
+        .set({
+          index: -1,
+          voters: [this.currentUser.uid],
+          votes: 0,
+        });
+    } else {
+      console.log("Song is already in playlist!")
+    }
   }
+
   /*
 	Firebase functions will look for changes in playlists.
 	If a song is added, the function will add this song to the playlist. 
 	If a song has the order changed, the function will change the order of the playlist
 	*/
 
-  deleteSong(song) {
-    /*
+  deleteSong(songID) {
+        /*
 		check if they are host
 		if they are, they can delete song
 		*/
+    let userType = this.getUserType();
+    if (userType === "host") {
+      let songDoc = db.collection("playlist").doc(this.currentPlaylist).collection("songs").doc(songID);
+      let removeSong = songDoc.delete().then(function() {
+        console.log("Document successfully deleted!");
+    }).catch(function(error) {
+        console.error("Error removing document: ", error);
+    });
+    }
   }
 
-  vote(song) {
+  vote(songID) {
     /*
 		check if user has voted before on this song. Grey the button out for the user!
 		add a vote to the song in current session
 		push the change to firebase
 		*/
+    var songRef = db.collection("playlist").doc(this.currentPlaylist).collection("songs").doc(songID);
+    songRef.update({
+      voters: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid),
+      vote: firebase.firestore.FieldValue.increment(1),
+    });
+
   }
 }
 
