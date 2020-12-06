@@ -1,9 +1,27 @@
+import { auth, db } from "./services/firebase"
+
 const DataSource = {
-	apiCall(endpoint, method, body) {
-		return fetch(endpoint, {
+	async getToken() {
+		if (auth.currentUser) {
+			let user = db.collection("users").doc(auth.currentUser.uid);
+			let token = await user.get().then((doc) => {
+				if (doc.exists) {
+					return doc.data().spotifyToken;
+				} else {
+					console.log("The document does not exist.")
+				}
+			}).catch(error => {
+				console.log("Could not retrieve the document:", error);
+			})
+			return token;
+		}
+	},
+	async apiCall(endpoint, method, body) {
+		let token = await this.getToken().then(data => data).catch(err => console.error(err));
+		return await fetch(endpoint, {
 			method: method,
 			headers: {
-				Authorization: "Bearer " + process.env.REACT_APP_SPOTIFY_TOKEN,
+				Authorization: "Bearer " + token,
 				Accept: "application/json",
 				"Content-Type": "application/json",
 			},

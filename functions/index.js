@@ -155,8 +155,8 @@ async function createFirebaseAccount(
 		.collection("users")
 		.doc(uid)
 		.set({
-			"spotify-token": accessToken,
-			"user-tye": "host",
+			"spotifyToken": accessToken,
+			"userType": "host",
 		});
 
 	// Create or update the user account.
