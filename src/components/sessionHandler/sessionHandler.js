@@ -22,20 +22,17 @@ function SessionHandler() {
 		}
 	}
 
+	// Printout of current user for debug
+	//return <div> {JSON.stringify(currentUser)}</div>;
+
 	return (
 		currentUser &&
-		((currentUser.providerData[0].providerId === "spotify.com" && (
-			<NewSessionView
-				user={currentUser.providerData[0]}
-				logout={handleLogout}
-			/>
+		((currentUser.uid.includes("spotify") && (
+			<NewSessionView user={currentUser} logout={handleLogout} />
 		)) ||
 			((currentUser.providerData[0].providerId === "google.com" ||
 				currentUser.providerData[0].providerId === "facebook.com") && (
-				<JoinSessionView
-					user={currentUser.providerData[0]}
-					logout={handleLogout}
-				/>
+				<JoinSessionView user={currentUser} logout={handleLogout} />
 			)))
 	);
 }
