@@ -20,11 +20,7 @@ function Navbar() {
 		}
 	}
 	return (
-		<NavbarView
-			user={currentUser.providerData[0]}
-			logout={handleLogout}
-			error={error}
-		/>
+		<NavbarView user={currentUser} logout={handleLogout} error={error} />
 	);
 }
 
