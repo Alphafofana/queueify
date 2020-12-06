@@ -25,7 +25,7 @@ class QueueifyModel {
         .get()
         .then((d) => {
           if (d.exists) {
-            data = doc.data();
+            data = d.data();
           } else {
             console.log("The document does not exist.");
           }
@@ -34,39 +34,45 @@ class QueueifyModel {
           console.log("Could not retrieve the document:", error);
         });
     }
+    console.log(data);
     return data;
   }
 
   getUserType() {
-    let userType = "";
-    let data = this.getFirebaseData("users", this.currentUser.uid);
-    if (data) {
-      userType = data.userType;
-    } else {
-      console.error("could not retrieve the user type");
+    console.log("current user, ", this.currentUser)
+    if (this.currentUser) {
+      let userType = "";
+      let data = this.getFirebaseData("users", this.currentUser.uid);
+      if (data) {
+        userType = data.userType;
+      } else {
+        console.error("could not retrieve the user type");
+      }
+      return userType;
     }
-    return userType;
   }
 
-  async getUserToken() {
-    let userToken = "";
-    let data = this.getFirebaseData("users", this.currentUser.uid);
-    if (data) {
-      userToken = data.userToken;
-    } else {
-      console.error("could not retrieve the user token");
+  getUserToken() {
+    if (this.currentUser) {
+      let userToken = "";
+      let data = this.getFirebaseData("users", this.currentUser.uid);
+      if (data) {
+        userToken = data.userToken;
+      } else {
+        console.error("could not retrieve the user token");
+      }
+      return userToken;
     }
-    return userToken;
   }
 
   createSession(sessionName, sessionPin) {
     //If currentUser is a host, create a new session and store it in the session collection
     let userType = this.getUserType();
-    let userToken = this.userToken();
+    let userToken = this.getUserToken();
     console.log(userType, userToken);
-    if (userType && userType == "host") {
+    if (userType && userType === "host") {
       // Create a new playlist on spotify
-      playlistID = DataSource.createPlaylist(
+      let playlistID = DataSource.createPlaylist(
         this.currentUser.uid.split(":")[1],
         sessionName
       ).id;
@@ -128,16 +134,16 @@ class QueueifyModel {
   }
 
   getCurrentPlaylist() {
-	  // Return the data about the playlist from firebase
-	  // From the API we get all the song info, here we get just the info about position, votes and such
+    // Return the data about the playlist from firebase
+    // From the API we get all the song info, here we get just the info about position, votes and such
     if (this.currentSession) {
-		return this.getFirebaseData("playlist", this.currentPlaylist)
+      return this.getFirebaseData("playlist", this.currentPlaylist);
     }
   }
 
   addSong(song) {
-	  let playlist = this.getCurrentPlaylist();
-	  
+    let playlist = this.getCurrentPlaylist();
+
     /*
 		if song does not already exist
 		add song to session playlist 

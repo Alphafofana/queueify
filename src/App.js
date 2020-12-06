@@ -7,6 +7,7 @@ import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
 import Search from "./components/search/search";
 import Popup from "./components/popup/popup";
+import QueueifyModel from './queueifyModel';
 
 //import PrivateRoute from "./components/router/privateRouteComponent";
 import PrivateRoute from "./components/router/privateRouteChildren";
@@ -21,6 +22,7 @@ import {
 import CurrentSession from "./components/currentSession/currentSession";
 
 function App() {
+	let model = new QueueifyModel();
 	return (
 		<BrowserRouter>
 			<AuthProvider>
@@ -55,7 +57,7 @@ function App() {
 									<Sidebar />
 								</Col>
 								<Col className="pageCol">
-									<SessionHandler />
+									<SessionHandler model={model}/>
 								</Col>
 							</Row>
 						</div>
@@ -68,7 +70,7 @@ function App() {
 									<Sidebar />
 								</Col>
 								<Col className="pageCol">
-									<CurrentSession />
+									<CurrentSession model={model}/>
 								</Col>
 							</Row>
 						</div>
