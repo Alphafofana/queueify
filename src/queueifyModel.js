@@ -6,265 +6,164 @@
  ********************************************************************************
  */
 
-import { useAuth } from "./contexts/AuthContext";
-
+import { auth, db } from "./services/firebase";
+import DataSource from "./dataSource";
+const crypto = require("crypto");
 
 class QueueifyModel {
+  constructor() {
+    this.currentUser = auth.currentUser;
+    this.currentSession = "";
+    this.currentPlaylist = "";
+  }
 
-	constructor() {
-        const { currentUser } = useAuth();
-		this.currentUser = currentUser;
-		this.currentSession = "";
+  getFirebaseData(collection, document) {
+    let data = "";
+    if (this.currentUser) {
+      let doc = db.collection(collection).doc(document);
+      doc
+        .get()
+        .then((d) => {
+          if (d.exists) {
+            data = doc.data();
+          } else {
+            console.log("The document does not exist.");
+          }
+        })
+        .catch((error) => {
+          console.log("Could not retrieve the document:", error);
+        });
     }
+    return data;
+  }
 
-    createSession(user) {
-        /*
-        A host can create a session.
-        A session ID is created
-        A new playlist is created 
-        the following data is set: 
-        {
-            "host-token":,
-            "host-uid":,
-            "name":,
-            "pin":,
-            "playlist-id":,
-        }
-        */
+  getUserType() {
+    let userType = "";
+    let data = this.getFirebaseData("users", this.currentUser.uid);
+    if (data) {
+      userType = data.userType;
+    } else {
+      console.error("could not retrieve the user type");
     }
+    return userType;
+  }
 
-    getCurrentSession() {
-        /*
-        checking this.currentsession and if there is a session ongoing
-        Retrieving data about currentsession from firebase
-        returning session name and pin
-        */ 
+  async getUserToken() {
+    let userToken = "";
+    let data = this.getFirebaseData("users", this.currentUser.uid);
+    if (data) {
+      userToken = data.userToken;
+    } else {
+      console.error("could not retrieve the user token");
     }
-    
-    setCurrentSession(user, session, pin) {
-        /*
-        Check that the user has typed in the 
-        Add the user to a session connected to the host and the password
-        */
-    };
-    
+    return userToken;
+  }
 
-    
-	/**
-	 * set the number of guests.
-	 * @param {number} numberOfGuests
-	 */
-	setNumberOfGuests(numberOfGuests) {
-		if (numberOfGuests <= 0)
-			throw "Number of dinner guests cannot be zero or negative";
-		this.numberOfGuests = numberOfGuests;
-		this.notifyObservers();
-	}
-	/**
-	 * get the number of guests.
-	 * @return {number} - numberOfGuests
-	 */
-	getNumberOfGuests() {
-		return this.numberOfGuests;
-	}
-	/**
-	 * add observer/subscriber to the model
-	 * @param  {callback} obs - callback function
-	 */
-	addObserver(obs) {
-		this.subscribers = this.subscribers.concat(obs);
-		return () => this.removeObserver(obs);
-	}
-	/**
-	 * remove observer/subscriber from the model
-	 * @param  {callback} obs - callback function
-	 */
-	removeObserver(obs) {
-		this.subscribers = this.subscribers.filter((o) => o != obs);
-	}
+  createSession(sessionName, sessionPin) {
+    //If currentUser is a host, create a new session and store it in the session collection
+    let userType = this.getUserType();
+    let userToken = this.userToken();
+    console.log(userType, userToken);
+    if (userType && userType == "host") {
+      // Create a new playlist on spotify
+      playlistID = DataSource.createPlaylist(
+        this.currentUser.uid.split(":")[1],
+        sessionName
+      ).id;
 
-	/**
-	 * notify the models observers/subscribes
-	 */
-	notifyObservers() {
-		if (this.subscribers)
-			this.subscribers.forEach((callback) => {
-				try {
-					callback();
-				} catch (err) {
-					console.error("Error ", err, callback);
-				}
-			});
-		this.saveToLocalStorage();
-	}
+      // Set currentPlaylist
+      this.currentPlaylist = playlistID;
 
-	/**
-	 * Add a dish to stored dishes
-	 */
-	addToMenu(dish) {
-		if (!dish) throw "Dish already exists";
-		if (this.dishes.find((Existingdish) => Existingdish.id === dish.id))
-			throw "Dish already exists";
-		this.dishes = [dish, ...this.dishes];
-		this.notifyObservers();
-	}
-	/**
-	 * Get all stored dishes
-	 */
-	getMenu() {
-		return [...this.dishes];
-	}
+      // Create new instance of playlist in firebase
+      db.collection("playlist").doc(playlistID);
 
-	/**
-	 * Remove a dish from the stored dishes
-	 */
-	removeFromMenu(dish) {
-		this.dishes = this.dishes.filter(
-			(Existingdish) => Existingdish.id != dish.id
-		);
-		this.notifyObservers();
-	}
+      // Create hash string for current session
+      this.currentSession = crypto
+        .createHash("sha1")
+        .update(sessionName + sessionPin)
+        .digest("hex");
 
-	/**
-	 * Store the id for the "Current Dish"
-	 */
-	setCurrentDish(id) {
-		//if (!id) throw "Missing dish id";
-		this.currentDish = id;
-		this.notifyObservers();
-	}
+      // Create new session collection
+      db.collection("session").doc(this.currentSession).set({
+        hostToken: userToken,
+        hostUid: this.currentUser.uid,
+        name: sessionName,
+        pin: sessionPin,
+        playlistId: playlistID,
+      });
 
-	//TODO: Confirm, Should these reside in the model?
-	/**
-	 * Calculate the total price of stored dishes
-	 */
-	calculateTotalPrice() {
-		let totalPrice = 0;
-		this.dishes.forEach(
-			(dish) => (totalPrice += dish.pricePerServing * this.numberOfGuests)
-		);
-		return Number.parseFloat(totalPrice).toFixed(2);
-	}
+      // Update the user adding the session
+      db.collection("users")
+        .doc(this.currentUser.uid)
+        .set({ sessionId: this.currentSession }, { merge: true });
+      console.log("Session created with session ID " + this.currentSession);
+    } else {
+      console.error("The user does not exist or is not a host");
+    }
+  }
 
-	/* 	sortIngredients() {
-		let ing = [];
-		this.dishes.forEach(
-			(dish) => (ing = ing.concat(dish.extendedIngredients))
-		); // Adding all the ingredients to an array
+  setCurrentSession(sessionName, sessionPin) {
+    // Set the current session for a guest, if the session name and password is correct.
+    let validSession = false;
 
-		let ingDict = {};
-		ing.forEach(
-			// For each ingredient...
-			(ing) =>
-				(ingDict[ing.name] = {
-					// Add it to a dictionary
-					name: ing.name,
-					aisle: ing.aisle,
-					unit: ing.unit,
-					amount:
-						ingDict[ing.name] && ingDict[ing.name].unit == ing.unit // And if the ingredient is already in the dictionary...
-							? (ingDict[ing.name].amount +=
-									ing.amount * this.numberOfGuests) // Add the amount to the previous amount
-							: ing.amount * this.numberOfGuests, // If not, just add the amount
-				})
-		);
-		return ingDict;
-	} */
+    // Generate hash based upon the name and pin given
+    let hashedSession = crypto
+      .createHash("sha1")
+      .update(sessionName + sessionPin)
+      .digest("hex");
 
-	/**
-	 * Get destinct ingredients together with their amount, aisle and unit
-	 */
-	getIngredients() {
-		const ingredients = {}; // empty object used as mapping
-		this.dishes.forEach((dish) =>
-			dish.extendedIngredients.forEach((ingredient) => {
-				if (!ingredients[ingredient.name])
-					// ingredient not taken into account yet
-					// associate the ingredient with the name
-					// {...i } is a *copy* of the ingredient (spread syntax)
-					// we copy just in case, as we’ll change the object below
-					ingredients[ingredient.name] = { ...ingredient };
-				else ingredients[ingredient.name].amount += ingredient.amount;
-			})
-		);
-		//console.log(Object.values(ingredients));
-		return Object.values(ingredients);
-	}
+    // Check to see if the session exists
+    let data = this.getFirebaseData("sessions", hashedSession);
+    if (data) {
+      validSession = true;
+      this.currentSession = hashedSession;
+      this.playlistId = data.playlistId;
+      db.collection("users")
+        .doc(this.currentUser.uid)
+        .set({ sessionId: this.currentSession }, { merge: true });
+    } else {
+      console.log("password or name does not match");
+    }
+    return validSession;
+  }
 
-	/**
-	 * Determine a dish Type
-	 */
-	dishType(dish) {
-		const types = ["starter", "main course", "dessert"]; // TODO: Keep this constant in one place, exists in SearchFormView
-		const tp = dish.dishTypes.filter((value) => types.includes(value));
-		if (tp.length) return tp[0];
-		return "";
-	}
+  getCurrentPlaylist() {
+	  // Return the data about the playlist from firebase
+	  // From the API we get all the song info, here we get just the info about position, votes and such
+    if (this.currentSession) {
+		return this.getFirebaseData("playlist", this.currentPlaylist)
+    }
+  }
 
-	/**
-	 * Compare Dishes to order with types as sorting criterion:
-	 * 1. Aisle
-	 * 2. Ingredient name
-	 */
-	compareDishes(a, b) {
-		const types = ["starter", "main course", "dessert"]; // TODO: Keep this constant in one place, exists in SearchFormView
-		let ai = types.indexOf(this.dishType(a));
-		let bi = types.indexOf(this.dishType(b));
-		let val = 0;
-		if (ai < bi) val = -1;
-		else if (ai > bi) val = 1;
-		return val;
-	}
+  addSong(song) {
+	  let playlist = this.getCurrentPlaylist();
+	  
+    /*
+		if song does not already exist
+		add song to session playlist 
+		votes is 0 and position is 0
+		*/
+  }
+  /*
+	Firebase functions will look for changes in playlists.
+	If a song is added, the function will add this song to the playlist. 
+	If a song has the order changed, the function will change the order of the playlist
+	*/
 
-	/**
-	 * Compare ingredients to order in alphabetical order with sorting criterions:
-	 * 1. Aisle
-	 * 2. Ingredient name
-	 */
-	compareIngredients(a, b) {
-		if (a.aisle < b.aisle) return -1;
-		else if (a.aisle > b.aisle) return 1; // TODO return 1 if a.aisle > b.aisle. Note: not >= !!!
+  deleteSong(song) {
+    /*
+		check if they are host
+		if they are, they can delete song
+		*/
+  }
 
-		// At this point, we know that a.aisle===b.aisle
-		if (a.name < b.name) return -1; // TODO compare a.name with b.name, return 1 or -1 based on that
-		if (a.name > b.name) return 1; // TODO compare a.name with b.name, return 1 or -1 based on that
-		/* if a.name===b.name throw an error because 
-       ingredient names are not unique as specified, so 
-	   there’s a bug */
-		if (a.name === b.name) throw "Equal ingredient can't be compared!";
-	}
-
-	/**
-	 * Save the Model to localStorage
-	 */
-	saveToLocalStorage() {
-		localStorage.setItem(
-			"dinnerModel",
-			JSON.stringify({
-				//Conversion from object to String (serialization)
-				numberOfGuests: this.numberOfGuests,
-				dishes: this.dishes,
-				currentDish: this.currentDish,
-			})
-		);
-
-		//Option 2 (Save to local storage by observing data model)
-		// this.addObserver(() => {
-		// 	localStorage.setItem(
-		// 		"dinnerModel",
-		// 		JSON.stringify({
-		// 			//Conversion from object to String (serialization)
-		// 			numberOfGuests: this.numberOfGuests,
-		// 			dishes: this.dishes,
-		// 			currentDish: this.currentDish,
-		// 		})
-		// 	);
-		// });
-	}
-
-	/**
-	 * Load the Model from localStorage
-	 */
-	//loadFromLocalStorage() { //TODO: Complete this method
-	//}
+  vote(song) {
+    /*
+		check if user has voted before on this song. Grey the button out for the user!
+		add a vote to the song in current session
+		push the change to firebase
+		*/
+  }
 }
+
+export default QueueifyModel;

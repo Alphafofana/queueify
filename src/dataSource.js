@@ -4,6 +4,7 @@ const DataSource = {
 	async getToken() {
 		if (auth.currentUser) {
 			let user = db.collection("users").doc(auth.currentUser.uid);
+			//Men senare måste vi snarare titta på session och dess token
 			let token = await user.get().then((doc) => {
 				if (doc.exists) {
 					return doc.data().spotifyToken;
@@ -58,8 +59,6 @@ const DataSource = {
 			description: "Playlist for the queueify app",
 			public: false,
 		};
-
-		let playlistID = "";
 
 		return this.apiCall(endpoint, method, body).catch((error) => {
 			console.error(error);
@@ -120,6 +119,12 @@ const DataSource = {
 		return this.apiCall(endpoint, method).catch((error) => {
 			console.error(error);
 		});
+	},
+
+	getCurrentSong() {
+		/*
+		get information about the song that is currently playing
+		*/
 	},
 };
 
