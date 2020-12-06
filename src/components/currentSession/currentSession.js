@@ -26,10 +26,11 @@ function CurrentSession({currPlaylist_id}) {
 			setError("Failed to log out");
 		}
 	}
+	console.log(currentUser);
 
 	return (<>
 		{currentUser &&
-		((currentUser.providerData[0].providerId === "spotify.com" && (
+		((currentUser.uid.includes("spotify") && (
 			<CurrentSessionHostView
 				user={currentUser.providerData[0]}
 				logout={handleLogout}

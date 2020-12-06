@@ -46,7 +46,7 @@ function Login() {
 			console.log("not signed in!");
 		}
 	}
-	//printCurrentUser();
+	printCurrentUser();
 
 	return !currentUser ? (
 		<LoginView
