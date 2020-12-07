@@ -1,35 +1,38 @@
-import { auth, db } from "./services/firebase"
+import { auth, db } from "./services/firebase";
 
 const DataSource = {
-	async getToken() {
-		if (auth.currentUser) {
-			let user = db.collection("users").doc(auth.currentUser.uid);
-			//Men senare måste vi snarare titta på session och dess token
-			let token = await user.get().then((doc) => {
+	getToken() {
+		let user = db.collection("users").doc(auth.currentUser.uid);
+		return user
+			.get()
+			.then((doc) => {
 				if (doc.exists) {
 					return doc.data().spotifyToken;
 				} else {
-					console.log("The document does not exist.")
+					console.log("The document does not exist.");
 				}
-			}).catch(error => {
-				console.log("Could not retrieve the document:", error);
 			})
-			return token;
-		}
+			.catch((error) => {
+				console.log("Could not retrieve the document:", error);
+			});
 	},
-	async apiCall(endpoint, method, body) {
-		let token = await this.getToken().then(data => data).catch(err => console.error(err));
-		return await fetch(endpoint, {
-			method: method,
-			headers: {
-				Authorization: "Bearer " + token,
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: body ? JSON.stringify(body) : body,
-		}).then((response) => {
-			return response.json();
-		});
+
+	apiCall(endpoint, method, body) {
+		return this.getToken()
+			.then((token) =>
+				fetch(endpoint, {
+					method: method,
+					headers: {
+						Authorization: "Bearer " + token,
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: body ? JSON.stringify(body) : body,
+				}).then((response) => {
+					return response.json();
+				})
+			)
+			.catch((err) => console.error(err));
 	},
 
 	searchSong(query) {
@@ -59,7 +62,6 @@ const DataSource = {
 			description: "Playlist for the queueify app",
 			public: false,
 		};
-		console.log("success!")
 		return this.apiCall(endpoint, method, body).catch((error) => {
 			console.error(error);
 		});

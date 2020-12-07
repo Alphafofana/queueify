@@ -26,12 +26,17 @@ function SessionHandler({ model }) {
 
 	function newSession(e) {
 		e.preventDefault();
-		model.createSession(sessionName, sessionPin);
+		model
+			.createSession(sessionName, sessionPin)
+			.then((sessionID) =>
+				console.log(
+					"SessionHandler: Session created with session ID " +
+						sessionID
+				)
+			);
 	}
 
-	function joinSession() {
-
-	}
+	function joinSession() {}
 
 	// Printout of current user for debug
 	//return <div> {JSON.stringify(currentUser)}</div>;
@@ -39,7 +44,13 @@ function SessionHandler({ model }) {
 	return (
 		currentUser &&
 		((currentUser.uid.includes("spotify") && (
-			<NewSessionView sessionName={name => setSessionName(name)}	sessionPin={pin => setSessionPin(pin)} submit={e => newSession(e)} user={currentUser} logout={handleLogout} />
+			<NewSessionView
+				sessionName={(name) => setSessionName(name)}
+				sessionPin={(pin) => setSessionPin(pin)}
+				submit={(e) => newSession(e)}
+				user={currentUser}
+				logout={handleLogout}
+			/>
 		)) ||
 			((currentUser.providerData[0].providerId === "google.com" ||
 				currentUser.providerData[0].providerId === "facebook.com") && (
