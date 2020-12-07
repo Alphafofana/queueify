@@ -7,17 +7,38 @@ import { useAuth } from "../../contexts/AuthContext";
 function SessionHandler({ model }) {
 	const { currentUser } = useAuth();
 	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
 	const [sessionName, setSessionName] = useState("");
+	const [sessionID, setSessionID] = useState(""); //TODO: Reuse setSessionName?
 	const [sessionPin, setSessionPin] = useState(null);
 	const history = useHistory();
 	//const [loading, setLoading] = useState(false);
 
 	function newSession(e) {
 		e.preventDefault();
-		model.createSession(sessionName, sessionPin);
+		setError("");
+		setLoading(true);
+		model
+			.createSession(sessionName, sessionPin)
+			.then((sessionID) => history.push("session/" + sessionID))
+			.catch((error) => {
+				console.error("Failed to create new session!");
+				setError("Failed to create new session!");
+			});
 	}
 
-	function joinSession() {}
+	function joinSession(e) {
+		e.preventDefault();
+		setError("");
+		setLoading(true);
+		model
+			.joinSession(sessionID, sessionPin)
+			.then((sessionID) => history.push("session/" + sessionID))
+			.catch((error) => {
+				console.error("Failed to create new session!");
+				setError("Failed to create new session!");
+			});
+	}
 
 	// Printout of current user for debug
 	//return <div> {JSON.stringify(currentUser)}</div>;
@@ -34,7 +55,12 @@ function SessionHandler({ model }) {
 		)) ||
 			((currentUser.providerData[0].providerId === "google.com" ||
 				currentUser.providerData[0].providerId === "facebook.com") && (
-				<JoinSessionView user={currentUser} />
+				<JoinSessionView
+					sessionID={(id) => setSessionID(id)}
+					sessionPin={(pin) => setSessionPin(pin)}
+					submit={(e) => joinSession(e)}
+					user={currentUser}
+				/>
 			)))
 	);
 }

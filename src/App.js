@@ -7,7 +7,7 @@ import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
 import Search from "./components/search/search";
 import Popup from "./components/popup/popup";
-import QueueifyModel from './queueifyModel';
+import QueueifyModel from "./queueifyModel";
 
 //import PrivateRoute from "./components/router/privateRouteComponent";
 import PrivateRoute from "./components/router/privateRouteChildren";
@@ -34,7 +34,7 @@ function App() {
 						<Login />
 					</Route>
 					<PrivateRoute path="/search">
-					<div className="pageContainer">
+						<div className="pageContainer">
 							<Navbar />
 							<Row>
 								<Col lg="auto" className="sidebarCol">
@@ -45,11 +45,11 @@ function App() {
 								</Col>
 							</Row>
 						</div>
-						</PrivateRoute>
+					</PrivateRoute>
 					<Route path="/login/popup">
 						<Popup />
 					</Route>
-					<PrivateRoute path="/session">
+					<PrivateRoute exact path="/session">
 						<div className="pageContainer">
 							<Navbar />
 							<Row>
@@ -57,12 +57,12 @@ function App() {
 									<Sidebar />
 								</Col>
 								<Col className="pageCol">
-									<SessionHandler model={model}/>
+									<SessionHandler model={model} />
 								</Col>
 							</Row>
 						</div>
 					</PrivateRoute>
-					<PrivateRoute path="/currentSession">
+					<PrivateRoute exact path="/session/:sessionId">
 						<div className="pageContainer">
 							<Navbar />
 							<Row>
@@ -70,7 +70,7 @@ function App() {
 									<Sidebar />
 								</Col>
 								<Col className="pageCol">
-									<CurrentSession model={model}/>
+									<CurrentSession model={model} />
 								</Col>
 							</Row>
 						</div>
