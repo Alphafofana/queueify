@@ -5,35 +5,16 @@ import JoinSessionView from "./joinSessionView";
 import { useAuth } from "../../contexts/AuthContext";
 
 function SessionHandler({ model }) {
-	const { logout, currentUser } = useAuth();
+	const { currentUser } = useAuth();
 	const [error, setError] = useState("");
 	const [sessionName, setSessionName] = useState("");
 	const [sessionPin, setSessionPin] = useState(null);
 	const history = useHistory();
 	//const [loading, setLoading] = useState(false);
 
-	async function handleLogout() {
-		setError("");
-
-		try {
-			await logout();
-			history.push("/login");
-		} catch {
-			console.error("Failed to log out!");
-			setError("Failed to log out");
-		}
-	}
-
 	function newSession(e) {
 		e.preventDefault();
-		model
-			.createSession(sessionName, sessionPin)
-			.then((sessionID) =>
-				console.log(
-					"SessionHandler: Session created with session ID " +
-						sessionID
-				)
-			);
+		model.createSession(sessionName, sessionPin);
 	}
 
 	function joinSession() {}
@@ -49,12 +30,11 @@ function SessionHandler({ model }) {
 				sessionPin={(pin) => setSessionPin(pin)}
 				submit={(e) => newSession(e)}
 				user={currentUser}
-				logout={handleLogout}
 			/>
 		)) ||
 			((currentUser.providerData[0].providerId === "google.com" ||
 				currentUser.providerData[0].providerId === "facebook.com") && (
-				<JoinSessionView user={currentUser} logout={handleLogout} />
+				<JoinSessionView user={currentUser} />
 			)))
 	);
 }

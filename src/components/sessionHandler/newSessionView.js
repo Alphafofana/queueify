@@ -9,7 +9,7 @@ import {
 	Form,
 } from "react-bootstrap";
 
-const NewSessionView = ({ sessionName, sessionPin, submit, user, logout }) => {
+const NewSessionView = ({ sessionName, sessionPin, submit, user }) => {
 	return (
 		<Container fluid className={css.sessionContainer}>
 			<Col>
