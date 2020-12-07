@@ -1,0 +1,10 @@
+.sessionContainer {
+	display: flex;
+	flex-direction: row;
+	padding: 0;
+	background: #121212;
+}
+
+.sessionJumbo {
+	margin-top: 4rem;
+}

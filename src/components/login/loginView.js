@@ -71,8 +71,6 @@ const LoginView = ({
 						</p>
 					</Col>
 				</Row>
-
-				<a href="/">Create new account</a>
 			</Jumbotron>
 
 			<Modal
@@ -141,11 +139,12 @@ const LoginView = ({
 						variant="outline-success"
 						onClick={(e) => {
 							//TODO: Fix Warning: findDOMNode is deprecated
+							e.preventDefault();
 							handleShowHostLogin();
-							loginhost(e, "facebook");
+							loginhost(); // TODO: Implement this
 						}}
 					>
-						<i class="fab fa-spotify"></i> Spotify
+						<i className="fab fa-spotify"></i> Spotify
 					</Button>
 				</Modal.Footer>
 			</Modal>
