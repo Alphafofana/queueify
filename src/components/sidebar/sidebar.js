@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import SidebarView from "./sidebarView";
 import { useAuth } from "../../contexts/AuthContext";
 
-function Sidebar() {
+function Sidebar(currNav,sessionNav, searchNav) {
 	const { logout, currentUser } = useAuth();
 	const [error, setError] = useState("");
 	const history = useHistory();
@@ -24,6 +24,9 @@ function Sidebar() {
 			user={currentUser.providerData[0]}
 			logout={handleLogout}
 			error={error}
+			currNav={currNav}
+			sessionNav={sessionNav}
+			searchNav={searchNav}
 		/>
 	);
 }

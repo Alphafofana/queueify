@@ -1,9 +1,9 @@
 import React from "react";
 import css from "./sidebarView.module.css";
 import logo from "../../assets/queueify_logo1.svg";
-import { Nav } from "react-bootstrap";
+import { Nav, Button } from "react-bootstrap";
 
-const SidebarView = () => {
+const SidebarView = (user, logout, error, currNav, sessionNav, searchNav) => {
 	return (
 		<div className="sidebar">
 			<div className="logo">
@@ -15,20 +15,19 @@ const SidebarView = () => {
 				defaultActiveKey="/home"
 				className="flex-column sidebar-nav"
 			>
-				<Nav.Link eventKey="link1">
-					{" "}
-					<i className="fas fa-home" /> Home
+				<Nav.Link eventKey="/home" onSelect={sessionNav}>
+					{" "}<Button className={css.sidebarButtons} onClick={sessionNav}>
+					<i className="fas fa-home"  /> Session</Button>
 				</Nav.Link>
-				<Nav.Link eventKey="link2">
-					{" "}
-					<i className="fas fa-search" /> Search
-				</Nav.Link>
-				<Nav.Link eventKey="link3">
-					{" "}
-					<i className="fas fa-book" /> Your Library
+				<Nav.Link eventKey="/search" onSelect={searchNav}>
+				{" "}
+					<Button className={css.sidebarButtons} onClick={searchNav}>
+					<i className="fas fa-search" /> Search</Button>
 				</Nav.Link>
 			</Nav>
 		</div>
+		
+
 	);
 };
 
