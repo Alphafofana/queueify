@@ -12,20 +12,18 @@ const crypto = require("crypto");
 
 class QueueifyModel {
   constructor() {
-    this.currentUser = auth.currentUser;
     this.currentSession = "";
     this.currentPlaylist = "";
   }
 
   getFirebaseData(collection, document) {
-    let data = "";
-    if (this.currentUser) {
+    if (auth.currentUser) {
       let doc = db.collection(collection).doc(document);
-      doc
+      return doc
         .get()
         .then((d) => {
           if (d.exists) {
-            data = d.data();
+            return d.data();
           } else {
             console.log("The document does not exist.");
           }
@@ -34,48 +32,21 @@ class QueueifyModel {
           console.log("Could not retrieve the document:", error);
         });
     }
-    console.log(data);
-    return data;
   }
 
-  getUserType() {
-    console.log("current user, ", this.currentUser);
-    if (this.currentUser) {
-      let userType = "";
-      let data = this.getFirebaseData("users", this.currentUser.uid);
-      if (data) {
-        userType = data.userType;
-      } else {
-        console.error("could not retrieve the user type");
-      }
-      return userType;
-    }
-  }
-
-  getUserToken() {
-    if (this.currentUser) {
-      let userToken = "";
-      let data = this.getFirebaseData("users", this.currentUser.uid);
-      if (data) {
-        userToken = data.userToken;
-      } else {
-        console.error("could not retrieve the user token");
-      }
-      return userToken;
-    }
-  }
-
-  createSession(sessionName, sessionPin) {
+  async createSession(sessionName, sessionPin) {
+    console.log("create session " + auth.currentUser.uid)
     //If currentUser is a host, create a new session and store it in the session collection
-    let userType = this.getUserType();
-    let userToken = this.getUserToken();
-    console.log(userType, userToken);
-    if (userType && userType === "host") {
+    //let userType = this.getUserType();
+    let userToken = await this.getFirebaseData("users", auth.currentUser.uid).then(data => data.spotifyToken).catch(err => console.error(err));
+    console.log("token!" + userToken);
+    if (userToken) {
       // Create a new playlist on spotify
-      let playlistID = DataSource.createPlaylist(
-        this.currentUser.uid.split(":")[1],
+      let playlistID = await DataSource.createPlaylist(
+        auth.currentUser.uid.split(":")[1],
         sessionName
-      ).id;
+      ).then(data => data.id).catch(error => console.error(error));
+      console.log(playlistID);
 
       // Set currentPlaylist
       this.currentPlaylist = playlistID;
@@ -92,7 +63,7 @@ class QueueifyModel {
       // Create new session collection
       db.collection("session").doc(this.currentSession).set({
         hostToken: userToken,
-        hostUid: this.currentUser.uid,
+        hostUid: auth.currentUser.uid,
         name: sessionName,
         pin: sessionPin,
         playlistId: playlistID,
@@ -100,11 +71,11 @@ class QueueifyModel {
 
       // Update the user adding the session
       db.collection("users")
-        .doc(this.currentUser.uid)
+        .doc(auth.currentUser.uid)
         .set({ sessionId: this.currentSession }, { merge: true });
       console.log("Session created with session ID " + this.currentSession);
     } else {
-      console.error("The user does not exist or is not a host");
+      console.error("The token could not be retrieved");
     }
   }
 
@@ -125,7 +96,7 @@ class QueueifyModel {
       this.currentSession = hashedSession;
       this.playlistId = data.playlistId;
       db.collection("users")
-        .doc(this.currentUser.uid)
+        .doc(auth.currentUser.uid)
         .set({ sessionId: this.currentSession }, { merge: true });
     } else {
       console.log("password or name does not match");
@@ -155,7 +126,7 @@ class QueueifyModel {
         .doc(songID)
         .set({
           index: -1,
-          voters: [this.currentUser.uid],
+          voters: [auth.currentUser.uid],
           votes: 0,
         });
     } else {
@@ -185,19 +156,20 @@ class QueueifyModel {
     }
   }
 
+  /*
   vote(songID) {
-    /*
+    
 		check if user has voted before on this song. Grey the button out for the user!
 		add a vote to the song in current session
 		push the change to firebase
-		*/
+		
     var songRef = db.collection("playlist").doc(this.currentPlaylist).collection("songs").doc(songID);
     songRef.update({
-      voters: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid),
+      voters: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid),
       vote: firebase.firestore.FieldValue.increment(1),
     });
 
-  }
+  }*/
 }
 
 export default QueueifyModel;

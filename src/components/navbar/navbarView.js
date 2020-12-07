@@ -29,7 +29,7 @@ const Navibar = ({ user, logout }) => {
 								className="d-inline-block align-top"
 							/>
 						) : (
-							<i class="fas fa-user"></i>
+							<i className="fas fa-user"></i>
 						)}
 					</Navbar.Text>
 				</Col>

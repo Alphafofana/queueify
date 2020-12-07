@@ -59,7 +59,7 @@ const DataSource = {
 			description: "Playlist for the queueify app",
 			public: false,
 		};
-
+		console.log("success!")
 		return this.apiCall(endpoint, method, body).catch((error) => {
 			console.error(error);
 		});
