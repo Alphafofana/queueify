@@ -4,7 +4,7 @@ import css from "./navbar.module.css";
 
 const Navibar = ({ user, logout }) => {
 	return (
-		<Navbar className={css.navbar} fixed="top" bg="dark" variant="dark">
+		<Navbar className={css.navbar} fixed="top" variant="dark">
 			<Container >
 				<Col lg={7}>
 					<Nav className="mr-auto"></Nav>
