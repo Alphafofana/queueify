@@ -6,17 +6,10 @@ import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
 import Popup from "./components/popup/popup";
 import Search from "./components/search/search";
-//import PrivateRoute from "./components/router/privateRouteComponent";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
-import { Row, Col } from "react-bootstrap";
-import {
-	//HashRouter,
-	Redirect,
-	Switch,
-	Route,
-	BrowserRouter,
-} from "react-router-dom";
+import {Redirect, Switch, Route, BrowserRouter} from "react-router-dom";
+
 
 function App() {
 	return (
@@ -32,40 +25,35 @@ function App() {
 					<Route path="/login/popup">
 						<Popup />
 					</Route>
-          <PrivateRoute path="/session">
-						<div className="pageContainer">
+          			<PrivateRoute path="/session">
+						  <div className="sidebarCol" >
+						  <Sidebar/>
+							  <div className="pageCol">
 							<Navbar />
-							<Row>
-								<Col lg="auto" className="sidebarCol">
-									<Sidebar />
-								</Col>
-								<Col className="pageCol">
-									<SessionHandler />
-								</Col>
-							</Row>
-						</div>
+							<SessionHandler />
+							</div>
+						</div>  
 					</PrivateRoute>
+
 					<PrivateRoute path="/search">
-					<div className="pageContainer">
+						  <div className="sidebarCol">
+						  <Sidebar/>
+							  <div className="pageCol">
 							<Navbar />
-							<Row>
-								<Col lg="auto" className="sidebarCol">
-									<Sidebar />
-								</Col>
-								<Col className="pageCol">
-									<Search />
-								</Col>
-							</Row>
-						</div>
+							<Search/>
+							</div>
+						</div>  
 					</PrivateRoute>
-					<PrivateRoute
-						path="/privateRoute"
-						component={() => <h1>This is a Private Route!</h1>}
-					/>
-					<Route
-						path="/route"
-						component={() => <h1>This is a route</h1>}
-					/>
+
+					<PrivateRoute exact path="/session/:sessionId">
+						  <div className="sidebarCol">
+						  <Sidebar/>
+							  <div className="pageCol">
+							<Navbar />
+							<Search/>
+							</div>
+						</div>  
+					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
 		</BrowserRouter>

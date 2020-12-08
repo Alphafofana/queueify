@@ -1,3 +1,21 @@
-.jumbo {
+.searchJumbo {
+	display: flexbox;
 	text-align: center;
+	margin: 20px;
+	min-width: 500px;
+
+}
+
+.searchMenu {
+	margin-left: 20px;
+	justify-content: right;
+}
+
+.serachReturn {
+	margin: auto;
+	
+}
+.searchBar{
+	
+	margin: auto;
 }
