@@ -27,7 +27,7 @@ function App() {
 					</Route>
           			<PrivateRoute path="/session">
 						  <div className="sidebarCol" >
-						  <Sidebar currNav={currNav} sessionNav={sessionNav} searchNav={searchNav}/>
+						  <Sidebar/>
 							  <div className="pageCol">
 							<Navbar />
 							<SessionHandler />
@@ -37,10 +37,10 @@ function App() {
 
 					<PrivateRoute path="/search">
 						  <div className="sidebarCol">
-						  <Sidebar currNav={currNav} sessionNav={sessionNav} searchNav={searchNav}/>
+						  <Sidebar/>
 							  <div className="pageCol">
 							<Navbar />
-							<Search currNac={currNav}/>
+							<Search/>
 							</div>
 						</div>  
 					</PrivateRoute>
@@ -61,8 +61,3 @@ function App() {
 }
 
 export default App;
-
-
-const currNav=[()=> {window.location.pathname="/home"}]
-const sessionNav=[()=> {window.location.pathname="/session"}]
-const searchNav=[()=> {window.location.pathname="/search"}]

@@ -1,28 +1,25 @@
 import React from "react";
 import css from "./sidebarView.module.css";
 import logo from "../../assets/queueify_logo1.svg";
-import { Nav, Button } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 
-const SidebarView = (user, logout, error, currNav, sessionNav, searchNav) => {
+const SidebarView = (user, logout, error, getLocation) => {
 	return (
 		<div className="sidebar">
 			<div className="logo">
 				<img src={logo} className={css.queueifyLogo} alt="logo" />
 			</div>
-
 			<Nav
 				variant="pills"
-				defaultActiveKey="/home"
 				className="flex-column sidebar-nav"
 			>
-				<Nav.Link eventKey="/home" onSelect={sessionNav}>
-					{" "}<Button className={css.sidebarButtons} onClick={sessionNav}>
-					<i className="fas fa-home"  /> Session</Button>
+				<Nav.Link href='/session'>
+					{" "}
+					<i className="fas fa-home"  /> New Session
 				</Nav.Link>
-				<Nav.Link eventKey="/search" onSelect={searchNav}>
+				<Nav.Link href="/search">
 				{" "}
-					<Button className={css.sidebarButtons} onClick={searchNav}>
-					<i className="fas fa-search" /> Search</Button>
+					<i className="fas fa-search" /> Search
 				</Nav.Link>
 			</Nav>
 		</div>

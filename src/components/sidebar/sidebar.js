@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import SidebarView from "./sidebarView";
 import { useAuth } from "../../contexts/AuthContext";
 
-function Sidebar(currNav,sessionNav, searchNav) {
+function Sidebar() {
 	const { logout, currentUser } = useAuth();
 	const [error, setError] = useState("");
 	const history = useHistory();
@@ -19,14 +19,19 @@ function Sidebar(currNav,sessionNav, searchNav) {
 			setError("Failed to log out");
 		}
 	}
+
+	function getLocation(){
+		return history.location.pathname;
+	}
+
+	console.log(getLocation());
+
 	return (
 		<SidebarView
 			user={currentUser.providerData[0]}
 			logout={handleLogout}
 			error={error}
-			currNav={currNav}
-			sessionNav={sessionNav}
-			searchNav={searchNav}
+			getLocation={getLocation}
 		/>
 	);
 }
