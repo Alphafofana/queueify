@@ -20,18 +20,11 @@ function Sidebar() {
 		}
 	}
 
-	function getLocation(){
-		return history.location.pathname;
-	}
-
-	console.log(getLocation());
-
 	return (
 		<SidebarView
 			user={currentUser.providerData[0]}
 			logout={handleLogout}
 			error={error}
-			getLocation={getLocation}
 		/>
 	);
 }

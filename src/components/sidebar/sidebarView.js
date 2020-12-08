@@ -3,7 +3,7 @@ import css from "./sidebarView.module.css";
 import logo from "../../assets/queueify_logo1.svg";
 import { Nav } from "react-bootstrap";
 
-const SidebarView = (user, logout, error, getLocation) => {
+const SidebarView = (user, logout, error) => {
 	return (
 		<div className="sidebar">
 			<div className="logo">
@@ -13,9 +13,13 @@ const SidebarView = (user, logout, error, getLocation) => {
 				variant="pills"
 				className="flex-column sidebar-nav"
 			>
+				<Nav.Link href="/currentSession">
+				{" "}
+					<i className="fas fa-home" /> Session
+				</Nav.Link>
 				<Nav.Link href='/session'>
 					{" "}
-					<i className="fas fa-home"  /> New Session
+					<i className="fas fa-book"  /> New Session
 				</Nav.Link>
 				<Nav.Link href="/search">
 				{" "}
