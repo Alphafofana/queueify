@@ -28,12 +28,14 @@ function CurrentSession({currPlaylist_id}) {
 	}
 
 	return (<>
-		{currentUser &&
-		((currentUser.providerData[0].providerId === "spotify.com" && (
-			<CurrentSessionHostView
+		{(currentUser.providerData[0].providerId === "spotify.com" && PromiseNoData(promise, data, error)||(
+			<CurrentSessionHostView   //TODO currentUser.providerData[0].providerId === "spotify.com" 
 				user={currentUser.providerData[0]}
 				logout={handleLogout}
 				error={error}
+				currSession = {data}
+				sessionName={"*PlaylistName*"} //TODO: Complete this!
+				sessionID={"*12345*"} //TODO: Complete this!
 			/>
 		)) ||
 			((currentUser.providerData[0].providerId === "google.com" ||
@@ -46,7 +48,7 @@ function CurrentSession({currPlaylist_id}) {
 					sessionName={"*PlaylistName*"} //TODO: Complete this!
 					sessionID={"*12345*"} //TODO: Complete this!
 				/>
-			)))}</>
+			))}</>
 	);
 }
 

@@ -17,6 +17,7 @@ import {
 	BrowserRouter,
 } from "react-router-dom";
 import CurrentSession from "./components/currentSession/currentSession";
+import CurrentSessionHostView from "./components/currentSession/currentSessionHostView";
 
 function App() {
 	return (
@@ -56,6 +57,19 @@ function App() {
 						</div>
 					</PrivateRoute>
 					<PrivateRoute path="/currentSession">
+						<div className="pageContainer">
+							<Navbar />
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar />
+								</Col>
+								<Col className="pageCol">
+									<CurrentSession />
+								</Col>
+							</Row>
+						</div>
+					</PrivateRoute>
+					<PrivateRoute path="/currentSessionHost">
 						<div className="pageContainer">
 							<Navbar />
 							<Row>
