@@ -6,6 +6,7 @@ import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
 import Popup from "./components/popup/popup";
 import Search from "./components/search/search";
+import currentSession from "./components/currentSession/currentSession";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
 import {Redirect, Switch, Route, BrowserRouter} from "react-router-dom";
@@ -13,6 +14,51 @@ import {Redirect, Switch, Route, BrowserRouter} from "react-router-dom";
 
 function App() {
 	return (
+		<BrowserRouter>
+			<AuthProvider>
+				<div className="sidebarCol">
+					<PrivateRoute>
+						<Sidebar/>
+						</PrivateRoute>
+					<div className="pageCol">
+						<PrivateRoute>
+							<Navbar/>
+							</PrivateRoute>
+						<Switch>
+							<Route exact path="/">
+								<Redirect to="/login" />
+							</Route>
+							<Route exact path="/login">
+								<Login />
+							</Route>
+							<Route path="/login/popup">
+								<Popup />								
+							</Route>
+							<PrivateRoute path="/search">
+									<Search/>
+							</PrivateRoute>
+							<PrivateRoute path="/session">
+									<SessionHandler/>
+							</PrivateRoute>
+							<PrivateRoute exact path="/session/:sessionId">
+									<currentSession/>
+							</PrivateRoute>
+						</Switch>
+					</div>
+				</div>
+
+			</AuthProvider>
+		</BrowserRouter>
+
+
+
+
+
+
+
+
+
+/*
 		<BrowserRouter>
 			<AuthProvider>
 				<Switch>
@@ -56,7 +102,7 @@ function App() {
 					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
-		</BrowserRouter>
+		</BrowserRouter>*/
 	);
 }
 

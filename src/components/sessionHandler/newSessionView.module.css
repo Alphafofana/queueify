@@ -2,8 +2,13 @@
 	display: flex;
 	flex-direction: row;
 	padding: 0;
+	margin: 20px;
+	margin-top: 75px;
+	margin-left: 200px;
+
 }
 
 .sessionJumbo {
-	margin-top: 4rem;
+	margin-top: 25px;
+
 }
