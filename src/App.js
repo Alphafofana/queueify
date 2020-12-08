@@ -16,24 +16,23 @@ function App() {
 	return (
 		<BrowserRouter>
 			<AuthProvider>
+				<Switch>
+					<Route exact path="/">
+						<Redirect to="/login" />
+						</Route>
+					<Route exact path="/login">
+						<Login />
+						</Route>
+					<Route path="/login/popup">
+						<Popup />
+						</Route>
+				</Switch>
+				<PrivateRoute>
 				<div className="sidebarCol">
-					<PrivateRoute>
 						<Sidebar/>
-						</PrivateRoute>
 					<div className="pageCol">
-						<PrivateRoute>
 							<Navbar/>
-							</PrivateRoute>
 						<Switch>
-							<Route exact path="/">
-								<Redirect to="/login" />
-							</Route>
-							<Route exact path="/login">
-								<Login />
-							</Route>
-							<Route path="/login/popup">
-								<Popup />								
-							</Route>
 							<PrivateRoute path="/search">
 									<Search/>
 							</PrivateRoute>
@@ -46,7 +45,7 @@ function App() {
 						</Switch>
 					</div>
 				</div>
-
+				</PrivateRoute>
 			</AuthProvider>
 		</BrowserRouter>
 
