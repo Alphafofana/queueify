@@ -1,6 +1,5 @@
-import "./App.css";
 import React from "react";
-import { Row, Col } from "react-bootstrap";
+import "./App.css";
 import Login from "./components/login/login";
 import SessionHandler from "./components/sessionHandler/sessionHandler";
 import Navbar from "./components/navbar/navbar";
@@ -8,10 +7,11 @@ import Sidebar from "./components/sidebar/sidebar";
 import Search from "./components/search/search";
 import Popup from "./components/popup/popup";
 import QueueifyModel from "./queueifyModel";
-
 //import PrivateRoute from "./components/router/privateRouteComponent";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
+import CurrentSession from "./components/currentSession/currentSession";
+import { Row, Col } from "react-bootstrap";
 import {
 	//HashRouter,
 	Redirect,
@@ -19,7 +19,6 @@ import {
 	Route,
 	BrowserRouter,
 } from "react-router-dom";
-import CurrentSession from "./components/currentSession/currentSession";
 
 function App() {
 	let model = new QueueifyModel();
@@ -33,20 +32,7 @@ function App() {
 					<Route exact path="/login">
 						<Login />
 					</Route>
-					<PrivateRoute path="/search">
-						<div className="pageContainer">
-							<Navbar />
-							<Row>
-								<Col lg="auto" className="sidebarCol">
-									<Sidebar />
-								</Col>
-								<Col className="pageCol">
-									<Search />
-								</Col>
-							</Row>
-						</div>
-					</PrivateRoute>
-					<Route path="/login/popup">
+					<Route exact path="/login/popup">
 						<Popup />
 					</Route>
 					<PrivateRoute exact path="/session">
@@ -71,6 +57,19 @@ function App() {
 								</Col>
 								<Col className="pageCol">
 									<CurrentSession model={model} />
+								</Col>
+							</Row>
+						</div>
+					</PrivateRoute>
+					<PrivateRoute exact path="/search">
+						<div className="pageContainer">
+							<Navbar />
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar />
+								</Col>
+								<Col className="pageCol">
+									<Search />
 								</Col>
 							</Row>
 						</div>
