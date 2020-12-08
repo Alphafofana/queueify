@@ -44,16 +44,16 @@ function App() {
 							</div>
 						</div>  
 					</PrivateRoute>
-					  
-					
-					<PrivateRoute
-						path="/privateRoute"
-						component={() => <h1>This is a Private Route!</h1>}
-					/>
-					<Route
-						path="/route"
-						component={() => <h1>This is a route</h1>}
-					/>
+
+					<PrivateRoute exact path="/session/:sessionId">
+						  <div className="sidebarCol">
+						  <Sidebar/>
+							  <div className="pageCol">
+							<Navbar />
+							<Search/>
+							</div>
+						</div>  
+					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
 		</BrowserRouter>
