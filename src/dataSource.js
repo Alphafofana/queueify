@@ -17,21 +17,19 @@ const DataSource = {
 			});
 	},
 
-	apiCall(endpoint, method, body) {
-		return this.getToken()
-			.then((token) =>
-				fetch(endpoint, {
-					method: method,
-					headers: {
-						Authorization: "Bearer " + token,
-						Accept: "application/json",
-						"Content-Type": "application/json",
-					},
-					body: body ? JSON.stringify(body) : body,
-				}).then((response) => {
-					return response.json();
-				})
-			)
+	apiCall(endpoint, method, body, token) {
+		return fetch(endpoint, {
+			method: method,
+			headers: {
+				Authorization: "Bearer " + token,
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: body ? JSON.stringify(body) : body,
+		})
+			.then((response) => {
+				return response.json();
+			})
 			.catch((err) => console.error(err));
 	},
 
@@ -53,7 +51,7 @@ const DataSource = {
 		});
 	},
 
-	createPlaylist(userID, playlistName) {
+	createPlaylist(userID, playlistName, token) {
 		let endpoint =
 			"https://api.spotify.com/v1/users/" + userID + "/playlists/";
 		let method = "POST";
@@ -62,20 +60,19 @@ const DataSource = {
 			description: "Playlist for the queueify app",
 			public: false,
 		};
-		return this.apiCall(endpoint, method, body).catch((error) => {
-			console.error(error);
-		});
-
-		//Should probably try and return the same thing from each call
-		// .then(
-		// 	(result) => {
-		// 		playlistID = result.id;
-		// 	},
-		// 	(error) => {
-		// 		console.error(error);
-		// 	}
-		// );
-		// return playlistID;
+		return fetch(endpoint, {
+			method: method,
+			headers: {
+				Authorization: "Bearer " + token,
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: body ? JSON.stringify(body) : body,
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.catch((err) => console.error(err));
 	},
 
 	changePlaylistOrder(playlistID, songPosition, newSongPosition) {

@@ -40,63 +40,76 @@ class QueueifyModel {
 			.createHash("sha1")
 			.update(sessionName + sessionPin)
 			.digest("hex");
-		const userToken = DataSource.getToken();
-		const playlist = DataSource.createPlaylist(
-			auth.currentUser.uid.split(":")[1],
-			sessionName
-		);
 
-		return Promise.all([sessionID, userToken, playlist])
-			.then(([sessionID, userToken, playlist]) => {
-				db.collection("playlist").doc(playlist.id).set({});
-				db.collection("session").doc(sessionID).set({
-					hostToken: userToken,
-					hostUid: auth.currentUser.uid,
-					name: sessionName,
-					pin: sessionPin,
-					playlistId: playlist.id,
-				});
-				db.collection("users")
-					.doc(auth.currentUser.uid)
-					.set({ sessionId: sessionID }, { merge: true });
-				console.log("Session created with session ID " + sessionID);
-				this.currentSession = sessionID;
-				return sessionID;
+		return db
+			.collection("users")
+			.doc(auth.currentUser.uid)
+			.get()
+			.then((data) => data.data().spotifyToken)
+			.then((spotifyToken) => {
+				const session = db
+					.collection("session")
+					.doc(sessionID)
+					.set({
+						hostToken: spotifyToken,
+						hostUid: auth.currentUser.uid,
+						name: sessionName,
+						pin: sessionPin,
+					})
+					.then(() => {
+						return DataSource.createPlaylist(
+							auth.currentUser.uid.split(":")[1],
+							sessionName,
+							spotifyToken
+						);
+					})
+					.then((playlist) => {
+						db.collection("session")
+							.doc(sessionID)
+							.update({ playlistId: playlist.id });
+						this.currentPlaylist = playlist.id;
+						this.currentSession = sessionID;
+						return sessionID;
+					});
+				return session;
 			})
-			.catch((err) => console.error("Failed to create session" + err));
+			.catch((error) => {
+				console.log("Failed to create session: ", error);
+				throw new Error("Failed to create session" + error);
+			});
 	}
 
-	joinSession(sessionID, sessionPin) {
-		return db
+	joinSession(sessionName, sessionPin) {
+		const sessionID = crypto
+			.createHash("sha1")
+			.update(sessionName + sessionPin)
+			.digest("hex");
+
+		// Set the current session for a guest, if the session name and password is correct.
+		const session = db
 			.collection("session")
 			.doc(sessionID)
-			.get()
-			.then((doc) => {
-				if (doc.exists) {
-					if (doc.data().pin !== sessionPin) {
-						throw new Error("Incorrect pin");
-					}
-				} else {
-					// doc.data() will be undefined in this case
-					console.log("No such document!");
-				}
-			})
-			.then(() => {
-				db.collection("session")
-					.doc(sessionID)
-					.update({
-						//arrayUnion() adds elements to an array but only elements not already present.
-						users: firebase.firestore.FieldValue.arrayUnion(
-							auth.currentUser.uid
-						),
-					});
-				this.currentSession = sessionID;
-				return sessionID;
+			.update({
+				//arrayUnion() adds elements to an array but only elements not already present.
+				users: firebase.firestore.FieldValue.arrayUnion(
+					auth.currentUser.uid
+				),
 			})
 			.catch(function (error) {
 				console.log("Error getting document:", error);
 				throw new Error("Failed to join session" + error);
 			});
+
+		const user = db
+			.collection("users")
+			.doc(auth.currentUser.uid)
+			.set({ sessionID: this.currentSession }, { merge: true });
+
+		return Promise.all([sessionID, session, user]).then(([sessionID]) => {
+			console.log("joined session session ID", sessionID);
+			this.currentSession = sessionID;
+			return sessionID;
+		});
 	}
 	setCurrentSession(sessionName, sessionPin) {
 		// Set the current session for a guest, if the session name and password is correct.

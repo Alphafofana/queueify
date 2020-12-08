@@ -9,7 +9,7 @@ import {
 	Form,
 } from "react-bootstrap";
 
-const JoinSessionView = ({ sessionID, sessionPin, submit, user }) => {
+const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
 	return (
 		<Container fluid className={css.sessionContainer}>
 			<Col>
@@ -20,17 +20,17 @@ const JoinSessionView = ({ sessionID, sessionPin, submit, user }) => {
 						session yet, let's join one!
 					</p>
 					<Form onSubmit={submit}>
-						<Form.Group controlid="sessionID">
-							<Form.Label>Session ID</Form.Label>
+						<Form.Group controlid="sessionName">
+							<Form.Label>Session Name</Form.Label>
 							<Form.Control
 								type="text"
-								placeholder="Session ID"
+								placeholder="Session Name"
 								onChange={(event) =>
-									sessionID(event.target.value)
+									sessionName(event.target.value)
 								}
 							></Form.Control>
 							<Form.Text>
-								Enter the session ID provided by your host
+								Enter the session name provided by your host
 							</Form.Text>
 							<Form.Group controlid="sessionPin">
 								<Form.Label>Session Pin</Form.Label>

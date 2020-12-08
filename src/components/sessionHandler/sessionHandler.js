@@ -9,7 +9,6 @@ function SessionHandler({ model }) {
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [sessionName, setSessionName] = useState("");
-	const [sessionID, setSessionID] = useState(""); //TODO: Reuse setSessionName?
 	const [sessionPin, setSessionPin] = useState(null);
 	const history = useHistory();
 	//const [loading, setLoading] = useState(false);
@@ -32,7 +31,7 @@ function SessionHandler({ model }) {
 		setError("");
 		setLoading(true);
 		model
-			.joinSession(sessionID, sessionPin)
+			.joinSession(sessionName, sessionPin)
 			.then((sessionID) => history.push("session/" + sessionID))
 			.catch((error) => {
 				console.error("Failed to create new session!");
@@ -56,7 +55,7 @@ function SessionHandler({ model }) {
 			((currentUser.providerData[0].providerId === "google.com" ||
 				currentUser.providerData[0].providerId === "facebook.com") && (
 				<JoinSessionView
-					sessionID={(id) => setSessionID(id)}
+					sessionName={(id) => setSessionName(id)}
 					sessionPin={(pin) => setSessionPin(pin)}
 					submit={(e) => joinSession(e)}
 					user={currentUser}
