@@ -1,4 +1,4 @@
-# Interaction Programing DH2642 - Project "Queuefify" React
+# Interaction Programing DH2642 - Project "Queueify" React
 
 ## About 
 This repository contains the code for project "Queueify", which focuses on the Model-View-Controller framework utilizing React. 
