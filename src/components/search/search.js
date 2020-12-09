@@ -6,30 +6,35 @@
  *
  */
 
-import React from "react";
-import SearchViewForm, { SearchViewResult } from "./searchView";
+import React, { useState, useEffect }  from "react";
+import SearchViewForm, { SearchPlaceholderView, SearchViewResult } from "./searchView";
 import dataSource from "../../dataSource";
 import usePromise from "../usePromise";
 import PromiseNoData from "../promiseNoData";
+import { getStaticPlaylist } from "../../dataSourceTest";
 
 function Search() {
-	const [query, setQuery] = React.useState("");
-	const [promise, setPromise] = React.useState(null);
+	const [query, setQuery] = useState("");
+	const [promise, setPromise] = useState(null);
 
-	React.useEffect(() => setPromise(dataSource.searchSong("")), []);
+	useEffect(() => setPromise(dataSource.searchSong("")), []);
+	const [searchData, searchError] = usePromise(promise);
 
-	const [data, error] = usePromise(promise);
+	const staticPlaylist = getStaticPlaylist();
+	console.log(query, searchData);
 
 	return (
 		<>
 			<SearchViewForm
-				onText={(x) => setQuery(x)}
+				onText={(x) => {setQuery(x)}}
 				onSearch={() => setPromise(dataSource.searchSong(query))}
 			/>
-
-			{PromiseNoData(promise, data, error) || (
-				<SearchViewResult searchResult={data} />
-			)}
+			{ ((!searchData||searchData.hasOwnProperty('error'))&&(
+			<SearchPlaceholderView initialPlaylist={staticPlaylist}/>
+			)) || 
+			(PromiseNoData(promise, searchData, searchError) || (
+				<SearchViewResult searchResult={searchData} />
+			))}
 		</>
 	);
 }

@@ -32,7 +32,8 @@ export default SearchViewForm;
 
 
 export const SearchViewResult = ({searchResult}) =>{
- return(
+  if(searchResult&&searchResult.hasOwnProperty('tracks', 'items')){
+  return(
     <Jumbotron className="jumbo">
  <Table striped bordered hover variant="dark">
   <thead>
@@ -54,5 +55,32 @@ export const SearchViewResult = ({searchResult}) =>{
   </tbody>
 </Table>
 </Jumbotron>
- );
+ );}
+}
+
+export const SearchPlaceholderView = ({initialPlaylist}) => {
+  return(
+    <Jumbotron className="jumbo">
+ <Table striped bordered hover variant="dark">
+  <thead>
+    <tr>
+      <th> # </th>
+      <th>Song Title</th>
+      <th>Artist</th>
+      <th>Add</th>
+    </tr>
+  </thead>
+  <tbody>
+  {initialPlaylist.hasOwnProperty('tracks')&&initialPlaylist.tracks.items.map((item, index)=> 
+		  <tr key= {item.track.href}>
+			<td>{index+1}</td>
+			<td>{item.track.name}</td>
+			<td>{item.track.artists.map(artists => " / " + artists.name ) } /</td>
+      {/*<td>{item.artists.map(artists => " / " + artists.name )} / </td>*/}
+      <td><Button variant="outline-light">+</Button></td>
+        </tr>
+    )}
+  </tbody>
+</Table>
+</Jumbotron>);
 }
