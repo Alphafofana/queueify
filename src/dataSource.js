@@ -1,16 +1,38 @@
+import { auth, db } from "./services/firebase";
+
 const DataSource = {
+	getToken() {
+		let user = db.collection("users").doc(auth.currentUser.uid);
+		return user
+			.get()
+			.then((doc) => {
+				if (doc.exists) {
+					return doc.data().spotifyToken;
+				} else {
+					console.log("The document does not exist.");
+				}
+			})
+			.catch((error) => {
+				console.log("Could not retrieve the document:", error);
+			});
+	},
+
 	apiCall(endpoint, method, body) {
-		return fetch(endpoint, {
-			method: method,
-			headers: {
-				Authorization: "Bearer " + process.env.REACT_APP_SPOTIFY_TOKEN,
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: body ? JSON.stringify(body) : body,
-		}).then((response) => {
-			return response.json();
-		});
+		return this.getToken()
+			.then((token) =>
+				fetch(endpoint, {
+					method: method,
+					headers: {
+						Authorization: "Bearer " + token,
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: body ? JSON.stringify(body) : body,
+				}).then((response) => {
+					return response.json();
+				})
+			)
+			.catch((err) => console.error(err));
 	},
 
 	searchSong(query) {
@@ -40,9 +62,6 @@ const DataSource = {
 			description: "Playlist for the queueify app",
 			public: false,
 		};
-
-		let playlistID = "";
-
 		return this.apiCall(endpoint, method, body).catch((error) => {
 			console.error(error);
 		});
@@ -102,6 +121,12 @@ const DataSource = {
 		return this.apiCall(endpoint, method).catch((error) => {
 			console.error(error);
 		});
+	},
+
+	getCurrentSong() {
+		/*
+		get information about the song that is currently playing
+		*/
 	},
 };
 

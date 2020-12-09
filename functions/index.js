@@ -21,7 +21,7 @@ const crypto = require("crypto");
 
 // Firebase Setup
 const admin = require("firebase-admin");
-const serviceAccount = require("./service-account-prod.json");
+const serviceAccount = require("./service-account-dev.json");
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 	databaseURL: `https://${process.env.GCLOUD_PROJECT}.firebaseio.com`,
@@ -33,13 +33,13 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const Spotify = new SpotifyWebApi({
 	clientId: functions.config().spotify.client_id,
 	clientSecret: functions.config().spotify.client_secret,
-	//redirectUri: `http://localhost:3000/login/popup`,
+	redirectUri: `http://localhost:3000/login/popup`,
 	//redirectUri: `https://test-queueify.herokuapp.com/login/popup`,
-	redirectUri: `https://queueify.herokuapp.com/login/popup`,
+	//redirectUri: `https://queueify.herokuapp.com/login/popup`,
 });
 
 // Scopes to request.
-const OAUTH_SCOPES = ["user-read-email"];
+const OAUTH_SCOPES = ["user-read-email", "playlist-modify-private", "user-read-currently-playing"];
 
 /**
  * Redirects the User to the Spotify authentication consent screen. Also the 'state' cookie is set for later state
@@ -151,9 +151,13 @@ async function createFirebaseAccount(
 
 	// Save the access token to the Firebase Realtime Database.
 	const databaseTask = admin
-		.database()
-		.ref(`/spotifyAccessToken/${uid}`)
-		.set(accessToken);
+		.firestore()
+		.collection("users")
+		.doc(uid)
+		.set({
+			"spotifyToken": accessToken,
+			"userType": "host",
+		});
 
 	// Create or update the user account.
 	const userCreationTask = admin

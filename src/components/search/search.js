@@ -9,8 +9,8 @@
 import React from "react";
 import SearchViewForm, { SearchViewResult } from "./searchView";
 import dataSource from "../../dataSource";
-import usePromise from "./usePromise";
-import PromiseNoData from "./promiseNoData";
+import usePromise from "../usePromise";
+import PromiseNoData from "../promiseNoData";
 
 function Search() {
 	const [query, setQuery] = React.useState("");
