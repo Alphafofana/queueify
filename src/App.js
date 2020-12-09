@@ -64,11 +64,17 @@ function App() {
 						</div>
 					</PrivateRoute>
 					<PrivateRoute exact path="/search">
-						<div className="pageContainer">
+					<div className="pageContainer">
 							<Navbar />
-							<Search/>
-							</div>
-						</div>  
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar />
+								</Col>
+								<Col className="pageCol">
+									<Search model={model} />
+								</Col>
+							</Row>
+						</div>
 					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
