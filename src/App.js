@@ -4,15 +4,24 @@ import Login from "./components/login/login";
 import SessionHandler from "./components/sessionHandler/sessionHandler";
 import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
-import Popup from "./components/popup/popup";
 import Search from "./components/search/search";
-import currentSession from "./components/currentSession/currentSession";
+import Popup from "./components/popup/popup";
+import QueueifyModel from "./queueifyModel";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
-import {Redirect, Switch, Route, BrowserRouter} from "react-router-dom";
+import CurrentSession from "./components/currentSession/currentSession";
+import { Row, Col } from "react-bootstrap";
+import {
+	//HashRouter,
+	Redirect,
+	Switch,
+	Route,
+	BrowserRouter,
+} from "react-router-dom";
 
 
 function App() {
+	let model = new QueueifyModel();
 	return (
 		<BrowserRouter>
 			<AuthProvider>
@@ -67,37 +76,47 @@ function App() {
 					<Route exact path="/login">
 						<Login />
 					</Route>
-					<Route path="/login/popup">
+					<Route exact path="/login/popup">
 						<Popup />
 					</Route>
-          			<PrivateRoute path="/session">
-						  <div className="sidebarCol" >
-						  <Sidebar/>
-							  <div className="pageCol">
+					<PrivateRoute exact path="/session">
+						<div className="pageContainer">
 							<Navbar />
-							<SessionHandler />
-							</div>
-						</div>  
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar />
+								</Col>
+								<Col className="pageCol">
+									<SessionHandler model={model} />
+								</Col>
+							</Row>
+						</div>
 					</PrivateRoute>
-
-					<PrivateRoute path="/search">
-						  <div className="sidebarCol">
-						  <Sidebar/>
-							  <div className="pageCol">
-							<Navbar />
-							<Search/>
-							</div>
-						</div>  
-					</PrivateRoute>
-
 					<PrivateRoute exact path="/session/:sessionId">
-						  <div className="sidebarCol">
-						  <Sidebar/>
-							  <div className="pageCol">
+						<div className="pageContainer">
 							<Navbar />
-							<Search/>
-							</div>
-						</div>  
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar />
+								</Col>
+								<Col className="pageCol">
+									<CurrentSession model={model} />
+								</Col>
+							</Row>
+						</div>
+					</PrivateRoute>
+					<PrivateRoute exact path="/search">
+					<div className="pageContainer">
+							<Navbar />
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar />
+								</Col>
+								<Col className="pageCol">
+									<Search model={model} />
+								</Col>
+							</Row>
+						</div>
 					</PrivateRoute>
 				</Switch>
 			</AuthProvider>

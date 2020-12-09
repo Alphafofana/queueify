@@ -14,13 +14,13 @@ const SidebarView = (user, logout, error) => {
 				className="flex-column sidebar-nav"
 				activeKey={window.location.pathname}
 			>
-				<Nav.Link href="/currentSession" disabled={window.location.pathname==="/session/:sessionId"}>
+				<Nav.Link href="/session/:sessionId" >
 				{" "}
 					<i className="fas fa-home" /> Session
 				</Nav.Link>
 				<Nav.Link href='/session'>
 					{" "}
-					<i className="fas fa-book"  disabled={window.location.pathname==='/session'}/> New Session
+					<i className="fas fa-book" /> New Session
 				</Nav.Link>
 				<Nav.Link href="/search">
 				{" "}
