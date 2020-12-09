@@ -20,13 +20,17 @@ const Navibar = ({ user, logout }) => {
 				<Col lg={1}>
 					<Navbar.Text>
 						{" "}
-						<img
-							alt=""
-							src={user.photoURL}
-							width="30"
-							height="30"
-							className="d-inline-block align-top"
-						/>
+						{user.photoURL ? (
+							<img
+								alt=""
+								src={user.photoURL}
+								width="30"
+								height="30"
+								className="d-inline-block align-top"
+							/>
+						) : (
+							<i className="fas fa-user"></i>
+						)}
 					</Navbar.Text>
 				</Col>
 				<Col lg={2}>
