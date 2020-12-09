@@ -21,10 +21,6 @@ To test the app,go to [test-queueify.herokuapp.com](https://test-queueify.heroku
 ## The API in this project
 This application uses the [Spotify API](https://developer.spotify.com/documentation/web-api/) 
 
-## Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## How to setup this Project 
 
 In the project directory, you can run:
