@@ -1,16 +1,11 @@
 import React from "react";
 import { Col, Container, Button, Nav, Navbar } from "react-bootstrap";
+import css from "./navbar.module.css";
 
 const Navibar = ({ user, logout }) => {
 	return (
-		<Navbar
-			fixed="top"
-			expand="lg"
-			bg="dark"
-			variant="dark"
-			style={{ marginLeft: "250px", padding: 0 }}
-		>
-			<Container>
+		<Navbar className={css.navbar} fixed="top" variant="dark">
+			<Container >
 				<Col lg={7}>
 					<Nav className="mr-auto"></Nav>
 				</Col>

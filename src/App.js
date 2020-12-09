@@ -5,6 +5,7 @@ import SessionHandler from "./components/sessionHandler/sessionHandler";
 import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
 import Search from "./components/search/search";
+
 import Popup from "./components/popup/popup";
 import QueueifyModel from "./queueifyModel";
 //import PrivateRoute from "./components/router/privateRouteComponent";
@@ -19,6 +20,7 @@ import {
 	Route,
 	BrowserRouter,
 } from "react-router-dom";
+
 
 function App() {
 	let model = new QueueifyModel();
@@ -62,26 +64,18 @@ function App() {
 						</div>
 					</PrivateRoute>
 					<PrivateRoute exact path="/search">
-						<div className="pageContainer">
+					<div className="pageContainer">
 							<Navbar />
 							<Row>
 								<Col lg="auto" className="sidebarCol">
 									<Sidebar />
 								</Col>
 								<Col className="pageCol">
-									<Search />
+									<Search model={model} />
 								</Col>
 							</Row>
 						</div>
 					</PrivateRoute>
-					<PrivateRoute
-						path="/privateRoute"
-						component={() => <h1>This is a Private Route!</h1>}
-					/>
-					<Route
-						path="/route"
-						component={() => <h1>This is a route</h1>}
-					/>
 				</Switch>
 			</AuthProvider>
 		</BrowserRouter>

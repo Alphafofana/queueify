@@ -2,11 +2,12 @@
 	width: 150px;
 }
 :global(.sidebar) {
-	width: 250px;
+	width: 180px;
 	height: 100%;
 	background: #040404;
 	padding: 10px;
 	min-height: 100vh;
+	position: fixed;
 }
 :global(.sidebar-nav) {
 	margin-top: 30px;

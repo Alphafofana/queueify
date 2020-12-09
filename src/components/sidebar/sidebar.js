@@ -19,6 +19,7 @@ function Sidebar() {
 			setError("Failed to log out");
 		}
 	}
+
 	return (
 		<SidebarView
 			user={currentUser.providerData[0]}

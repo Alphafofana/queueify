@@ -1,11 +1,13 @@
 /* Starting CSS */
 .sidebarCol {
-	padding-right: 0;
-}
+	display: flex;
+	flex-direction: row;}
 .pageCol {
-	margin-top: 54px;
-	padding-left: 0;
-}
+	margin: 20px;
+	margin-top: 75px;
+	margin-left: 200px;
+	width: 100%;
+	height: 100%;}
 
 /*Global button CSS*/
 .btn-success {
