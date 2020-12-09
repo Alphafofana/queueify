@@ -10,7 +10,7 @@ import QueueifyModel from "./queueifyModel";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
 import CurrentSession from "./components/currentSession/currentSession";
-import { Row, Col } from "react-bootstrap";
+
 import {
 	//HashRouter,
 	Redirect,
@@ -32,7 +32,7 @@ function App() {
 					<Route exact path="/login">
 						<Login />
 						</Route>
-					<Route path="/login/popup">
+					<Route exact path="/login/popup">
 						<Popup />
 						</Route>
 				</Switch>
@@ -42,14 +42,14 @@ function App() {
 					<div className="pageCol">
 							<Navbar/>
 						<Switch>
-							<PrivateRoute path="/search">
-									<Search/>
+							<PrivateRoute exact path="/search">
+									<Search model= {model}/>
 							</PrivateRoute>
-							<PrivateRoute path="/session">
-									<SessionHandler/>
+							<PrivateRoute exact path="/session">
+									<SessionHandler model= {model}/>
 							</PrivateRoute>
 							<PrivateRoute exact path="/session/:sessionId">
-									<currentSession/>
+									<CurrentSession />
 							</PrivateRoute>
 						</Switch>
 					</div>
