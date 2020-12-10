@@ -3,10 +3,9 @@
 	flex-direction: row;
 	background:  #040404;
 	font-family: "Montserrat", sans-serif;
-	margin: 20px;
-	margin-top: 70px;
+	padding-top: 70px;
 	padding-left: 175px;
-	width: 98.4%;
+	width: 100%;
 	min-width: 410px;
 }
 .sessionInfo {
