@@ -5,14 +5,12 @@ import SessionHandler from "./components/sessionHandler/sessionHandler";
 import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
 import Search from "./components/search/search";
-
 import Popup from "./components/popup/popup";
 import QueueifyModel from "./queueifyModel";
-//import PrivateRoute from "./components/router/privateRouteComponent";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
 import CurrentSession from "./components/currentSession/currentSession";
-import { Row, Col } from "react-bootstrap";
+
 import {
 	//HashRouter,
 	Redirect,
@@ -25,6 +23,50 @@ import {
 function App() {
 	let model = new QueueifyModel();
 	return (
+		<BrowserRouter>
+			<AuthProvider>
+				<Switch>
+					<Route exact path="/">
+						<Redirect to="/login" />
+						</Route>
+					<Route exact path="/login">
+						<Login />
+						</Route>
+					<Route exact path="/login/popup">
+						<Popup />
+						</Route>
+				</Switch>
+				<PrivateRoute>
+				<div className="sidebarCol">
+						<Sidebar/>
+					<div className="pageCol">
+							<Navbar/>
+						<Switch>
+							<PrivateRoute exact path="/search">
+									<Search model= {model}/>
+							</PrivateRoute>
+							<PrivateRoute exact path="/session">
+									<SessionHandler model= {model}/>
+							</PrivateRoute>
+							<PrivateRoute exact path="/session/:sessionId">
+									<CurrentSession />
+							</PrivateRoute>
+						</Switch>
+					</div>
+				</div>
+				</PrivateRoute>
+			</AuthProvider>
+		</BrowserRouter>
+
+
+
+
+
+
+
+
+
+/*
 		<BrowserRouter>
 			<AuthProvider>
 				<Switch>
@@ -78,7 +120,7 @@ function App() {
 					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
-		</BrowserRouter>
+		</BrowserRouter>*/
 	);
 }
 
