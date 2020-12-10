@@ -6,13 +6,13 @@ const Navibar = ({ user, logout }) => {
 	return (
 		<Navbar className={css.navbar} fixed="top" variant="dark">
 			<Container className="largenavbar">
-				<Col lg={7} className="largenavbar">
+				<Col lg="7" md="5" className="largenavbar">
 					<Nav className="mr-auto"></Nav>
 				</Col>
-				<Col lg={2} className="largenavbar">
+				<Col lg="2" md="2" className="largenavbar">
 					<Navbar.Text className="mr-auto">User: {user.displayName}</Navbar.Text>
 				</Col>
-				<Col lg={1} className="largenavbar">
+				<Col lg="1" md="1" className="largenavbar">
 					<Navbar.Text className="mr-auto">
 						{" "}
 						{user.photoURL ? (
@@ -28,7 +28,7 @@ const Navibar = ({ user, logout }) => {
 						)}
 					</Navbar.Text >
 				</Col>
-				<Col lg={2} className="largenavbar">
+				<Col lg="2" md="2" className="largenavbar">
 					<Navbar.Text className="mr-auto">
 						<Button onClick={logout} variant="outline-light">
 							Log out
@@ -42,6 +42,7 @@ const Navibar = ({ user, logout }) => {
 			className="smallmenu"
 			variant="outline-light"
 			> 
+			
         		<Dropdown.Item href="/session/:sessionId">
 					{" "}
 					<i className="fas fa-home" /> Session
@@ -54,8 +55,8 @@ const Navibar = ({ user, logout }) => {
 					{" "}
 					<i className="fas fa-search" /> Search
 					</Dropdown.Item>
-				<Dropdown.Divider />
-				<Dropdown.Item disabled>
+					<Dropdown.Divider />
+					<Dropdown.Item disabled>
 					User: {user.displayName}
 					</Dropdown.Item>
 				<Dropdown.Item>

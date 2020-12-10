@@ -26,7 +26,7 @@
 	background-color: #282828 !important;
 }
 
-@media(max-width: 480px){
+@media(max-width: 580px){
 :global(.sidebar-nav) {
 	 display: none;
  }

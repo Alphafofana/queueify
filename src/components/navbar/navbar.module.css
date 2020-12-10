@@ -5,7 +5,12 @@ background: #0404048e;
 height: 85px;
 }
 
-@media(max-width:480px){
+:global(.mr-auto){
+    width: fit-content;
+    white-space: nowrap;
+}
+
+@media(max-width:580px){
     .navbar{
         min-width: 250px;
         background: #0404048e;
@@ -22,7 +27,7 @@ height: 85px;
     }
 }
 
-@media(min-width:480px){
+@media(min-width:580px){
     :global(.smallmenu){
         display: none;
     }
