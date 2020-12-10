@@ -1,6 +1,9 @@
+
 .queueifyLogo {
 	width: 150px;
+	margin-top: 10px;
 }
+
 :global(.sidebar) {
 	width: 180px;
 	height: 100%;
@@ -21,4 +24,20 @@
 }
 :global(.nav-link.active) {
 	background-color: #282828 !important;
+}
+
+@media(max-width: 480px){
+:global(.sidebar-nav) {
+	 display: none;
+ }
+:global(.sidebar){
+	min-height: 0vh;
+	height: 85px;
+	background: #0404048e;
+}
+
+:global(.sidebar-dropdown){
+	color: #b3b3b3;
+	border-radius: 5px;
+ }
 }

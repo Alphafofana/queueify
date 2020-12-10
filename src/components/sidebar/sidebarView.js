@@ -1,7 +1,7 @@
 import React from "react";
 import css from "./sidebarView.module.css";
 import logo from "../../assets/queueify_logo1.svg";
-import { Nav } from "react-bootstrap";
+import { Nav , NavDropdown} from "react-bootstrap";
 
 const SidebarView = (user, logout, error) => {
 	return (
@@ -27,6 +27,7 @@ const SidebarView = (user, logout, error) => {
 					<i className="fas fa-search" /> Search
 				</Nav.Link>
 			</Nav>
+
 		</div>
 		
 

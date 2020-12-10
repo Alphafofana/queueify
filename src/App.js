@@ -38,7 +38,7 @@ function App() {
 				</Switch>
 				<PrivateRoute>
 				<div className="sidebarCol">
-						<Sidebar/>
+						<Sidebar className="sidebar"/>
 					<div className="pageCol">
 							<Navbar/>
 						<Switch>

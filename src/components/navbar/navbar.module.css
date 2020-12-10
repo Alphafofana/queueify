@@ -2,5 +2,29 @@
 position: fixed;
 margin-left: 180px;
 background: #040404;
+height: 85px;
+}
+
+@media(max-width:480px){
+    .navbar{
+        min-width: 250px;
+        background: #0404048e;
+    }
+
+    :global(.mr-auto){
+        display: none;
+    }
+    :global(.largenavbar){
+        display: none;
+    }
+    :global(.smallmenu){
+        margin-right: 30px;
+    }
+}
+
+@media(min-width:480px){
+    :global(.smallmenu){
+        display: none;
+    }
 
 }
