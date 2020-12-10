@@ -38,6 +38,7 @@ const Navibar = ({ user, logout }) => {
 			</Container>
 
 			<DropdownButton 
+			menuAlign="right"
 			title="Menu" 
 			className="smallmenu"
 			variant="outline-light"
