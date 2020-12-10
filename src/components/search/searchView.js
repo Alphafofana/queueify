@@ -15,7 +15,7 @@ import css from "./search.module.css";
 const SearchViewForm =({onText, onSearch}) => {
 
 	return(
-	<div className={css.searchMenu}>
+	<Container className={css.searchMenu}>
     <Form inline onSubmit={e => { e.preventDefault();}}>
     <div className={css.searchBar}>
       <FormControl as='input' type="text" placeholder="Search For Artists, Songs..." 
@@ -23,7 +23,7 @@ const SearchViewForm =({onText, onSearch}) => {
       <Button type='submit' variant="outline-light" onClick ={onSearch}>Search</Button>
       </div>
     </Form>
-	</div>
+	</Container>
     )
 };
 
