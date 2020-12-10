@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import {Button, FormControl, Form, Jumbotron, Table} from "react-bootstrap";
+import {Button, FormControl, Form, Container, Table, Col} from "react-bootstrap";
 import css from "./search.module.css";
 
 
@@ -17,12 +17,10 @@ const SearchViewForm =({onText, onSearch}) => {
 	return(
 	<div className={css.searchMenu}>
     <Form inline onSubmit={e => { e.preventDefault();}}>
-    <Button className={css.serachReturn} href="#" variant="outline-secondary">&laquo; Return</Button>
     <div className={css.searchBar}>
       <FormControl as='input' type="text" placeholder="Search For Artists, Songs..." 
-      onChange={e => onText(JSON.stringify(e.target.value))} />
-      
-      <Button type='submit' variant="outline-dark" onClick ={onSearch}>Search</Button>
+      onChange={e => onText(JSON.stringify(e.target.value))} /> {" "}
+      <Button type='submit' variant="outline-light" onClick ={onSearch}>Search</Button>
       </div>
     </Form>
 	</div>
@@ -34,8 +32,9 @@ export default SearchViewForm;
 
 export const SearchViewResult = ({searchResult}) =>{
  return(
-   <div className="searchResult">
-    <Jumbotron className={css.searchJumbo}>
+   //<div className={css.result}>
+  <Container className={css.searchJumbo}>
+    <Col>
  <Table striped bordered hover variant="dark">
   <thead>
     <tr>
@@ -55,7 +54,8 @@ export const SearchViewResult = ({searchResult}) =>{
     )}
   </tbody>
 </Table>
-</Jumbotron>
-</div>
+</Col>
+</Container>
+//</div>
  );
 }
