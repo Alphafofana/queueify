@@ -21,8 +21,7 @@ const CurrentSessionGuestView = ({
 			<Container className={css.sessionInfo}>
 				<Row>
 					<Col className={css.sessionDetails}>
-						<p>Playlist Name: {currSession.name}</p>
-						<p>Session ID: {sessionID}</p>
+						<p>Session ID: {currSession.name}</p>
 					</Col>
 				</Row>
 				<Row>
