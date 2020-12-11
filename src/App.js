@@ -6,7 +6,7 @@ import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
 import Search from "./components/search/search";
 import Popup from "./components/popup/popup";
-import QueueifyModel from "./queueifyModel";
+import ReadModel from "./readModel";
 //import PrivateRoute from "./components/router/privateRouteComponent";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -21,7 +21,7 @@ import {
 } from "react-router-dom";
 
 function App() {
-	let model = new QueueifyModel();
+	const model = ReadModel();
 	return (
 		<BrowserRouter>
 			<AuthProvider>
@@ -69,7 +69,7 @@ function App() {
 									<Sidebar />
 								</Col>
 								<Col className="pageCol">
-									<Search />
+									<Search model={model} />
 								</Col>
 							</Row>
 						</div>

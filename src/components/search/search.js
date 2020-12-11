@@ -6,29 +6,44 @@
  *
  */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SearchViewForm, { SearchViewResult } from "./searchView";
-import dataSource from "../../dataSource";
+import DataSource from "../../dataSource";
 import usePromise from "../usePromise";
 import PromiseNoData from "../promiseNoData";
 
-function Search() {
-	const [query, setQuery] = React.useState("");
-	const [promise, setPromise] = React.useState(null);
+function Search({ model }) {
+	const [query, setQuery] = useState("");
+	const [search, setSearch] = useState(null);
+	const [disabledButtons, setDisabled] = useState([]);
+	const [showError, setShowError] = useState(false);
+	const sessionID = model.getModelProperty("currentSession");
 
-	React.useEffect(() => setPromise(dataSource.searchSong("")), []);
+	useEffect(() => setSearch(DataSource.searchSong(sessionID)), [sessionID]);
 
-	const [data, error] = usePromise(promise);
+	const [data, error] = usePromise(search);
+	const handleShowError = () => setShowError(!showError);
+	const handleDisabledButtons = (disable) =>
+		setDisabled([...disabledButtons, disable]);
 
 	return (
 		<>
 			<SearchViewForm
-				onText={(x) => setQuery(x)}
-				onSearch={() => setPromise(dataSource.searchSong(query))}
+				onText={(query) => setQuery(query)}
+				onSearch={() =>
+					setSearch(DataSource.searchSong(sessionID, query))
+				}
 			/>
 
-			{PromiseNoData(promise, data, error) || (
-				<SearchViewResult searchResult={data} />
+			{PromiseNoData(search, data, error) || (
+				<SearchViewResult
+					searchResult={data}
+					addsong={(songObj) => model.addSong(songObj)}
+					disable={handleDisabledButtons}
+					disabledButtons={disabledButtons}
+					handleShowError={handleShowError}
+					showError={showError}
+				/>
 			)}
 		</>
 	);

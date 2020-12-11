@@ -34,8 +34,8 @@ function SessionHandler({ model }) {
 			.joinSession(sessionName, sessionPin)
 			.then((sessionID) => history.push("session/" + sessionID))
 			.catch((error) => {
-				console.error("Failed to create new session!");
-				setError("Failed to create new session!");
+				console.error("Failed to join new session!");
+				setError("Failed to join new session!");
 			});
 	}
 

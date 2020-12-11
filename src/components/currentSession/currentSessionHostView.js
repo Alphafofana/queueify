@@ -10,17 +10,17 @@ const msToTime = (millis) => {
 
 const CurrentSessionHostView = ({
 	user,
-	logout,
 	error,
-	currSession,
+	playlist,
 	sessionID,
+	sessionName,
 }) => {
 	return (
 		<Container fluid className={css.currentSession}>
 			<Container className={css.sessionInfo}>
 				<Row>
 					<Col className={css.sessionDetails}>
-						<p>Playlist Name: {currSession.name}</p>
+						<p>Session Name: {sessionName}</p>
 						<p>Session ID: {sessionID}</p>
 					</Col>
 				</Row>
@@ -36,6 +36,7 @@ const CurrentSessionHostView = ({
 							<thead>
 								<tr>
 									<th>#</th>
+									<th>ARTIST</th>
 									<th>TITLE</th>
 									<th>ADDED</th>
 									<th>DURATION</th>
@@ -44,39 +45,34 @@ const CurrentSessionHostView = ({
 								</tr>
 							</thead>
 							<tbody>
-								{currSession.hasOwnProperty("tracks") &&
-									currSession.tracks.items.map(
-										(item, index) => (
-											<tr key={item.track.href}>
-												<td>{index + 1}</td>
-												<td>{item.track.name}</td>
-												<td>{/*todo*/}todo</td>
-												<td>
-													{msToTime(
-														item.track.duration_ms
-													)}
-												</td>
-												<td>
-													{/*todo*/}todo
-													<Button
-														variant="dark"
-														size="sm"
-													>
-														↑
-													</Button>
-												</td>
-												<td>
-													{/*todo*/}todo
-													<Button
-														variant="dark"
-														size="sm"
-													>
-														x
-													</Button>
-												</td>
-											</tr>
-										)
-									)}
+								{playlist &&
+									playlist.map((song, index) => (
+										<tr key={index}>
+											<td>{song.position}</td>
+											<td>{song.artist.join(", ")}</td>
+											<td>{song.title}</td>
+											<td>ADDED</td>
+											<td>{msToTime(300000)}</td>
+											<td>
+												{song.votes}
+												<Button
+													variant="dark"
+													size="sm"
+												>
+													↑
+												</Button>
+											</td>
+											<td>
+												todo
+												<Button
+													variant="dark"
+													size="sm"
+												>
+													x
+												</Button>
+											</td>
+										</tr>
+									))}
 							</tbody>
 						</Table>
 					</Col>

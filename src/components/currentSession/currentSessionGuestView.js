@@ -3,25 +3,24 @@ import css from "./currentSessionGuestView.module.css";
 import { Col, Container, Button, Table, Row } from "react-bootstrap";
 
 const msToTime = (millis) => {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return `${minutes}:${(seconds < 10 ? "0" : "")}${seconds}`;
-}
-
+	var minutes = Math.floor(millis / 60000);
+	var seconds = ((millis % 60000) / 1000).toFixed(0);
+	return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+};
 
 const CurrentSessionGuestView = ({
 	user,
-	logout,
 	error,
-	currSession,
+	playlist,
 	sessionID,
+	sessionName,
 }) => {
 	return (
 		<Container fluid className={css.currentSession}>
 			<Container className={css.sessionInfo}>
 				<Row>
 					<Col className={css.sessionDetails}>
-						<p>Playlist Name: {currSession.name}</p>
+						<p>Session Name: {sessionName}</p>
 						<p>Session ID: {sessionID}</p>
 					</Col>
 				</Row>
@@ -37,6 +36,7 @@ const CurrentSessionGuestView = ({
 							<thead>
 								<tr>
 									<th>#</th>
+									<th>ARTIST</th>
 									<th>TITLE</th>
 									<th>ADDED</th>
 									<th>DURATION</th>
@@ -44,15 +44,25 @@ const CurrentSessionGuestView = ({
 								</tr>
 							</thead>
 							<tbody>
-								{currSession.hasOwnProperty('tracks')&&currSession.tracks.items.map((item, index)=> 
-								<tr key= {item.track.href}>
-								<td>{index+1}</td>
-								<td>{item.track.name}</td>
-								<td>{/*todo*/ }todo</td>
-								<td>{msToTime(item.track.duration_ms)}</td>
-								<td>{/*todo*/}todo<Button variant="dark" size="sm">↑</Button></td>
-								</tr>)
-								}
+								{playlist &&
+									playlist.map((song, index) => (
+										<tr key={index}>
+											<td>{song.position}</td>
+											<td>{song.artist}</td>
+											<td>{song.title}</td>
+											<td>ADDED</td>
+											<td>{msToTime(300000)}</td>
+											<td>
+												{song.votes}
+												<Button
+													variant="dark"
+													size="sm"
+												>
+													↑
+												</Button>
+											</td>
+										</tr>
+									))}
 							</tbody>
 						</Table>
 					</Col>
