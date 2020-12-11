@@ -27,7 +27,7 @@
 
 
 @media(max-width: 580px){
-	.searchJumbo{
+	:global(.searchJumbo){
 		padding-left: 20px;
 	}
 	.searchMenu{
