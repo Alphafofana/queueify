@@ -2,12 +2,6 @@ import React from "react";
 import css from "./currentSessionGuestView.module.css";
 import { Col, Container, Button, Table, Row } from "react-bootstrap";
 
-const msToTime = (millis) => {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return `${minutes}:${(seconds < 10 ? "0" : "")}${seconds}`;
-}
-
 
 const CurrentSessionGuestView = ({
 	user,
@@ -37,8 +31,6 @@ const CurrentSessionGuestView = ({
 								<tr>
 									<th>#</th>
 									<th>TITLE</th>
-									<th>ADDED</th>
-									<th>DURATION</th>
 									<th>UPVOTES</th>
 								</tr>
 							</thead>
@@ -47,8 +39,6 @@ const CurrentSessionGuestView = ({
 								<tr key= {item.track.href}>
 								<td>{index+1}</td>
 								<td>{item.track.name}</td>
-								<td>{/*todo*/ }todo</td>
-								<td>{msToTime(item.track.duration_ms)}</td>
 								<td>{/*todo*/}todo<Button variant="outline-light" size="sm">↑</Button></td>
 								</tr>)
 								}
