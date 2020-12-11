@@ -7,13 +7,13 @@ const Navibar = ({ user, logout }) => {
 		<Navbar className={css.navbar} fixed="top" variant="dark">
 			<Container className="largenavbar">
 				<Col lg="7" md="5" className="largenavbar">
-					<Nav className="mr-auto"></Nav>
+					<Nav className="mrs-auto"></Nav>
 				</Col>
 				<Col lg="2" md="2" className="largenavbar">
-					<Navbar.Text className="mr-auto">User: {user.displayName}</Navbar.Text>
+					<Navbar.Text className="mrs-auto">User: {user.displayName}</Navbar.Text>
 				</Col>
 				<Col lg="1" md="1" className="largenavbar">
-					<Navbar.Text className="mr-auto">
+					<Navbar.Text className="mrs-auto">
 						{" "}
 						{user.photoURL ? (
 							<img
@@ -29,7 +29,7 @@ const Navibar = ({ user, logout }) => {
 					</Navbar.Text >
 				</Col>
 				<Col lg="2" md="2" className="largenavbar">
-					<Navbar.Text className="mr-auto">
+					<Navbar.Text className="mrs-auto">
 						<Button onClick={logout} variant="outline-light">
 							Log out
 						</Button>

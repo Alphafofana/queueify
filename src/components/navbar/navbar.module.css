@@ -16,7 +16,7 @@ height: 85px;
         background: #0404048e;
     }
 
-    :global(.mr-auto){
+    :global(.mrs-auto){
         display: none;
     }
     :global(.largenavbar){

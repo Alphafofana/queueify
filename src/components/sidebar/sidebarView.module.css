@@ -26,9 +26,10 @@
 }
 
 @media(max-width: 580px){
-:global(.sidebar-nav) {
-	 display: none;
- }
+	:global(.sidebar-nav) {
+		display: none;
+	}
+
 :global(.sidebar){
 	min-height: 0vh;
 	height: 85px;
