@@ -38,12 +38,16 @@ const DataSource = {
 
 	searchSong(sessionID, query = "") {
 		//console.log("searchSong, sessionID: " + sessionID + " query: " + query);
-		let endpoint =
-			"https://api.spotify.com/v1/search?q=" + query + "&type=track";
-		let method = "GET";
-		return this.apiCall(endpoint, method, sessionID).catch((error) => {
-			console.error(error);
-		});
+		if (query) {
+			let endpoint =
+				"https://api.spotify.com/v1/search?q=" + query + "&type=track";
+			let method = "GET";
+			return this.apiCall(endpoint, method, sessionID).catch((error) => {
+				console.error(error);
+			});
+		} else {
+			return Promise.resolve([]);
+		}
 	},
 
 	createPlaylist(userID, playlistName, token) {

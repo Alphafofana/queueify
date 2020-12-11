@@ -213,8 +213,8 @@ class QueueifyModel {
 		add song to session playlist 
 		votes is 0 and position is last (-1)
 		*/
-		console.log("Model, add song!");
-		console.log("Model, songObj: ", songObj);
+		//console.log("Model, add song!");
+		//console.log("Model, songObj: ", songObj);
 		const { id: songID, artists: artistsObj, name: title } = songObj;
 		const artists = artistsObj.map((artist) => artist.name);
 		console.log(songID, artists, title);

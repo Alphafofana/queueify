@@ -7,16 +7,13 @@ import { useAuth } from "../../contexts/AuthContext";
 function SessionHandler({ model }) {
 	const { currentUser } = useAuth();
 	const [error, setError] = useState("");
-	const [loading, setLoading] = useState(false);
 	const [sessionName, setSessionName] = useState("");
 	const [sessionPin, setSessionPin] = useState(null);
 	const history = useHistory();
-	//const [loading, setLoading] = useState(false);
 
 	function newSession(e) {
 		e.preventDefault();
 		setError("");
-		setLoading(true);
 		model
 			.createSession(sessionName, sessionPin)
 			.then((sessionID) => history.push("session/" + sessionID))
@@ -29,7 +26,6 @@ function SessionHandler({ model }) {
 	function joinSession(e) {
 		e.preventDefault();
 		setError("");
-		setLoading(true);
 		model
 			.joinSession(sessionName, sessionPin)
 			.then((sessionID) => history.push("session/" + sessionID))
@@ -50,6 +46,7 @@ function SessionHandler({ model }) {
 				sessionPin={(pin) => setSessionPin(pin)}
 				submit={(e) => newSession(e)}
 				user={currentUser}
+				error={error}
 			/>
 		)) ||
 			((currentUser.providerData[0].providerId === "google.com" ||
@@ -59,6 +56,7 @@ function SessionHandler({ model }) {
 					sessionPin={(pin) => setSessionPin(pin)}
 					submit={(e) => joinSession(e)}
 					user={currentUser}
+					error={error}
 				/>
 			)))
 	);
