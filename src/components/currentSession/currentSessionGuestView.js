@@ -50,7 +50,7 @@ const CurrentSessionGuestView = ({
 								<td>{item.track.name}</td>
 								<td>{/*todo*/ }todo</td>
 								<td>{msToTime(item.track.duration_ms)}</td>
-								<td>{/*todo*/}todo<Button variant="dark" size="sm">↑</Button></td>
+								<td>{/*todo*/}todo<Button variant="outline-light" size="sm">↑</Button></td>
 								</tr>)
 								}
 							</tbody>

@@ -46,16 +46,16 @@ const CurrentSessionHostView = ({
 												<td>
 													{/*todo*/}todo
 													<Button
-														variant="dark"
+														variant="outline-light"
 														size="sm"
 													>
 														↑
 													</Button>
 												</td>
 												<td>
-													{/*todo*/}todo
+													{/*todo*/}
 													<Button
-														variant="dark"
+														variant="outline-light"
 														size="sm"
 													>
 														x
