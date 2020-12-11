@@ -2,11 +2,11 @@
 	display: flex;
 	flex-direction: row;
 	background:  #040404;
-	font-family: "Montserrat", sans-serif;
 	padding-top: 70px;
 	padding-left: 175px;
 	width: 100%;
 	min-width: 410px;
+	min-height: 100vh;
 }
 .sessionInfo {
 	margin-top: 10px;

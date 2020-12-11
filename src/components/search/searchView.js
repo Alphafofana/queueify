@@ -33,7 +33,7 @@ export default SearchViewForm;
 export const SearchViewResult = ({searchResult}) =>{
  return(
    //<div className={css.result}>
-  <Container className={css.searchJumbo}>
+  <Container className="searchJumbo">
     <Col>
  <Table striped bordered hover variant="dark">
   <thead>
