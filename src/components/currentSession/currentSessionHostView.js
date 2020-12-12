@@ -48,10 +48,10 @@ const CurrentSessionHostView = ({
 								{playlist &&
 									playlist.map((song, index) => (
 										<tr key={index}>
-											<td>{song.position}</td>
+											<td>{index + 1}</td>
 											<td>{song.artist.join(", ")}</td>
 											<td>{song.title}</td>
-											<td>ADDED</td>
+											<td>{song.timestamp}</td>
 											<td>{msToTime(300000)}</td>
 											<td>
 												{song.votes}
