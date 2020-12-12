@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CurrentSessionGuestView from "./currentSessionGuestView";
 import CurrentSessionHostView from "./currentSessionHostView";
 import { useAuth } from "../../contexts/AuthContext";
@@ -30,7 +30,7 @@ function CurrentSession({ model }) {
 							"currentSessionName"
 						)}
 					/>
-				)))) ||
+				))) ||
 				((currentUser.providerData[0].providerId === "google.com" ||
 					currentUser.providerData[0].providerId ===
 						"facebook.com") &&
