@@ -1,9 +1,12 @@
 .currentSession {
 	display: flex;
 	flex-direction: row;
-	padding: 0;
-	background: #121212;
+	background:  #040404;
 	font-family: "Montserrat", sans-serif;
+	margin: 20px;
+	margin-top: 70px;
+	padding-left: 175px;
+	width: 98.4%;
 }
 .sessionInfo {
 	margin-top: 10px;

@@ -22,7 +22,7 @@ function CurrentSession({ model }) {
 				(PromiseNoData(playlist, data, error) || (
 					<CurrentSessionHostView
 						user={currentUser}
-						currSession={{ name: "Dummyname" }}
+						error={error}
 						playlist={data}
 						sessionID={model.getModelProperty("currentSession")}
 						sessionName={model.getModelProperty(

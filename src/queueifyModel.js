@@ -248,13 +248,18 @@ class QueueifyModel {
 	}
 
 	firebaseSubscriber() {
-		const Session = db
+		const session = db.collection("session").doc(this.currentSession);
+		const playlist = db
 			.collection("session")
 			.doc(this.currentSession)
 			//TODO: Subscribe on session instead to ensure notifications
 			.collection(this.currentPlaylist);
 
-		Session.onSnapshot((doc) => {
+		session.onSnapshot((doc) => {
+			//console.log("Current data: UPDATE");
+			this.notifyObservers();
+		});
+		playlist.onSnapshot((doc) => {
 			//console.log("Current data: UPDATE");
 			this.notifyObservers();
 		});

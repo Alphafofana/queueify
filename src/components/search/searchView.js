@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-
+import css from "./search.module.css";
 import {
 	Modal,
 	Button,
@@ -19,17 +19,21 @@ import {
 
 const SearchViewForm = ({ onText, onSearch }) => {
 	return (
-		<div className="searchView">
+		<div className={css.searchMenu}>
 			<Form
 				inline
 				onSubmit={(e) => {
 					e.preventDefault();
 				}}
 			>
-				<Button href="#" variant="outline-secondary">
+				<Button
+					className={css.serachReturn}
+					href="#"
+					variant="outline-secondary"
+				>
 					&laquo; Return
 				</Button>
-				<div className="searchArtist">
+				<div className={css.searchBar}>
 					<FormControl
 						as="input"
 						type="text"
@@ -61,8 +65,8 @@ export const SearchViewResult = ({
 	showError,
 }) => {
 	return (
-		<div>
-			<Jumbotron className="jumbo">
+		<div className="searchResult">
+			<Jumbotron className={css.searchJumbo}>
 				<Table striped bordered hover variant="dark">
 					<thead>
 						<tr>

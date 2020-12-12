@@ -11,7 +11,7 @@ import ReadModel from "./readModel";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
 import CurrentSession from "./components/currentSession/currentSession";
-import { Row, Col } from "react-bootstrap";
+
 import {
 	//HashRouter,
 	Redirect,
@@ -23,6 +23,42 @@ import {
 function App() {
 	const model = ReadModel();
 	return (
+		<BrowserRouter>
+			<AuthProvider>
+				<Switch>
+					<Route exact path="/">
+						<Redirect to="/login" />
+					</Route>
+					<Route exact path="/login">
+						<Login />
+					</Route>
+					<Route path="/login/popup">
+						<Popup />
+					</Route>
+				</Switch>
+				<PrivateRoute>
+					<div className="sidebarCol">
+						<Sidebar model={model} />
+						<div className="pageCol">
+							<Navbar />
+							<Switch>
+								<PrivateRoute exact path="/search">
+									<Search model={model} />
+								</PrivateRoute>
+								<PrivateRoute exact path="/session">
+									<SessionHandler model={model} />
+								</PrivateRoute>
+								<PrivateRoute exact path="/session/:sessionId">
+									<CurrentSession model={model} />
+								</PrivateRoute>
+							</Switch>
+						</div>
+					</div>
+				</PrivateRoute>
+			</AuthProvider>
+		</BrowserRouter>
+
+		/*
 		<BrowserRouter>
 			<AuthProvider>
 				<Switch>
@@ -62,7 +98,7 @@ function App() {
 						</div>
 					</PrivateRoute>
 					<PrivateRoute exact path="/search">
-						<div className="pageContainer">
+					<div className="pageContainer">
 							<Navbar />
 							<Row>
 								<Col lg="auto" className="sidebarCol">
@@ -74,17 +110,9 @@ function App() {
 							</Row>
 						</div>
 					</PrivateRoute>
-					<PrivateRoute
-						path="/privateRoute"
-						component={() => <h1>This is a Private Route!</h1>}
-					/>
-					<Route
-						path="/route"
-						component={() => <h1>This is a route</h1>}
-					/>
 				</Switch>
 			</AuthProvider>
-		</BrowserRouter>
+		</BrowserRouter>*/
 	);
 }
 

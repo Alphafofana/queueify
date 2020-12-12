@@ -51,7 +51,7 @@ const CurrentSessionHostView = ({
 											<td>{index + 1}</td>
 											<td>{song.artist.join(", ")}</td>
 											<td>{song.title}</td>
-											<td>{song.timestamp}</td>
+											<td>{song.timestamp.seconds}</td>
 											<td>{msToTime(300000)}</td>
 											<td>
 												{song.votes}
