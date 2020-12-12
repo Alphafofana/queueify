@@ -5,8 +5,9 @@ import {
 	Container,
 	Button,
 	Jumbotron,
-	FormControl,
 	Form,
+	OverlayTrigger,
+	Tooltip,
 } from "react-bootstrap";
 
 const NewSessionView = ({ sessionName, sessionPin, submit, user }) => {
@@ -21,7 +22,14 @@ const NewSessionView = ({ sessionName, sessionPin, submit, user }) => {
 					</p>
 					<Form onSubmit={submit}>
 						<Form.Group controlid="sessionName">
-							<Form.Label>Session Name</Form.Label>
+						<OverlayTrigger
+     					 placement="right"
+     					 overlay={
+       					<Tooltip id={`tooltip-$"right"`}>
+         				 Your Guests will use this to identify thesession.
+      	 					</Tooltip>}>
+						<Form.Label>Session Name</Form.Label>
+							</OverlayTrigger>
 							<Form.Control
 								type="text"
 								placeholder="Session name"
@@ -29,12 +37,16 @@ const NewSessionView = ({ sessionName, sessionPin, submit, user }) => {
 									sessionName(event.target.value)
 								}
 							></Form.Control>
-							<Form.Text>
-								The name your guests will use to identify the
-								session
-							</Form.Text>
+
 							<Form.Group controlid="sessionPin">
+							<OverlayTrigger
+     						 placement="right"
+     						 overlay={
+       						<Tooltip id={`tooltip-$"right"`}>
+         					 Type in a pin or passphrase.
+      	 					</Tooltip>}>
 								<Form.Label>Session Pin</Form.Label>
+							</OverlayTrigger>
 								<Form.Control
 									type="password"
 									autoComplete="on"
@@ -43,11 +55,9 @@ const NewSessionView = ({ sessionName, sessionPin, submit, user }) => {
 										sessionPin(event.target.value)
 									}
 								></Form.Control>
-								<Form.Text>
-									Type in a pin or passphrase
-								</Form.Text>
+
 							</Form.Group>
-							<Button variant="primary" type="submit">
+							<Button variant="dark" type="submit">
 								Submit
 							</Button>
 						</Form.Group>

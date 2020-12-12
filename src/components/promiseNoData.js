@@ -1,16 +1,16 @@
 import React from "react";
-import { Jumbotron, Spinner } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 function PromiseNoData(promise, data, error, h) {
 	return (
 		(!promise && "no data") || // case "0"
 		(error && <h1>error</h1>) || // case 3
 		(!data && (
-			<Jumbotron>
-				<Spinner animation="border" role="status">
+			<Container className="searchJumbo">
+				<Spinner animation="border" role="status" variant="light">
 					<span className="sr-only">Loading...</span>
 				</Spinner>
-			</Jumbotron>
+			</Container>
 		))
 	); // case 1
 }
