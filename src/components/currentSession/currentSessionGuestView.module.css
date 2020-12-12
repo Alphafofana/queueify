@@ -2,11 +2,11 @@
 	display: flex;
 	flex-direction: row;
 	background:  #040404;
-	font-family: "Montserrat", sans-serif;
-	margin: 20px;
-	margin-top: 70px;
+	padding-top: 70px;
 	padding-left: 175px;
-	width: 98.4%;
+	width: 100%;
+	min-width: 410px;
+	min-height: 100vh;
 }
 .sessionInfo {
 	margin-top: 10px;
@@ -17,7 +17,19 @@
 	padding: 14px 56px 16px;
 	font-size: 17px;
 }
-
+.queue{
+	width: 90%;
+}
 .queue tbody {
 	font-size: 13px;
+}
+
+@media(max-width:580px){
+	.currentSession{
+		padding-left: 0px;
+		margin: 0;
+		padding-top: 85px;
+		width: 100%;
+
+	}
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CurrentSessionGuestView from "./currentSessionGuestView";
 import CurrentSessionHostView from "./currentSessionHostView";
 import { useAuth } from "../../contexts/AuthContext";
@@ -13,13 +13,14 @@ function CurrentSession({ model }) {
 		setPlaylist(model.getCurrentPlaylist());
 		const obs = () => setPlaylist(model.getCurrentPlaylist());
 		return model.addObserver(obs);
-	}, []);
+	}, [model]);
 	const [data, error] = usePromise(playlist);
 
 	return (
 		<>
 			{(currentUser.uid.includes("spotify") &&
 				(PromiseNoData(playlist, data, error) || (
+
 					<CurrentSessionHostView
 						user={currentUser}
 						error={error}
@@ -29,7 +30,7 @@ function CurrentSession({ model }) {
 							"currentSessionName"
 						)}
 					/>
-				))) ||
+				)))) ||
 				((currentUser.providerData[0].providerId === "google.com" ||
 					currentUser.providerData[0].providerId ===
 						"facebook.com") &&

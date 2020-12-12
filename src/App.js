@@ -38,7 +38,7 @@ function App() {
 				</Switch>
 				<PrivateRoute>
 					<div className="sidebarCol">
-						<Sidebar model={model} />
+						<Sidebar className="sidebar" model={model} />
 						<div className="pageCol">
 							<Navbar />
 							<Switch>
@@ -53,6 +53,7 @@ function App() {
 								</PrivateRoute>
 							</Switch>
 						</div>
+
 					</div>
 				</PrivateRoute>
 			</AuthProvider>

@@ -17,6 +17,7 @@ const CurrentSessionHostView = ({
 					<Col className={css.sessionDetails}>
 						<p>Session Name: {sessionName}</p>
 						<p>Session ID: {sessionID}</p>
+
 					</Col>
 				</Row>
 				<Row>
@@ -33,11 +34,12 @@ const CurrentSessionHostView = ({
 									<th>#</th>
 									<th>ARTIST</th>
 									<th>TITLE</th>
-									<th>ADDED</th>
+									<th>VOTES</th>
 									<th>REMOVE</th>
 								</tr>
 							</thead>
 							<tbody>
+
 								{playlist &&
 									playlist.map((song, index) => (
 										<tr key={index}>
@@ -47,7 +49,7 @@ const CurrentSessionHostView = ({
 											<td>
 												{song.votes}
 												<Button
-													variant="dark"
+													variant="outline-light"
 													size="sm"
 												>
 													↑
@@ -56,7 +58,7 @@ const CurrentSessionHostView = ({
 											<td>
 												todo
 												<Button
-													variant="dark"
+													variant="outline-light"
 													size="sm"
 												>
 													x
@@ -64,6 +66,7 @@ const CurrentSessionHostView = ({
 											</td>
 										</tr>
 									))}
+
 							</tbody>
 						</Table>
 					</Col>

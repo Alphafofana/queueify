@@ -13,44 +13,24 @@ import {
 	Button,
 	FormControl,
 	Form,
-	Jumbotron,
+	Container,
 	Table,
+  Col
 } from "react-bootstrap";
 
 const SearchViewForm = ({ onText, onSearch }) => {
 	return (
-		<div className={css.searchMenu}>
-			<Form
-				inline
-				onSubmit={(e) => {
-					e.preventDefault();
-				}}
-			>
-				<Button
-					className={css.serachReturn}
-					href="#"
-					variant="outline-secondary"
-				>
-					&laquo; Return
-				</Button>
+		<Container className={css.searchMenu}>
+			<Form inline onSubmit={(e) => {e.preventDefault();}}>
 				<div className={css.searchBar}>
-					<FormControl
-						as="input"
-						type="text"
-						placeholder="Search For Artists, Songs..."
-						onChange={(e) => onText(JSON.stringify(e.target.value))}
-					/>
-
-					<Button
-						type="submit"
-						variant="outline-dark"
-						onClick={onSearch}
-					>
+					<FormControl as="input" type="text" placeholder="Search For Artists, Songs..." 
+            onChange={(e) => onText(JSON.stringify(e.target.value))}/>
+					<Button type="submit" variant="outline-light" onClick={onSearch}>
 						Search
 					</Button>
 				</div>
 			</Form>
-		</div>
+		</Container>
 	);
 };
 
@@ -65,8 +45,8 @@ export const SearchViewResult = ({
 	showError,
 }) => {
 	return (
-		<div className="searchResult">
-			<Jumbotron className={css.searchJumbo}>
+      <Container className="searchJumbo">
+        <Col>
 				<Table striped bordered hover variant="dark">
 					<thead>
 						<tr>
@@ -82,29 +62,19 @@ export const SearchViewResult = ({
 								<tr key={song.href}>
 									<td>{song.name}</td>
 									<td>
-										{song.artists.map(
-											(artists, index) =>
-												((index !== 0 && ", ") || "") +
-												artists.name
-										)}{" "}
+										{song.artists.map((artists, index) => ((index !== 0 && ", ") || "") + artists.name)}{" "}
 									</td>
 									<td>
-										<Button
-											onClick={(e) => {
-												e.preventDefault();
-												disable(index);
-												addsong(song).catch((error) => {
-													console.error(
-														"Could not add song:"
-													);
-													//TODO: check errortype
-													handleShowError();
-												});
-											}}
+										<Button 
+                      onClick={(e) => 
+                                     {e.preventDefault(); 
+                                     disable(index);
+                                     addsong(song).catch((error) => {
+                                     console.error("Could not add song:"); //TODO: check errortype
+                                     handleShowError();
+                                    });}}
 											variant="outline-light"
-											disabled={disabledButtons.includes(
-												index
-											)}
+											disabled={disabledButtons.includes(index)}
 										>
 											+
 										</Button>
@@ -113,7 +83,6 @@ export const SearchViewResult = ({
 							))}
 					</tbody>
 				</Table>
-			</Jumbotron>
 			<Modal
 				size="sm"
 				show={showError}
@@ -125,6 +94,7 @@ export const SearchViewResult = ({
 					<Modal.Title>Song Already exists!</Modal.Title>
 				</Modal.Header>
 			</Modal>
-		</div>
+      </Col>
+		</Container>
 	);
 };

@@ -1,26 +1,37 @@
-.searchJumbo {
-	display: flexbox;
-	text-align: center;
-	margin: 20px;
-	min-width: 500px;
-	margin: 20px;
-	margin-top: 20px;
-	margin-left: 200px;
+
+
+:global(.searchJumbo) {
+	display: flex;
+	flex-direction: row;
+	background:  #040404;
+	padding:20px;
+	padding-left: 175px;
+	padding-top: 0px;
+	width: 100%;
+	height: 100%;
+	min-width: 410px;
+	min-height: 100vh;
 
 }
 
 .searchMenu {
-	margin-left: 20px;
-	margin: 20px;
-	margin-top: 80px;
-	margin-left: 200px;
+	display: flex;
+	flex-direction: row;
+	padding: 20px;
+	padding-top: 90px;
+	padding-left: 200px;
+	background: #040404;
+
 }
 
-.serachReturn {
-	margin: auto;
-	
-}
-.searchBar{
-	
-	margin: auto;
+
+
+@media(max-width: 580px){
+	:global(.searchJumbo){
+		padding-left: 20px;
+	}
+	.searchMenu{
+		padding-left: 20px;
+	}
+
 }
