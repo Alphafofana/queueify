@@ -205,12 +205,13 @@ exports.vote = functions.firestore
       .then((info) => info.data())
       .catch((err) => console.err("could not retrieve the token", err));
 
-    let setToken = token.then((data) =>
-      Spotify.setAccessToken(data.hostToken)
-    );
+    let setToken = token.then((data) => {
+      console.log(data.hostToken);
+      return Spotify.setAccessToken(data.hostToken);
+    });
 
-    return setToken.then(
-      Spotify
+    return setToken.then((spotify) =>
+      spotify
         .reorderTracksInPlaylist(playlist, prevPosition, newPosition, options)
         .catch((err) => console.error(err))
     );
