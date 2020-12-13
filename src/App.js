@@ -53,7 +53,6 @@ function App() {
 								</PrivateRoute>
 							</Switch>
 						</div>
-
 					</div>
 				</PrivateRoute>
 			</AuthProvider>

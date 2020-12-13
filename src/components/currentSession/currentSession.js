@@ -20,11 +20,11 @@ function CurrentSession({ model }) {
 		<>
 			{(currentUser.uid.includes("spotify") &&
 				(PromiseNoData(playlist, data, error) || (
-
 					<CurrentSessionHostView
 						user={currentUser}
 						error={error}
 						playlist={data}
+						vote={(songID) => model.upVote(songID)}
 						sessionID={model.getModelProperty("currentSession")}
 						sessionName={model.getModelProperty(
 							"currentSessionName"
@@ -39,6 +39,7 @@ function CurrentSession({ model }) {
 							user={currentUser.providerData[0]}
 							error={error}
 							playlist={data}
+							vote={(songID) => model.upVote(songID)}
 							sessionID={model.getModelProperty("currentSession")}
 							sessionName={model.getModelProperty(
 								"currentSessionName"
