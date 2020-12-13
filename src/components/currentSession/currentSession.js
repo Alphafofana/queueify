@@ -13,16 +13,17 @@ function CurrentSession({ model }) {
 		setPlaylist(model.getCurrentPlaylist());
 		const obs = () => setPlaylist(model.getCurrentPlaylist());
 		return model.addObserver(obs);
-	}, []);
+	}, [model]);
 	const [data, error] = usePromise(playlist);
 
 	return (
 		<>
 			{(currentUser.uid.includes("spotify") &&
 				(PromiseNoData(playlist, data, error) || (
+
 					<CurrentSessionHostView
 						user={currentUser}
-						currSession={{ name: "Dummyname" }}
+						error={error}
 						playlist={data}
 						sessionID={model.getModelProperty("currentSession")}
 						sessionName={model.getModelProperty(

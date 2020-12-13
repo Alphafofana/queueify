@@ -219,6 +219,7 @@ class QueueifyModel {
 		const artists = artistsObj.map((artist) => artist.name);
 		console.log(songID, artists, title);
 
+		const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 		const song = db
 			.collection("session")
 			.doc(this.currentSession)
@@ -233,7 +234,8 @@ class QueueifyModel {
 				} else {
 					song.set({
 						artist: artists,
-						position: -1,
+						//position: -1, remove position
+						timestamp: timestamp,
 						title: title,
 						votes: 0,
 					});
@@ -246,12 +248,18 @@ class QueueifyModel {
 	}
 
 	firebaseSubscriber() {
-		const Session = db
+		const session = db.collection("session").doc(this.currentSession);
+		const playlist = db
 			.collection("session")
 			.doc(this.currentSession)
+			//TODO: Subscribe on session instead to ensure notifications
 			.collection(this.currentPlaylist);
 
-		Session.onSnapshot((doc) => {
+		session.onSnapshot((doc) => {
+			//console.log("Current data: UPDATE");
+			this.notifyObservers();
+		});
+		playlist.onSnapshot((doc) => {
 			//console.log("Current data: UPDATE");
 			this.notifyObservers();
 		});

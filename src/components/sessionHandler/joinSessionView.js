@@ -5,8 +5,9 @@ import {
 	Container,
 	Button,
 	Jumbotron,
-	FormControl,
 	Form,
+	OverlayTrigger,
+	Tooltip
 } from "react-bootstrap";
 
 const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
@@ -21,7 +22,14 @@ const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
 					</p>
 					<Form onSubmit={submit}>
 						<Form.Group controlid="sessionName">
+						<OverlayTrigger
+     						 placement="right"
+     						 overlay={
+       						<Tooltip id={`tooltip-$"right"`}>
+         					 Enter the session name provided by your host
+      	 					</Tooltip>}>
 							<Form.Label>Session Name</Form.Label>
+							</OverlayTrigger>
 							<Form.Control
 								type="text"
 								placeholder="Session Name"
@@ -29,11 +37,16 @@ const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
 									sessionName(event.target.value)
 								}
 							></Form.Control>
-							<Form.Text>
-								Enter the session name provided by your host
-							</Form.Text>
 							<Form.Group controlid="sessionPin">
+							<OverlayTrigger
+     						 placement="right"
+     						 overlay={
+       						<Tooltip id={`tooltip-$"right"`}>
+         					 Type in the pin or passphrase provided by
+									your host
+      	 					</Tooltip>}>
 								<Form.Label>Session Pin</Form.Label>
+								</OverlayTrigger>
 								<Form.Control
 									type="password"
 									autoComplete="on"
@@ -42,12 +55,8 @@ const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
 										sessionPin(event.target.value)
 									}
 								></Form.Control>
-								<Form.Text>
-									Type in the pin or passphrase provided by
-									your host
-								</Form.Text>
 							</Form.Group>
-							<Button variant="primary" type="submit">
+							<Button variant="dark" type="submit">
 								Submit
 							</Button>
 						</Form.Group>
