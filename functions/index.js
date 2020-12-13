@@ -34,8 +34,8 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const Spotify = new SpotifyWebApi({
   clientId: functions.config().spotify.client_id,
   clientSecret: functions.config().spotify.client_secret,
-  redirectUri: `http://localhost:3000/login/popup`,
-  //redirectUri: `https://test-queueify.herokuapp.com/login/popup`,
+  //redirectUri: `http://localhost:3000/login/popup`,
+  redirectUri: `https://test-queueify.herokuapp.com/login/popup`,
   //redirectUri: `https://queueify.herokuapp.com/login/popup`,
 });
 
@@ -133,69 +133,10 @@ exports.token = functions.https.onRequest((req, res) => {
 
 exports.addSong = functions.firestore
   .document("session/{sessionID}/{playlistID}/{songID}")
-  .onCreate((snap, context) => {
-    const newValue = snap.data();
-    const position = newValue.position;
+  .onCreate(async (snap, context) => {
     const session = context.params.sessionID;
     const playlist = context.params.playlistID;
     const song = context.params.songID;
-
-    let endpoint =
-      "https://api.spotify.com/v1/playlists/" +
-      playlist +
-      "/tracks?position=" +
-      position +
-      "&uris=spotify%3Atrack%3A" +
-      song;
-    let method = "POST";
-
-    const token = admin
-      .firestore()
-      .collection("session")
-      .doc(session)
-      .get()
-      .then((info) => info.data())
-      .catch((err) => console.err("could not retrieve the token", err));
-    console.log("token", token);
-    return token
-      .then((data) => {
-        console.log("this is token", data.hostToken);
-        return apiCall(data.hostToken, endpoint, method);
-      })
-      .catch((error) => {
-        console.error("There was an error when connecting to spotify", error);
-      });
-  });
-
-function apiCall(token, endpoint, method) {
-  console.log("api token", token);
-  return fetch(endpoint, {
-    method: method,
-    headers: {
-      Authorization: "Bearer " + token,
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      console.log("ersponse", response);
-      return response;
-    })
-    .catch((err) => console.error(err));
-}
-
-exports.vote = functions.firestore
-  .document("session/{sessionID}/{playlistID}/{songID}")
-  .onUpdate((change, context) => {
-    const playlist = context.params.playlistID;
-    const session = context.params.sessionID;
-
-    const previousValue = change.before.data();
-    const newValue = change.after.data();
-
-    const prevPosition = previousValue.position;
-    const newPosition = newValue.position;
-    var options = { range_length: 1 };
 
     const token = admin
       .firestore()
@@ -206,16 +147,77 @@ exports.vote = functions.firestore
       .catch((err) => console.err("could not retrieve the token", err));
 
     let setToken = token.then((data) => {
-      console.log(data.hostToken);
-      return Spotify.setAccessToken(data.hostToken);
+      Spotify.setAccessToken(data.hostToken);
+      return Spotify;
     });
 
-    return setToken.then((spotify) =>
-      spotify
-        .reorderTracksInPlaylist(playlist, prevPosition, newPosition, options)
-        .catch((err) => console.error(err))
-    );
+    return setToken
+      .then((Spotify) => {
+        return Spotify.addTracksToPlaylist(playlist, ["spotify:track:" + song]);
+      })
+      .catch((err) => console.error(err));
   });
+
+exports.vote = functions.firestore
+  .document("session/{sessionID}/{playlistID}/{songID}")
+  .onUpdate(async (change, context) => {
+    let songs = [];
+    const playlist = context.params.playlistID;
+    const session = context.params.sessionID;
+
+    let songData = admin
+      .firestore()
+      .collection("session")
+      .doc(session)
+      .collection(playlist)
+      .get()
+      .then((res) =>
+        res.forEach((doc) => {
+          songs.push(doc);
+        })
+      );
+
+    await songData.then(() => {
+      songs = songs.sort((a, b) => sortSongs(a.data(), b.data()));
+      return songs;
+    });
+
+    let songsString = "";
+
+    songs.map((song) => songsString = songsString + "spotify:track:" + song.id + ",");
+    songsString = songsString.substring(0, songsString.length - 1);
+
+    const token = await admin
+      .firestore()
+      .collection("session")
+      .doc(session)
+      .get()
+      .then((info) => info.data().hostToken)
+      .catch((err) => console.err("could not retrieve the token", err));
+
+
+    let call = await fetch(
+        "https://api.spotify.com/v1/playlists/" + playlist + "/tracks?uris=" + songsString,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + token,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      ).catch((err) => console.log(err));
+      return call;
+  });
+
+function sortSongs(a, b) {
+  if (a.votes === b.votes) {
+    if (a.timestamp < b.timestamp) return -1;
+    else if (a.timestamp > b.timestamp) return 1;
+  } else if (a.votes > b.votes) return -1;
+  else if (a.votes < b.votes) return 1;
+  return 0;
+}
 
 /**
  * Creates a Firebase account with the given user profile and returns a custom auth token allowing
