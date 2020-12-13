@@ -56,9 +56,10 @@ export const SearchViewResult = ({
 						</tr>
 					</thead>
 					<tbody>
+						
 						{searchResult &&
-							searchResult.hasOwnProperty("tracks", "items") &&
-							searchResult.tracks.items.map((song, index) => (
+							searchResult.hasOwnProperty("tracks", "items", "song") &&
+							searchResult.tracks.items.map((song) => (
 								<tr key={song.href}>
 									<td>{song.name}</td>
 									<td>
@@ -68,13 +69,13 @@ export const SearchViewResult = ({
 										<Button 
                       onClick={(e) => 
                                      {e.preventDefault(); 
-                                     disable(index);
+                                     disable(song.href);
                                      addsong(song).catch((error) => {
                                      console.error("Could not add song:"); //TODO: check errortype
-                                     handleShowError();
+									 handleShowError();
                                     });}}
 											variant="outline-light"
-											disabled={disabledButtons.includes(index)}
+											disabled={disabledButtons.includes(song.href)}
 										>
 											+
 										</Button>
