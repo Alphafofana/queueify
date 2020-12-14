@@ -37,45 +37,57 @@ This application uses the [Spotify API](https://developer.spotify.com/documentat
 
 ## Project file structure 
 
-**src folder**
+### **./src/**
 
-`app.js`: This file holds the layout and routing in the app. (private route osv)
-`dataSource.js`: Fetches the spotify API 
-`QueueifyModel.js`: Contains different functions used in other files. 
+`app.js`: This file holds the layout and routing in the app.
 
-**components folder**
+`dataSource.js`: Contains functions for the API calls to Spotify, client side.  
 
-This folder contains individual folders that each holds view, presenter and their associated css. The presenter files: 
+`QueueifyModel.js`: Contains functions to handle the communication with Firebase.
 
-**CurrentSession** 
+### **./src/components/**
+
+This folder contains individual folders that each holds view, presenter and their associated css. The presenter folders and files: 
+
+**currentSession/** 
+
 `currentSession.js`: Depending on the Login (guest/host), the Currentsession shown for the user will be different. If the user is a host they can have the option to remove songs from the list, while the guest can't. In this file, depending on the login condition, props and data will be send to eiter `currentSessionGuestView.js` or `currentSessionHostView.js`. 
 
-**Login**
-`login.js`: The login is connected with the firebase auth server and it takes in email and password. If login fails, it gives an visible error for the user saying "failed to log in". 
+**login/**
 
-**navbar**
-`navbar.js`: The navbar will show the UserName of the person loged in the session, and a log out button. The presenter will get the user information from firebase Auth. There is also a function that handles the logout. If the user can logout succesfully, they will be redirected to the login page, else an error message will appear saying "failed to log out". 
+`login.js`: The login is connected with the Firebase auth server and it takes in email and password. If login fails, it gives an visible error for the user saying "failed to log in". The Google and Facebook authentification is built using Firebase Auth, while we had to implement the login for Spotify ourselves.  
 
-**popup**
-`popup.js`: When the user clicks on login as guest/login as host on the first page, a popup will appear. *TODO* 
+**navbar/**
 
-**router**
-`privateRouteChildren.js`: *TODO* 
-`privateRouteComponent`:  *TODO* 
+`navbar.js`: The navbar will show the username of the person loged in the session, and a log out button. The presenter will get the user information from Firebase Auth. There is also a function that handles the logout. If the user can logout succesfully, they will be redirected to the login page, else an error message will appear saying "failed to log out". 
 
-**search**
+**popup/**
+
+`popup.js`: When the user clicks on login as host on the first page, a popup will appear. The user will then go trough the login flow, which happens server-side. The login flow returns a custom token, used to sign in with Firebase Auth. 
+
+**router/**
+
+`privateRouteChildren.js` and `privateRouteComponent.js`: These components makes sure that the app is only accessible for a user with a token present. 
+
+**search/**
+
 `search.js`: The user searches for a song/artist in the search page. 
 
-**sessionHandler** 
+**sessionHandler/** 
+
 `sessionHandler.js`: After a login, the user will be able to join or create a new session. The host will be able to create new sessions, while the guest will have the option to enter a Session name and a session pin created by the host. Depending on the login, props and data will either be sent to `joinSessionView.js` (guest) or `newSessionView.js` (host). 
 
-**Services folder** 
-`firebase.js` : *TODO* 
+### **./src/contexts/** 
 
-**root folder** 
-`firebase.json`, 
-`package.json`, 
-`package-lock.json`
+`AuthContexts.js`: Contexts are used for states that are needed from multiple components. We initialise the user from this context, and make it available from all the views. 
+
+### **./src/services/** 
+
+`firebase.js`: This is where Firebase is initialised.  
+
+### **./functions/**
+
+ `index.js`: This file contains cloud functions used in the project. There are functions to handle the login flow for Spotify, and to handle API calls to Spotify when there are changes in the database.  
 
 ## How to setup this Project 
 
@@ -91,10 +103,10 @@ Installs firebase-tools globally, so that you can use the Firebase CLI
 ### **Setup Firebase project:**
 1. Create a Firebase project using the [Firebase Developer Console](https://console.firebase.google.com).
 2. Enable Billing on your Firebase project by switching to the **Blaze** plan, this is currently needed to be able to perform HTTP requests to external services from a Cloud Function. See the [pricing](https://firebase.google.com/pricing/) page for more details.
-3. Click "Add app" in the firebase console and add the firebase config credentials to your local environment variables
+3. Click "Add app" in the Firebase console and add the Firebase config credentials to your local environment variables
 
 **Create and add a service account to your project:**
-1. In "Settings" in the firebase console, go to "Service accounts" and create a new service account. You can read more about service accounts here: [Server SDK setup instructions](https://firebase.google.com/docs/server/setup#add_firebase_to_your_app).
+1. In "Settings" in the Firebase console, go to "Service accounts" and create a new service account. You can read more about service accounts here: [Server SDK setup instructions](https://firebase.google.com/docs/server/setup#add_firebase_to_your_app).
 2. Save the private key as "./functions/service-account-dev.json".
 
 **Create and setup Spotify app:**
@@ -106,7 +118,7 @@ Installs firebase-tools globally, so that you can use the Firebase CLI
     firebase functions:config:set spotify.client_id="yourClientID" spotify.client_secret="yourClientSecret"
     ```
 **Deploy your project:**
-1. Run `firebase login` to login to your firebase account. 
+1. Run `firebase login` to login to your Firebase account. 
 2. Run `firebase use --add` and choose your Firebase project. This will configure the Firebase CLI to use the correct project locally.
 3. Run `firebase deploy` to effectively deploy the sample. The first time the Functions are deployed the process can take several minutes.
 
