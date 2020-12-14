@@ -38,27 +38,36 @@ This application uses the [Spotify API](https://developer.spotify.com/documentat
 ## Project file structure 
 
 **src folder**
+
 `app.js`: This file holds the layout and routing in the app. (private route osv)
 `dataSource.js`: Fetches the spotify API 
 `QueueifyModel.js`: Contains different functions used in other files. 
 
 **components folder**
+
 This folder contains individual folders that each holds view, presenter and their associated css. The presenter files: 
 
 **CurrentSession** 
+
 `currentSession.js`: Depending on the Login (guest/host), the Currentsession shown for the user will be different. If the user is a host they can have the option to remove songs from the list, while the guest can't. In this file, depending on the login condition, props and data will be send to eiter `currentSessionGuestView.js` or `currentSessionHostView.js`. 
 **Login**
+
 `login.js`: The login is connected with the firebase auth server and it takes in email and password. If login fails, it gives an visible error for the user saying "failed to log in". 
 **navbar**
+
 `navbar.js`: The navbar will show the UserName of the person loged in the session, and a log out button. The presenter will get the user information from firebase Auth. There is also a function that handles the logout. If the user can logout succesfully, they will be redirected to the login page, else an error message will appear saying "failed to log out". 
 **popup**
+
 `popup.js`: When the user clicks on login as guest/login as host on the first page, a popup will appear. *TODO* 
 **router**
+
 `privateRouteChildren.js`: *TODO* 
 `privateRouteComponent`:  *TODO* 
 **search**
+
 `search.js`: The user searches for a song/artist in the search page. 
 **sessionHandler** 
+
 `sessionHandler.js`: After a login, the user will be able to join or create a new session. The host will be able to create new sessions, while the guest will have the option to enter a Session name and a session pin created by the host. Depending on the login, props and data will either be sent to `joinSessionView.js` (guest) or `newSessionView.js` (host). 
 
 **Services folder** 
