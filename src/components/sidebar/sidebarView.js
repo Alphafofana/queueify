@@ -24,7 +24,7 @@ const SidebarView = ({ session }) => {
 				</Nav.Link>
 				<Nav.Link href="/search">
 					{" "}
-					<i className="fas fa-search" /> Search
+					<i className="fas fa-search" /> Add Songs
 				</Nav.Link>
 			</Nav>
 

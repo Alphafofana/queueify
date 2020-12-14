@@ -16,7 +16,7 @@ const CurrentSessionGuestView = ({
 				<Row>
 					<Col className={css.sessionDetails}>
 						<p>Session Name: {sessionName}</p>
-						<p>Session ID: {sessionID}</p>
+						{/*<p>Session ID: {sessionID}</p>*/}
 					</Col>
 				</Row>
 				<Row>

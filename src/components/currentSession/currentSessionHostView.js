@@ -16,7 +16,8 @@ const CurrentSessionHostView = ({
 				<Row>
 					<Col className={css.sessionDetails}>
 						<p>Session Name: {sessionName}</p>
-						<p>Session ID: {sessionID}</p>
+						<p>Now have your guests join and add some songs to the playlist. To listen to your playlist, open your Spotify app and play this playlist on repeat.</p>
+						{/*<p>Session pin: {sessionID}</p>*/}
 					</Col>
 				</Row>
 				<Row>

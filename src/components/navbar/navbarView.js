@@ -54,7 +54,7 @@ const Navibar = ({ user, logout }) => {
 					</Dropdown.Item>
 				<Dropdown.Item href='/search'>
 					{" "}
-					<i className="fas fa-search" /> Search
+					<i className="fas fa-search" /> Add Songs
 					</Dropdown.Item>
 					<Dropdown.Divider />
 					<Dropdown.Item disabled>
