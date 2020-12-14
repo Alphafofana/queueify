@@ -36,7 +36,6 @@ function App() {
 					<Route exact path="/login/popup">
 						<Popup />
 					</Route>
-				</Switch>
 				<PrivateRoute>
 					<div className="sidebarCol">
 						<Sidebar className="sidebar" model={model} />
@@ -56,6 +55,7 @@ function App() {
 						</div>
 					</div>
 				</PrivateRoute>
+				</Switch>
 			</AuthProvider>
 		</BrowserRouter>
 
