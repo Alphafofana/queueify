@@ -2,11 +2,11 @@ import React from "react";
 import css from "./currentSessionGuestView.module.css";
 import { Col, Container, Button, Table, Row } from "react-bootstrap";
 
-
 const CurrentSessionGuestView = ({
 	user,
 	error,
 	playlist,
+	vote,
 	sessionID,
 	sessionName,
 }) => {
@@ -17,7 +17,6 @@ const CurrentSessionGuestView = ({
 					<Col className={css.sessionDetails}>
 						<p>Session Name: {sessionName}</p>
 						<p>Session ID: {sessionID}</p>
-
 					</Col>
 				</Row>
 				<Row>
@@ -49,6 +48,17 @@ const CurrentSessionGuestView = ({
 												<Button
 													variant="outline-light"
 													size="sm"
+													onClick={(e) => {
+														e.preventDefault();
+														vote(song.id).catch(
+															(error) => {
+																console.error(
+																	"Could not vote:"
+																); //TODO: check errortype
+																//handleShowError();
+															}
+														);
+													}}
 												>
 													↑
 												</Button>

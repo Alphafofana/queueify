@@ -12,7 +12,7 @@ const crypto = require("crypto");
 
 class QueueifyModel {
 	constructor(
-		currentSession = "1",
+		currentSession = "",
 		currentSessionName = "",
 		currentPlaylist = "",
 		subscribers = []
@@ -114,6 +114,7 @@ class QueueifyModel {
 					hostUid: auth.currentUser.uid,
 					name: sessionName,
 					pin: sessionPin,
+					totalVotes: 0,
 				});
 
 				return DataSource.createPlaylist(
@@ -186,7 +187,6 @@ class QueueifyModel {
 
 	getCurrentPlaylist() {
 		// Return the data about the playlist from firebase
-
 		let playlist = [];
 		return db
 			.collection("session")
@@ -195,7 +195,9 @@ class QueueifyModel {
 			.get()
 			.then((res) =>
 				res.forEach((doc) => {
-					playlist.push(doc.data());
+					let song = doc.data();
+					song.id = doc.id;
+					playlist.push(song);
 				})
 			)
 			.then(() => {
@@ -217,8 +219,7 @@ class QueueifyModel {
 		//console.log("Model, songObj: ", songObj);
 		const { id: songID, artists: artistsObj, name: title } = songObj;
 		const artists = artistsObj.map((artist) => artist.name);
-		console.log(songID, artists, title);
-
+		//console.log(songID, artists, title);
 		const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 		const song = db
 			.collection("session")
@@ -243,6 +244,41 @@ class QueueifyModel {
 			})
 			.catch((error) => {
 				console.error("Could not add song:", error);
+				throw new Error(error);
+			});
+	}
+
+	upVote(songID) {
+		const session = db.collection("session").doc(this.currentSession);
+		const song = db
+			.collection("session")
+			.doc(this.currentSession)
+			.collection(this.currentPlaylist)
+			.doc(songID);
+		const increment = firebase.firestore.FieldValue.increment(1);
+		const user = firebase.firestore.FieldValue.arrayUnion(
+			auth.currentUser.uid
+		);
+		return song
+			.get()
+			.then((doc) => {
+				if (
+					!doc.data().voters ||
+					!doc.data().voters.includes(auth.currentUser.uid)
+				) {
+					song.update({
+						votes: increment,
+						voters: user,
+					});
+					session.update({
+						totalVotes: increment,
+					});
+				} else {
+					throw new Error("already voted!");
+				}
+			})
+			.catch((error) => {
+				console.error("Could not vote:", error);
 				throw new Error(error);
 			});
 	}
