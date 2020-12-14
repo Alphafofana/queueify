@@ -11,6 +11,7 @@ import ReadModel from "./readModel";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
 import CurrentSession from "./components/currentSession/currentSession";
+import { Row, Col } from "react-bootstrap";
 
 import {
 	//HashRouter,
@@ -32,7 +33,7 @@ function App() {
 					<Route exact path="/login">
 						<Login />
 					</Route>
-					<Route path="/login/popup">
+					<Route exact path="/login/popup">
 						<Popup />
 					</Route>
 				<PrivateRoute>
@@ -58,8 +59,7 @@ function App() {
 			</AuthProvider>
 		</BrowserRouter>
 
-		/*
-		<BrowserRouter>
+		/* 		<BrowserRouter>
 			<AuthProvider>
 				<Switch>
 					<Route exact path="/">
@@ -73,10 +73,10 @@ function App() {
 					</Route>
 					<PrivateRoute exact path="/session">
 						<div className="pageContainer">
-							<Navbar />
+							<Navbar model={model} />
 							<Row>
 								<Col lg="auto" className="sidebarCol">
-									<Sidebar />
+									<Sidebar model={model} />
 								</Col>
 								<Col className="pageCol">
 									<SessionHandler model={model} />
@@ -86,10 +86,10 @@ function App() {
 					</PrivateRoute>
 					<PrivateRoute exact path="/session/:sessionId">
 						<div className="pageContainer">
-							<Navbar />
+							<Navbar model={model} />
 							<Row>
 								<Col lg="auto" className="sidebarCol">
-									<Sidebar />
+									<Sidebar model={model} />
 								</Col>
 								<Col className="pageCol">
 									<CurrentSession model={model} />
@@ -98,11 +98,11 @@ function App() {
 						</div>
 					</PrivateRoute>
 					<PrivateRoute exact path="/search">
-					<div className="pageContainer">
+						<div className="pageContainer">
 							<Navbar />
 							<Row>
 								<Col lg="auto" className="sidebarCol">
-									<Sidebar />
+									<Sidebar model={model} />
 								</Col>
 								<Col className="pageCol">
 									<Search model={model} />
@@ -112,7 +112,7 @@ function App() {
 					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
-		</BrowserRouter>*/
+		</BrowserRouter> */
 	);
 }
 

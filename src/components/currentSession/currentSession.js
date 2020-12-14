@@ -11,6 +11,7 @@ function CurrentSession({ model }) {
 	//useEffect(() => setPlaylist(model.getCurrentPlaylist()), [model]);
 	useEffect(() => {
 		setPlaylist(model.getCurrentPlaylist());
+		model.firebaseSubscriber();
 		const obs = () => setPlaylist(model.getCurrentPlaylist());
 		return model.addObserver(obs);
 	}, [model]);

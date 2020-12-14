@@ -130,9 +130,9 @@ class QueueifyModel {
 				this.currentSession = sessionID;
 				this.currentSessionName = sessionName;
 				this.currentPlaylist = playlist.id;
-				this.notifyObservers();
-				this.firebaseSubscriber();
 				return batch.commit().then(() => {
+					this.notifyObservers();
+					this.firebaseSubscriber();
 					return this.currentSession;
 				});
 			})
@@ -301,14 +301,26 @@ class QueueifyModel {
 			//TODO: Subscribe on session instead to ensure notifications
 			.collection(this.currentPlaylist);
 
-		session.onSnapshot((doc) => {
-			//console.log("Current data: UPDATE");
-			this.notifyObservers();
-		});
-		playlist.onSnapshot((doc) => {
-			//console.log("Current data: UPDATE");
-			this.notifyObservers();
-		});
+		session.onSnapshot(
+			{
+				// Listen for document metadata changes
+				includeMetadataChanges: true,
+			},
+			(doc) => {
+				console.log("onSnapshot, session: " + this.currentSession);
+				this.notifyObservers();
+			}
+		);
+		playlist.onSnapshot(
+			{
+				// Listen for document metadata changes
+				includeMetadataChanges: true,
+			},
+			(doc) => {
+				console.log("onSnapshot: playlist: " + this.currentPlaylist);
+				this.notifyObservers();
+			}
+		);
 	}
 	/*
 	Firebase functions will look for changes in playlists.
