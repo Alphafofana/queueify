@@ -201,12 +201,22 @@ class QueueifyModel {
 				})
 			)
 			.then(() => {
+				playlist = playlist.sort((a, b) => this.sortPlaylist(a, b));
 				return playlist;
 			})
 			.catch(function (error) {
 				console.log("Error getting playlist:", error);
 				throw new Error("Failed to get playlist " + error);
 			});
+	}
+
+	sortPlaylist(a, b) {
+		if (a.votes === b.votes) {
+			if (a.timestamp < b.timestamp) return -1;
+			else if (a.timestamp > b.timestamp) return 1;
+		  } else if (a.votes > b.votes) return -1;
+		  else if (a.votes < b.votes) return 1;
+		  return 0;
 	}
 
 	addSong(songObj) {
