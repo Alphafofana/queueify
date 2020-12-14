@@ -1,27 +1,73 @@
-# Interaction Programing DH2642 - Project "Queueify" React
+# Interaction Programing DH2642 - Project "Queueify" 
+This repository contains the code for project "Queueify", which focuses on Model-View-Controller using the React framework. 
 
-## About 
-This repository contains the code for project "Queueify", which focuses on the Model-View-Controller framework utilizing React. 
+## Project Title
+Queueify
 
-Queueify is an application that uses the Spotify API. The user can choose to either log in as a host with their Spotify account, or as a guest using their google or facebook account. The guest is able to join a new session using a given event ID created by the host. The idea is to use a shared playlist, where users can upvote/downvote songs in the list. They can also add new songs to the list using the search function. The host have the option to remove songs from the playlist. 
+## Project description  
+
+Queueify is an application that uses the Spotify API. The user can choose to either log in as a host with their Spotify account, or as a guest using their google or facebook account. The guest is able to join a new session using a given event ID created by the host. The idea is to use a shared playlist, where users can upvote/downvote songs in the list. They can also add new songs to the list using the search function. The host have the exclusive option to remove songs from the playlist. 
 
 ### Try it 
 The app is hosted on [Heroku](https://signup.heroku.com/?c=70130000000NeLCAA0&gclid=CjwKCAiAiML-BRAAEiwAuWVggkEMhnf3uC02TCfvWUz22oo2ugNs5-ssMwtxYIWx7a5XshM98AiuNBoCxvoQAvD_BwE) and uses automatic deploys that tracks the master branch of this repository.
 
-To test the app, go to [test-queueify.herokuapp.com](https://test-queueify.herokuapp.com/) and start by log in either as a guest or host.
+To test the app, go to [queueify.herokuapp.com](https://queueify.herokuapp.com/) and start by log in either as a guest or host.
 
 ### What we have done 
 - Created user functionality using Firebase authentication
+
+- Database storage in Firebase 
+
 - Created a currentSession page that shows the shared playlist for Host and Guest
-- Created DataSource.js that hold API calls used in the app 
+
+- Created DataSource.js that holds API calls used in the app 
+
 - Created search functionality that allows user to search for songs and add them to playlist 
+
 - Created newSession page that allows user to join sessions with session ID and password 
+
 - Created responsive sidebar and navbar
+
 - Saving data about the sessions in Firebase Firestore, in order to make the session data available to multiple users.
+
 - Utilized Firebase Cloud Functions to make certain API calls to Spotify run backend.  
 
 ## The API in this project
 This application uses the [Spotify API](https://developer.spotify.com/documentation/web-api/) 
+
+## Project file structure 
+
+**src folder**
+`app.js`: This file holds the layout and routing in the app. (private route osv)
+`dataSource.js`: Fetches the spotify API 
+`QueueifyModel.js`: Contains different functions used in other files. 
+
+**components folder**
+This folder contains individual folders that each holds view, presenter and their associated css. The presenter files: 
+
+**CurrentSession** 
+`currentSession.js`: Depending on the Login (guest/host), the Currentsession shown for the user will be different. If the user is a host they can have the option to remove songs from the list, while the guest can't. In this file, depending on the login condition, props and data will be send to eiter `currentSessionGuestView.js` or `currentSessionHostView.js`. 
+**Login**
+`login.js`: The login is connected with the firebase auth server and it takes in email and password. If login fails, it gives an visible error for the user saying "failed to log in". 
+**navbar**
+`navbar.js`: The navbar will show the UserName of the person loged in the session, and a log out button. The presenter will get the user information from firebase Auth. There is also a function that handles the logout. If the user can logout succesfully, they will be redirected to the login page, else an error message will appear saying "failed to log out". 
+**popup**
+`popup.js`: When the user clicks on login as guest/login as host on the first page, a popup will appear. *TODO* 
+**router**
+`privateRouteChildren.js`: *TODO* 
+`privateRouteComponent`:  *TODO* 
+**search**
+`search.js`: The user searches for a song/artist in the search page. 
+**sessionHandler** 
+`sessionHandler.js`: After a login, the user will be able to join or create a new session. The host will be able to create new sessions, while the guest will have the option to enter a Session name and a session pin created by the host. Depending on the login, props and data will either be sent to `joinSessionView.js` (guest) or `newSessionView.js` (host). 
+
+**Services folder** 
+`firebase.js` : *TODO* 
+
+**root folder** 
+`firebase.json`, 
+`package.json`, 
+`package-lock.json`
 
 ## How to setup this Project 
 
@@ -65,5 +111,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ### `npm run build` 
 Builds the project into a deployable artifact.
-
 
