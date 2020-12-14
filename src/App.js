@@ -6,10 +6,12 @@ import Navbar from "./components/navbar/navbar";
 import Sidebar from "./components/sidebar/sidebar";
 import Search from "./components/search/search";
 import Popup from "./components/popup/popup";
-import QueueifyModel from "./queueifyModel";
+import ReadModel from "./readModel";
+//import PrivateRoute from "./components/router/privateRouteComponent";
 import PrivateRoute from "./components/router/privateRouteChildren";
 import { AuthProvider } from "./contexts/AuthContext";
 import CurrentSession from "./components/currentSession/currentSession";
+import { Row, Col } from "react-bootstrap";
 
 import {
 	//HashRouter,
@@ -19,55 +21,45 @@ import {
 	BrowserRouter,
 } from "react-router-dom";
 
-
 function App() {
-	let model = new QueueifyModel();
+	const model = ReadModel();
 	return (
 		<BrowserRouter>
 			<AuthProvider>
 				<Switch>
 					<Route exact path="/">
 						<Redirect to="/login" />
-						</Route>
+					</Route>
 					<Route exact path="/login">
 						<Login />
-						</Route>
+					</Route>
 					<Route exact path="/login/popup">
 						<Popup />
-						</Route>
-				</Switch>
+					</Route>
 				<PrivateRoute>
-				<div className="sidebarCol">
-						<Sidebar className="sidebar"/>
-					<div className="pageCol">
-							<Navbar/>
-						<Switch>
-							<PrivateRoute exact path="/search">
-									<Search model= {model}/>
-							</PrivateRoute>
-							<PrivateRoute exact path="/session">
-									<SessionHandler model= {model}/>
-							</PrivateRoute>
-							<PrivateRoute exact path="/session/:sessionId">
-									<CurrentSession />
-							</PrivateRoute>
-						</Switch>
+					<div className="sidebarCol">
+						<Sidebar className="sidebar" model={model} />
+						<div className="pageCol">
+							<Navbar />
+							<Switch>
+								<PrivateRoute exact path="/search">
+									<Search model={model} />
+								</PrivateRoute>
+								<PrivateRoute exact path="/session">
+									<SessionHandler model={model} />
+								</PrivateRoute>
+								<PrivateRoute exact path="/session/:sessionId">
+									<CurrentSession model={model} />
+								</PrivateRoute>
+							</Switch>
+						</div>
 					</div>
-				</div>
 				</PrivateRoute>
+				</Switch>
 			</AuthProvider>
 		</BrowserRouter>
 
-
-
-
-
-
-
-
-
-/*
-		<BrowserRouter>
+		/* 		<BrowserRouter>
 			<AuthProvider>
 				<Switch>
 					<Route exact path="/">
@@ -81,10 +73,10 @@ function App() {
 					</Route>
 					<PrivateRoute exact path="/session">
 						<div className="pageContainer">
-							<Navbar />
+							<Navbar model={model} />
 							<Row>
 								<Col lg="auto" className="sidebarCol">
-									<Sidebar />
+									<Sidebar model={model} />
 								</Col>
 								<Col className="pageCol">
 									<SessionHandler model={model} />
@@ -94,10 +86,10 @@ function App() {
 					</PrivateRoute>
 					<PrivateRoute exact path="/session/:sessionId">
 						<div className="pageContainer">
-							<Navbar />
+							<Navbar model={model} />
 							<Row>
 								<Col lg="auto" className="sidebarCol">
-									<Sidebar />
+									<Sidebar model={model} />
 								</Col>
 								<Col className="pageCol">
 									<CurrentSession model={model} />
@@ -106,11 +98,11 @@ function App() {
 						</div>
 					</PrivateRoute>
 					<PrivateRoute exact path="/search">
-					<div className="pageContainer">
+						<div className="pageContainer">
 							<Navbar />
 							<Row>
 								<Col lg="auto" className="sidebarCol">
-									<Sidebar />
+									<Sidebar model={model} />
 								</Col>
 								<Col className="pageCol">
 									<Search model={model} />
@@ -120,7 +112,7 @@ function App() {
 					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
-		</BrowserRouter>*/
+		</BrowserRouter> */
 	);
 }
 

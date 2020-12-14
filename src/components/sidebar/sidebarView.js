@@ -3,7 +3,7 @@ import css from "./sidebarView.module.css";
 import logo from "../../assets/queueify_logo1.svg";
 import { Nav , NavDropdown} from "react-bootstrap";
 
-const SidebarView = (user, logout, error) => {
+const SidebarView = ({ session }) => {
 	return (
 		<div className="sidebar">
 			<div className="logo">
@@ -14,23 +14,21 @@ const SidebarView = (user, logout, error) => {
 				className="flex-column sidebar-nav"
 				activeKey={window.location.pathname}
 			>
-				<Nav.Link href="/session/:sessionId" >
-				{" "}
+				<Nav.Link href={`/session/${session}`}>
+					{" "}
 					<i className="fas fa-home" /> Session
 				</Nav.Link>
-				<Nav.Link href='/session'>
+				<Nav.Link href="/session">
 					{" "}
 					<i className="fas fa-book" /> New Session
 				</Nav.Link>
 				<Nav.Link href="/search">
-				{" "}
+					{" "}
 					<i className="fas fa-search" /> Search
 				</Nav.Link>
 			</Nav>
 
 		</div>
-		
-
 	);
 };
 

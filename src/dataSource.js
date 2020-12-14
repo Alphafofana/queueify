@@ -1,59 +1,56 @@
-import { auth, db } from "./services/firebase";
+import { db } from "./services/firebase";
 
 const DataSource = {
-	getToken() {
-		let user = db.collection("users").doc(auth.currentUser.uid);
-		return user
+	getToken(sessionID) {
+		const session = db.collection("session").doc(sessionID);
+		return session
 			.get()
 			.then((doc) => {
 				if (doc.exists) {
-					return doc.data().spotifyToken;
+					return doc.data().hostToken;
 				} else {
-					console.log("The document does not exist.");
+					//console.error("The document does not exist.");
+					throw new Error("Failed to get token");
 				}
 			})
 			.catch((error) => {
-				console.log("Could not retrieve the document:", error);
+				console.error("Could not retrieve the document:", error);
+				throw new Error("Failed to get token");
 			});
 	},
-
-	apiCall(endpoint, method, body) {
-		return this.getToken()
-			.then((token) =>
-				fetch(endpoint, {
-					method: method,
-					headers: {
-						Authorization: "Bearer " + token,
-						Accept: "application/json",
-						"Content-Type": "application/json",
-					},
-					body: body ? JSON.stringify(body) : body,
-				}).then((response) => {
+	apiCall(endpoint, method, sessionID, body) {
+		return this.getToken(sessionID).then((token) => {
+			return fetch(endpoint, {
+				method: method,
+				headers: {
+					Authorization: "Bearer " + token,
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: body ? JSON.stringify(body) : body,
+			})
+				.then((response) => {
 					return response.json();
 				})
-			)
-			.catch((err) => console.error(err));
-	},
-
-	searchSong(query) {
-		let endpoint =
-			"https://api.spotify.com/v1/search?q=" + query + "&type=track";
-		let method = "GET";
-		return this.apiCall(endpoint, method).catch((error) => {
-			console.error(error);
+				.catch((err) => console.error(err));
 		});
 	},
 
-	getPlaylist(playlistID) {
-		let endpoint = "https://api.spotify.com/v1/playlists/" + playlistID;
-		let method = "GET";
-
-		return this.apiCall(endpoint, method).catch((error) => {
-			console.error(error);
-		});
+	searchSong(sessionID, query = "") {
+		//console.log("searchSong, sessionID: " + sessionID + " query: " + query);
+		if (query) {
+			let endpoint =
+				"https://api.spotify.com/v1/search?q=" + query + "&type=track";
+			let method = "GET";
+			return this.apiCall(endpoint, method, sessionID).catch((error) => {
+				console.error(error);
+			});
+		} else {
+			return Promise.resolve([]);
+		}
 	},
 
-	createPlaylist(userID, playlistName) {
+	createPlaylist(userID, playlistName, token) {
 		let endpoint =
 			"https://api.spotify.com/v1/users/" + userID + "/playlists/";
 		let method = "POST";
@@ -62,72 +59,33 @@ const DataSource = {
 			description: "Playlist for the queueify app",
 			public: false,
 		};
-		return this.apiCall(endpoint, method, body).catch((error) => {
-			console.error(error);
-		});
-
-		//Should probably try and return the same thing from each call
-		// .then(
-		// 	(result) => {
-		// 		playlistID = result.id;
-		// 	},
-		// 	(error) => {
-		// 		console.error(error);
-		// 	}
-		// );
-		// return playlistID;
+		return fetch(endpoint, {
+			method: method,
+			headers: {
+				Authorization: "Bearer " + token,
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: body ? JSON.stringify(body) : body,
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.catch((err) => console.error(err));
 	},
+	//TODO: Is this functionality needed for our MVP?
+	//getPlaylist(playlistID) {
 
-	changePlaylistOrder(playlistID, songPosition, newSongPosition) {
-		let endpoint =
-			"https://api.spotify.com/v1/playlists/" + playlistID + "/tracks";
-		let method = "PUT";
-		let body = {
-			range_start: songPosition,
-			insert_before: newSongPosition,
-		};
+	//TODO: Is this functionality needed for our MVP?
+	//changePlaylistOrder(playlistID, songPosition, newSongPosition) {
 
-		return this.apiCall(endpoint, method, body).catch((error) => {
-			console.error(error);
-		});
-	},
+	//TODO: Is this functionality needed for our MVP?
+	//deleteSong(playlistID, songID, songPosition) {
+	//TODO: Is this functionality needed for our MVP?
+	//addSong(playlistID, songID) {
 
-	deleteSong(playlistID, songID, songPosition) {
-		let endpoint =
-			"https://api.spotify.com/v1/playlists/" + playlistID + "/tracks";
-		let method = "DELETE";
-		let body = {
-			tracks: [
-				{
-					uri: "spotify:track:" + songID,
-					positions: [songPosition],
-				},
-			],
-		};
-
-		return this.apiCall(endpoint, method, body).catch((error) => {
-			console.error(error);
-		});
-	},
-
-	addSong(playlistID, songID) {
-		let endpoint =
-			"https://api.spotify.com/v1/playlists/" +
-			playlistID +
-			"/tracks?position=-1&uris=spotify%3Atrack%" +
-			songID;
-		let method = "POST";
-
-		return this.apiCall(endpoint, method).catch((error) => {
-			console.error(error);
-		});
-	},
-
-	getCurrentSong() {
-		/*
-		get information about the song that is currently playing
-		*/
-	},
+	//TODO: Is this functionality needed for our MVP?
+	//getCurrentSong() {
 };
 
 export default DataSource;

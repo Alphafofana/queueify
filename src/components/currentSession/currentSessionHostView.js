@@ -4,17 +4,19 @@ import { Col, Container, Button, Table, Row } from "react-bootstrap";
 
 const CurrentSessionHostView = ({
 	user,
-	logout,
 	error,
-	currSession,
+	playlist,
+	vote,
 	sessionID,
+	sessionName,
 }) => {
 	return (
 		<Container fluid className={css.currentSession}>
 			<Container className={css.sessionInfo}>
 				<Row>
 					<Col className={css.sessionDetails}>
-					<p>Session ID: {currSession.name}</p>
+						<p>Session Name: {sessionName}</p>
+						<p>Session ID: {sessionID}</p>
 					</Col>
 				</Row>
 				<Row>
@@ -29,40 +31,50 @@ const CurrentSessionHostView = ({
 							<thead>
 								<tr>
 									<th>#</th>
+									<th>ARTIST</th>
 									<th>TITLE</th>
-									<th>UPVOTES</th>
+									<th>VOTES</th>
 									<th>REMOVE</th>
 								</tr>
 							</thead>
 							<tbody>
-								{currSession.hasOwnProperty("tracks") &&
-									currSession.tracks.items.map(
-										(item, index) => (
-											<tr key={item.track.href}>
-												<td>{index + 1}</td>
-												<td>{item.track.name}</td>
-
-												<td>
-													{/*todo*/}todo
-													<Button
-														variant="outline-light"
-														size="sm"
-													>
-														↑
-													</Button>
-												</td>
-												<td>
-													{/*todo*/}
-													<Button
-														variant="outline-light"
-														size="sm"
-													>
-														x
-													</Button>
-												</td>
-											</tr>
-										)
-									)}
+								{playlist &&
+									playlist.map((song, index) => (
+										<tr key={index}>
+											<td>{index + 1}</td>
+											<td>{song.artist.join(", ")}</td>
+											<td>{song.title}</td>
+											<td>
+												{song.votes}
+												<Button
+													variant="outline-light"
+													size="sm"
+													onClick={(e) => {
+														e.preventDefault();
+														vote(song.id).catch(
+															(error) => {
+																console.error(
+																	"Could not vote:"
+																); //TODO: check errortype
+																//handleShowError();
+															}
+														);
+													}}
+												>
+													↑
+												</Button>
+											</td>
+											<td>
+												todo
+												<Button
+													variant="outline-light"
+													size="sm"
+												>
+													x
+												</Button>
+											</td>
+										</tr>
+									))}
 							</tbody>
 						</Table>
 					</Col>

@@ -11,11 +11,70 @@ import DataSource from "./dataSource";
 const crypto = require("crypto");
 
 class QueueifyModel {
-	constructor() {
-		this.currentSession = "";
-		this.currentPlaylist = "";
+	constructor(
+		currentSession = "",
+		currentSessionName = "",
+		currentPlaylist = "",
+		subscribers = []
+	) {
+		this.currentSession = currentSession;
+		this.currentSessionName = currentSessionName;
+		this.currentPlaylist = currentPlaylist;
+		this.subscribers = subscribers;
+		this.saveToLocalStorage();
 	}
 
+	getModelProperty(prop) {
+		return this[prop];
+	}
+
+	/**
+	 * add observer/subscriber to the model
+	 * @param  {callback} obs - callback function
+	 */
+	addObserver(obs) {
+		this.subscribers = this.subscribers.concat(obs);
+		return () => this.removeObserver(obs);
+	}
+	/**
+	 * remove observer/subscriber from the model
+	 * @param  {callback} obs - callback function
+	 */
+	removeObserver(obs) {
+		this.subscribers = this.subscribers.filter((o) => o !== obs);
+	}
+	/**
+	 * notify the models observers/subscribes
+	 */
+	notifyObservers() {
+		if (this.subscribers)
+			this.subscribers.forEach((callback) => {
+				try {
+					callback();
+				} catch (err) {
+					console.error("Error ", err, callback);
+				}
+			});
+		this.saveToLocalStorage();
+	}
+	/**
+	 * Add localStorage observer to Subscribe to the Model
+	 */
+	saveToLocalStorage() {
+		this.addObserver(() => {
+			localStorage.setItem(
+				"queueifyModel",
+				JSON.stringify({
+					//Conversion from object to String (serialization)
+					currentSession: this.currentSession,
+					currentSessionName: this.currentSessionName,
+					currentPlaylist: this.currentPlaylist,
+				})
+			);
+		});
+	}
+
+	//TODO: Remove this?
 	getFirebaseData(collection, document) {
 		if (auth.currentUser) {
 			let doc = db.collection(collection).doc(document);
@@ -40,162 +99,242 @@ class QueueifyModel {
 			.createHash("sha1")
 			.update(sessionName + sessionPin)
 			.digest("hex");
-		const userToken = DataSource.getToken();
-		const playlist = DataSource.createPlaylist(
-			auth.currentUser.uid.split(":")[1],
-			sessionName
-		);
 
-		return Promise.all([sessionID, userToken, playlist])
-			.then(([sessionID, userToken, playlist]) => {
-				db.collection("playlist").doc(playlist.id).set({});
-				db.collection("session").doc(sessionID).set({
-					hostToken: userToken,
+		const session = db.collection("session").doc(sessionID);
+		const user = db.collection("users").doc(auth.currentUser.uid);
+
+		// Get a new write batch
+		var batch = db.batch();
+		return user
+			.get()
+			.then((user) => user.data().spotifyToken)
+			.then((spotifyToken) => {
+				batch.set(session, {
+					hostToken: spotifyToken,
 					hostUid: auth.currentUser.uid,
 					name: sessionName,
 					pin: sessionPin,
+					totalVotes: 0,
+				});
+
+				return DataSource.createPlaylist(
+					auth.currentUser.uid.split(":")[1],
+					sessionName,
+					spotifyToken
+				);
+			})
+			.then((playlist) => {
+				batch.update(session, {
 					playlistId: playlist.id,
 				});
-				db.collection("users")
-					.doc(auth.currentUser.uid)
-					.set({ sessionId: sessionID }, { merge: true });
-				console.log("Session created with session ID " + sessionID);
 				this.currentSession = sessionID;
-				return sessionID;
+				this.currentSessionName = sessionName;
+				this.currentPlaylist = playlist.id;
+				return batch.commit().then(() => {
+					this.notifyObservers();
+					this.firebaseSubscriber();
+					return this.currentSession;
+				});
 			})
-			.catch((err) => console.error("Failed to create session" + err));
+			.catch((error) => {
+				console.log("Failed to create session: ", error);
+				throw new Error("Failed to create session" + error);
+			});
 	}
 
-	joinSession(sessionID, sessionPin) {
-		return db
-			.collection("session")
-			.doc(sessionID)
-			.get()
-			.then((doc) => {
-				if (doc.exists) {
-					if (doc.data().pin !== sessionPin) {
-						throw new Error("Incorrect pin");
-					}
-				} else {
-					// doc.data() will be undefined in this case
-					console.log("No such document!");
-				}
+	joinSession(sessionName, sessionPin) {
+		const sessionID = crypto
+			.createHash("sha1")
+			.update(sessionName + sessionPin)
+			.digest("hex");
+
+		// Prepare the database documents to update
+		const session = db.collection("session").doc(sessionID);
+		const user = db.collection("users").doc(auth.currentUser.uid);
+
+		return session
+			.update({
+				//arrayUnion() adds elements to an array but only elements not already present.
+				users: firebase.firestore.FieldValue.arrayUnion(
+					auth.currentUser.uid
+				),
 			})
 			.then(() => {
-				db.collection("session")
-					.doc(sessionID)
-					.update({
-						//arrayUnion() adds elements to an array but only elements not already present.
-						users: firebase.firestore.FieldValue.arrayUnion(
-							auth.currentUser.uid
-						),
-					});
+				const setUser = user.set(
+					{ sessionID: sessionID },
+					{ merge: true }
+				);
 				this.currentSession = sessionID;
-				return sessionID;
+				this.currentSessionName = sessionName;
+				const getPlaylist = session
+					.get()
+					.then(
+						(session) =>
+							(this.currentPlaylist = session.data().playlistId)
+					);
+
+				return Promise.all([setUser, getPlaylist]).then(() => {
+					this.notifyObservers();
+					this.firebaseSubscriber();
+					return this.currentSession;
+				});
 			})
 			.catch(function (error) {
 				console.log("Error getting document:", error);
 				throw new Error("Failed to join session" + error);
 			});
 	}
-	setCurrentSession(sessionName, sessionPin) {
-		// Set the current session for a guest, if the session name and password is correct.
-		let validSession = false;
-
-		// Generate hash based upon the name and pin given
-		let hashedSession = crypto
-			.createHash("sha1")
-			.update(sessionName + sessionPin)
-			.digest("hex");
-
-		// Check to see if the session exists
-		let data = this.getFirebaseData("sessions", hashedSession);
-		if (data) {
-			validSession = true;
-			this.currentSession = hashedSession;
-			this.playlistId = data.playlistId;
-			db.collection("users")
-				.doc(auth.currentUser.uid)
-				.set({ sessionId: this.currentSession }, { merge: true });
-		} else {
-			console.log("password or name does not match");
-		}
-		return validSession;
-	}
 
 	getCurrentPlaylist() {
 		// Return the data about the playlist from firebase
-		// From the API we get all the song info, here we get just the info about position, votes and such
-		if (this.currentSession) {
-			return this.getFirebaseData("playlist", this.currentPlaylist);
-		}
+		let playlist = [];
+		return db
+			.collection("session")
+			.doc(this.currentSession)
+			.collection(this.currentPlaylist)
+			.get()
+			.then((res) =>
+				res.forEach((doc) => {
+					let song = doc.data();
+					song.id = doc.id;
+					playlist.push(song);
+				})
+			)
+			.then(() => {
+				playlist = playlist.sort((a, b) => this.sortPlaylist(a, b));
+				return playlist;
+			})
+			.catch(function (error) {
+				console.log("Error getting playlist:", error);
+				throw new Error("Failed to get playlist " + error);
+			});
 	}
 
-	addSong(songID) {
+	sortPlaylist(a, b) {
+		if (a.votes === b.votes) {
+			if (a.timestamp < b.timestamp) return -1;
+			else if (a.timestamp > b.timestamp) return 1;
+		  } else if (a.votes > b.votes) return -1;
+		  else if (a.votes < b.votes) return 1;
+		  return 0;
+	}
+
+	addSong(songObj) {
 		/*
 		if song does not already exist
 		add song to session playlist 
 		votes is 0 and position is last (-1)
 		*/
-		let songRef = db.collection("playlist");
-		if (!songRef.where(songID, "in", [this.currentPlaylist])) {
-			db.collection("playlist")
-				.doc(this.currentPlaylist)
-				.collection("songs")
-				.doc(songID)
-				.set({
-					index: -1,
-					voters: [auth.currentUser.uid],
-					votes: 0,
-				});
-		} else {
-			console.log("Song is already in playlist!");
-		}
+		//console.log("Model, add song!");
+		//console.log("Model, songObj: ", songObj);
+		const { id: songID, artists: artistsObj, name: title } = songObj;
+		const artists = artistsObj.map((artist) => artist.name);
+		//console.log(songID, artists, title);
+		const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+		const song = db
+			.collection("session")
+			.doc(this.currentSession)
+			.collection(this.currentPlaylist)
+			.doc(songID);
+
+		return song
+			.get()
+			.then((doc) => {
+				if (doc.exists) {
+					throw new Error("song already exists!");
+				} else {
+					song.set({
+						artist: artists,
+						//position: -1, remove position
+						timestamp: timestamp,
+						title: title,
+						votes: 0,
+					});
+				}
+			})
+			.catch((error) => {
+				console.error("Could not add song:", error);
+				throw new Error(error);
+			});
 	}
 
+	upVote(songID) {
+		const session = db.collection("session").doc(this.currentSession);
+		const song = db
+			.collection("session")
+			.doc(this.currentSession)
+			.collection(this.currentPlaylist)
+			.doc(songID);
+		const increment = firebase.firestore.FieldValue.increment(1);
+		const user = firebase.firestore.FieldValue.arrayUnion(
+			auth.currentUser.uid
+		);
+		return song
+			.get()
+			.then((doc) => {
+				if (
+					!doc.data().voters ||
+					!doc.data().voters.includes(auth.currentUser.uid)
+				) {
+					song.update({
+						votes: increment,
+						voters: user,
+					});
+					session.update({
+						totalVotes: increment,
+					});
+				} else {
+					throw new Error("already voted!");
+				}
+			})
+			.catch((error) => {
+				console.error("Could not vote:", error);
+				throw new Error(error);
+			});
+	}
+
+	firebaseSubscriber() {
+		const session = db.collection("session").doc(this.currentSession);
+		const playlist = db
+			.collection("session")
+			.doc(this.currentSession)
+			//TODO: Subscribe on session instead to ensure notifications
+			.collection(this.currentPlaylist);
+
+		session.onSnapshot(
+			{
+				// Listen for document metadata changes
+				includeMetadataChanges: true,
+			},
+			(doc) => {
+				console.log("onSnapshot, session: " + this.currentSession);
+				this.notifyObservers();
+			}
+		);
+		playlist.onSnapshot(
+			{
+				// Listen for document metadata changes
+				includeMetadataChanges: true,
+			},
+			(doc) => {
+				console.log("onSnapshot: playlist: " + this.currentPlaylist);
+				this.notifyObservers();
+			}
+		);
+	}
 	/*
 	Firebase functions will look for changes in playlists.
 	If a song is added, the function will add this song to the playlist. 
 	If a song has the order changed, the function will change the order of the playlist
 	*/
+	//TODO: Is this functionality needed for our MVP?
+	//setCurrentSession(sessionName, sessionPin) {
 
-	deleteSong(songID) {
-		/*
-		check if they are host
-		if they are, they can delete song
-		*/
-		let userType = this.getUserType();
-		if (userType === "host") {
-			let songDoc = db
-				.collection("playlist")
-				.doc(this.currentPlaylist)
-				.collection("songs")
-				.doc(songID);
-			let removeSong = songDoc
-				.delete()
-				.then(function () {
-					console.log("Document successfully deleted!");
-				})
-				.catch(function (error) {
-					console.error("Error removing document: ", error);
-				});
-		}
-	}
+	//TODO: Is this functionality needed for our MVP?
+	//deleteSong(songID) {
 
-	/*
-  vote(songID) {
-    
-		check if user has voted before on this song. Grey the button out for the user!
-		add a vote to the song in current session
-		push the change to firebase
-		
-    var songRef = db.collection("playlist").doc(this.currentPlaylist).collection("songs").doc(songID);
-    songRef.update({
-      voters: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid),
-      vote: firebase.firestore.FieldValue.increment(1),
-    });
-
-  }*/
+	//TODO: Is this functionality needed for our MVP?
+	//vote(songID) {
 }
 
 export default QueueifyModel;
