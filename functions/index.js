@@ -22,7 +22,7 @@ const fetch = require("node-fetch");
 
 // Firebase Setup
 const admin = require("firebase-admin");
-const serviceAccount = require("./service-account-dev.json");
+const serviceAccount = require("./service-account-prod.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: `https://${process.env.GCLOUD_PROJECT}.firebaseio.com`,
