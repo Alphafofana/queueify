@@ -48,7 +48,7 @@ function App() {
                   <PrivateRoute exact path="/session">
                     <SessionHandler model={model} />
                   </PrivateRoute>
-                  <PrivateRoute exact path="/session/:sessionId">
+                  <PrivateRoute strict path="/session/active">
                     <CurrentSession model={model} />
                   </PrivateRoute>
                   <PrivateRoute>

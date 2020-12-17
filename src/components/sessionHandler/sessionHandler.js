@@ -28,7 +28,7 @@ function SessionHandler({ model }) {
 		setError("");
 		model
 			.joinSession(sessionName, sessionPin)
-			.then((sessionID) => history.push("session/" + sessionID))
+			.then(history.push("session/active"))
 			.catch((error) => {
 				console.error("Failed to join new session!");
 				setError("Failed to join new session!");

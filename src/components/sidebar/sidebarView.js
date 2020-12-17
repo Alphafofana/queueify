@@ -14,7 +14,7 @@ const SidebarView = ({ session }) => {
 				className="flex-column sidebar-nav"
 				activeKey={window.location.pathname}
 			>
-				<Nav.Link href={`/session/${session}`}>
+				<Nav.Link href={`/session/active`}>
 					{" "}
 					<i className="fas fa-home" /> Session
 				</Nav.Link>
