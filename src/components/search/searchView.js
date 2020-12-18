@@ -15,17 +15,30 @@ import {
 	Form,
 	Container,
 	Table,
-  Col
+	Col,
 } from "react-bootstrap";
 
 const SearchViewForm = ({ onText, onSearch }) => {
 	return (
 		<Container className={css.searchMenu}>
-			<Form inline onSubmit={(e) => {e.preventDefault();}}>
+			<Form
+				inline
+				onSubmit={(e) => {
+					e.preventDefault();
+				}}
+			>
 				<div className={css.searchBar}>
-					<FormControl as="input" type="text" placeholder="Search For Artists, Songs..." 
-            onChange={(e) => onText(JSON.stringify(e.target.value))}/>
-					<Button type="submit" variant="outline-light" onClick={onSearch}>
+					<FormControl
+						as="input"
+						type="text"
+						placeholder="Search For Artists, Songs..."
+						onChange={(e) => onText(JSON.stringify(e.target.value))}
+					/>
+					<Button
+						type="submit"
+						variant="outline-light"
+						onClick={onSearch}
+					>
 						Search
 					</Button>
 				</div>
@@ -39,14 +52,13 @@ export default SearchViewForm;
 export const SearchViewResult = ({
 	searchResult,
 	addsong,
-	disable,
-	disabledButtons,
+	playlist,
 	handleShowError,
 	showError,
 }) => {
 	return (
-      <Container className="searchJumbo">
-        <Col>
+		<Container className="searchJumbo">
+			<Col>
 				<Table striped bordered hover variant="dark">
 					<thead>
 						<tr>
@@ -56,26 +68,42 @@ export const SearchViewResult = ({
 						</tr>
 					</thead>
 					<tbody>
-						
 						{searchResult &&
-							searchResult.hasOwnProperty("tracks", "items", "song") &&
+							searchResult.hasOwnProperty(
+								"tracks",
+								"items",
+								"song"
+							) &&
 							searchResult.tracks.items.map((song) => (
 								<tr key={song.href}>
 									<td>{song.name}</td>
 									<td>
-										{song.artists.map((artists, index) => ((index !== 0 && ", ") || "") + artists.name)}{" "}
+										{song.artists.map(
+											(artists, index) =>
+												((index !== 0 && ", ") || "") +
+												artists.name
+										)}{" "}
 									</td>
 									<td>
-										<Button 
-                      onClick={(e) => 
-                                     {e.preventDefault(); 
-                                     disable(song.href);
-                                     addsong(song).catch((error) => {
-                                     console.error("Could not add song:"); //TODO: check errortype
-									 handleShowError();
-                                    });}}
+										<Button
+											onClick={(e) => {
+												e.preventDefault();
+												addsong(song).catch((error) => {
+													console.error(
+														"Could not add song:"
+													); //TODO: check errortype
+													handleShowError();
+												});
+											}}
 											variant="outline-light"
-											disabled={disabledButtons.includes(song.href)}
+											disabled={
+												playlist &&
+												playlist.some(
+													(playlistSong) =>
+														playlistSong.id ===
+														song.id
+												)
+											} //TODO: add song id
 										>
 											+
 										</Button>
@@ -84,18 +112,18 @@ export const SearchViewResult = ({
 							))}
 					</tbody>
 				</Table>
-			<Modal
-				size="sm"
-				show={showError}
-				onHide={handleShowError}
-				animation={false}
-				keyboard
-			>
-				<Modal.Header closeButton>
-					<Modal.Title>Song Already exists!</Modal.Title>
-				</Modal.Header>
-			</Modal>
-      </Col>
+				<Modal
+					size="sm"
+					show={showError}
+					onHide={handleShowError}
+					animation={false}
+					keyboard
+				>
+					<Modal.Header closeButton>
+						<Modal.Title>Song Already exists!</Modal.Title>
+					</Modal.Header>
+				</Modal>
+			</Col>
 		</Container>
 	);
 };

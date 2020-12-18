@@ -14,14 +14,30 @@ class QueueifyModel {
 	constructor(
 		currentSession = "",
 		currentSessionName = "",
-		currentPlaylist = "",
+		currentPlaylistID = "",
 		subscribers = []
 	) {
 		this.currentSession = currentSession;
 		this.currentSessionName = currentSessionName;
-		this.currentPlaylist = currentPlaylist;
+		this.currentPlaylistID = currentPlaylistID;
 		this.subscribers = subscribers;
+		this.firebaseSubscription = false;
 		this.saveToLocalStorage();
+
+		console.log(
+			"Print moddel : " +
+				"subscribers: " +
+				this.subscribers +
+				"\n" +
+				"currentSession: " +
+				this.currentSession +
+				"\n" +
+				"currentSessionName: " +
+				this.currentSessionName +
+				"\n" +
+				"currentPlaylistID: " +
+				this.currentPlaylistID
+		);
 	}
 
 	getModelProperty(prop) {
@@ -33,7 +49,13 @@ class QueueifyModel {
 	 * @param  {callback} obs - callback function
 	 */
 	addObserver(obs) {
+		if (!this.firebaseSubscription) {
+			console.log("firebaseSubscriber!");
+			this.firebaseSubscription = this.firebaseSubscriber();
+		}
+
 		this.subscribers = this.subscribers.concat(obs);
+		console.log("addObserver: " + this.subscribers);
 		return () => this.removeObserver(obs);
 	}
 	/**
@@ -42,6 +64,10 @@ class QueueifyModel {
 	 */
 	removeObserver(obs) {
 		this.subscribers = this.subscribers.filter((o) => o !== obs);
+		if (this.subscribers.length <= 1 && this.firebaseSubscription) {
+			this.firebaseSubscription();
+			this.firebaseSubscription = false;
+		}
 	}
 	/**
 	 * notify the models observers/subscribes
@@ -55,20 +81,20 @@ class QueueifyModel {
 					console.error("Error ", err, callback);
 				}
 			});
-		this.saveToLocalStorage();
+		console.log("notify observers!");
 	}
 	/**
 	 * Add localStorage observer to Subscribe to the Model
 	 */
 	saveToLocalStorage() {
-		this.addObserver(() => {
+		this.subscribers.push(() => {
 			localStorage.setItem(
 				"queueifyModel",
 				JSON.stringify({
 					//Conversion from object to String (serialization)
 					currentSession: this.currentSession,
 					currentSessionName: this.currentSessionName,
-					currentPlaylist: this.currentPlaylist,
+					currentPlaylistID: this.currentPlaylistID,
 				})
 			);
 		});
@@ -129,10 +155,9 @@ class QueueifyModel {
 				});
 				this.currentSession = sessionID;
 				this.currentSessionName = sessionName;
-				this.currentPlaylist = playlist.id;
+				this.currentPlaylistID = playlist.id;
 				return batch.commit().then(() => {
 					this.notifyObservers();
-					this.firebaseSubscriber();
 					return this.currentSession;
 				});
 			})
@@ -170,12 +195,11 @@ class QueueifyModel {
 					.get()
 					.then(
 						(session) =>
-							(this.currentPlaylist = session.data().playlistId)
+							(this.currentPlaylistID = session.data().playlistId)
 					);
 
 				return Promise.all([setUser, getPlaylist]).then(() => {
 					this.notifyObservers();
-					this.firebaseSubscriber();
 					return this.currentSession;
 				});
 			})
@@ -191,7 +215,7 @@ class QueueifyModel {
 		return db
 			.collection("session")
 			.doc(this.currentSession)
-			.collection(this.currentPlaylist)
+			.collection(this.currentPlaylistID)
 			.get()
 			.then((res) =>
 				res.forEach((doc) => {
@@ -214,9 +238,9 @@ class QueueifyModel {
 		if (a.votes === b.votes) {
 			if (a.timestamp < b.timestamp) return -1;
 			else if (a.timestamp > b.timestamp) return 1;
-		  } else if (a.votes > b.votes) return -1;
-		  else if (a.votes < b.votes) return 1;
-		  return 0;
+		} else if (a.votes > b.votes) return -1;
+		else if (a.votes < b.votes) return 1;
+		return 0;
 	}
 
 	addSong(songObj) {
@@ -234,7 +258,7 @@ class QueueifyModel {
 		const song = db
 			.collection("session")
 			.doc(this.currentSession)
-			.collection(this.currentPlaylist)
+			.collection(this.currentPlaylistID)
 			.doc(songID);
 
 		return song
@@ -246,7 +270,7 @@ class QueueifyModel {
 					song.set({
 						artist: artists,
 						//position: -1, remove position
-						timestamp: timestamp,
+						timestamp: new Date(),
 						title: title,
 						votes: 0,
 					});
@@ -263,7 +287,7 @@ class QueueifyModel {
 		const song = db
 			.collection("session")
 			.doc(this.currentSession)
-			.collection(this.currentPlaylist)
+			.collection(this.currentPlaylistID)
 			.doc(songID);
 		const increment = firebase.firestore.FieldValue.increment(1);
 		const user = firebase.firestore.FieldValue.arrayUnion(
@@ -280,9 +304,9 @@ class QueueifyModel {
 						votes: increment,
 						voters: user,
 					});
-					session.update({
-						totalVotes: increment,
-					});
+					// session.update({
+					// 	totalVotes: increment,
+					// });
 				} else {
 					throw new Error("already voted!");
 				}
@@ -294,14 +318,14 @@ class QueueifyModel {
 	}
 
 	firebaseSubscriber() {
-		const session = db.collection("session").doc(this.currentSession);
+		//const session = db.collection("session").doc(this.currentSession);
 		const playlist = db
 			.collection("session")
 			.doc(this.currentSession)
 			//TODO: Subscribe on session instead to ensure notifications
-			.collection(this.currentPlaylist);
+			.collection(this.currentPlaylistID);
 
-		session.onSnapshot(
+		/* 		const sessionUnsub = session.onSnapshot(
 			{
 				// Listen for document metadata changes
 				includeMetadataChanges: true,
@@ -310,17 +334,21 @@ class QueueifyModel {
 				console.log("onSnapshot, session: " + this.currentSession);
 				this.notifyObservers();
 			}
-		);
-		playlist.onSnapshot(
+		); */
+		const playlistUnsub = playlist.onSnapshot(
 			{
 				// Listen for document metadata changes
-				includeMetadataChanges: true,
+				includeMetadataChanges: false,
 			},
 			(doc) => {
-				console.log("onSnapshot: playlist: " + this.currentPlaylist);
+				//console.log("onSnapshot: playlist: " + this.currentPlaylistID);
 				this.notifyObservers();
 			}
 		);
+		return () => {
+			//sessionUnsub();
+			playlistUnsub();
+		};
 	}
 	/*
 	Firebase functions will look for changes in playlists.

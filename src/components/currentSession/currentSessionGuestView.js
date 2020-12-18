@@ -59,6 +59,12 @@ const CurrentSessionGuestView = ({
 															}
 														);
 													}}
+													disabled={
+														song.voters &&
+														song.voters.includes(
+															user.uid
+														)
+													}
 												>
 													↑
 												</Button>

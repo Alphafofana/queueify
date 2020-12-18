@@ -8,10 +8,9 @@ import PromiseNoData from "../promiseNoData";
 function CurrentSession({ model }) {
 	const { currentUser } = useAuth();
 	const [playlist, setPlaylist] = useState();
-	//useEffect(() => setPlaylist(model.getCurrentPlaylist()), [model]);
 	useEffect(() => {
 		setPlaylist(model.getCurrentPlaylist());
-		model.firebaseSubscriber();
+		//model.firebaseSubscriber();
 		const obs = () => setPlaylist(model.getCurrentPlaylist());
 		return model.addObserver(obs);
 	}, [model]);

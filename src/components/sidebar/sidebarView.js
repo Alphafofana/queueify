@@ -1,9 +1,11 @@
 import React from "react";
 import css from "./sidebarView.module.css";
 import logo from "../../assets/queueify_logo1.svg";
-import { Nav , NavDropdown} from "react-bootstrap";
+import { Nav, NavDropdown } from "react-bootstrap";
 
-const SidebarView = ({ session }) => {
+const SidebarView = ({ location, session }) => {
+	console.log("current locaction: " + JSON.stringify(location));
+	console.log("locaction check: " + JSON.stringify(location));
 	return (
 		<div className="sidebar">
 			<div className="logo">
@@ -27,7 +29,6 @@ const SidebarView = ({ session }) => {
 					<i className="fas fa-search" /> Search
 				</Nav.Link>
 			</Nav>
-
 		</div>
 	);
 };

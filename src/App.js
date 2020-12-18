@@ -36,25 +36,28 @@ function App() {
 					<Route exact path="/login/popup">
 						<Popup />
 					</Route>
-				<PrivateRoute>
-					<div className="sidebarCol">
-						<Sidebar className="sidebar" model={model} />
-						<div className="pageCol">
-							<Navbar />
-							<Switch>
-								<PrivateRoute exact path="/search">
-									<Search model={model} />
-								</PrivateRoute>
-								<PrivateRoute exact path="/session">
-									<SessionHandler model={model} />
-								</PrivateRoute>
-								<PrivateRoute exact path="/session/:sessionId">
-									<CurrentSession model={model} />
-								</PrivateRoute>
-							</Switch>
+					<PrivateRoute>
+						<div className="sidebarCol">
+							<Sidebar className="sidebar" model={model} />
+							<div className="pageCol">
+								<Navbar />
+								<Switch>
+									<PrivateRoute exact path="/search">
+										<Search model={model} />
+									</PrivateRoute>
+									<PrivateRoute exact path="/session">
+										<SessionHandler model={model} />
+									</PrivateRoute>
+									<PrivateRoute
+										exact
+										path="/session/:sessionId"
+									>
+										<CurrentSession model={model} />
+									</PrivateRoute>
+								</Switch>
+							</div>
 						</div>
-					</div>
-				</PrivateRoute>
+					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
 		</BrowserRouter>

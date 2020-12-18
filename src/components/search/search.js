@@ -15,7 +15,7 @@ import PromiseNoData from "../promiseNoData";
 function Search({ model }) {
 	const [query, setQuery] = useState("");
 	const [search, setSearch] = useState(null);
-	const [disabledButtons, setDisabled] = useState([]);
+	//const [disabledButtons, setDisabled] = useState([]);
 	const [showError, setShowError] = useState(false);
 	const sessionID = model.getModelProperty("currentSession");
 
@@ -23,8 +23,15 @@ function Search({ model }) {
 
 	const [data, error] = usePromise(search);
 	const handleShowError = () => setShowError(!showError);
-	const handleDisabledButtons = (disable) =>
-		setDisabled([...disabledButtons, disable]);
+	// const handleDisabledButtons = (disable) =>
+	// 	setDisabled([...disabledButtons, disable]);
+	const [playlistPromise, setPlaylist] = useState();
+	useEffect(() => {
+		const obs = () => setPlaylist(model.getCurrentPlaylist());
+		return model.addObserver(obs);
+	}, [model]);
+
+	const [playlist, playlistrror] = usePromise(playlistPromise);
 
 	return (
 		<>
@@ -39,8 +46,9 @@ function Search({ model }) {
 				<SearchViewResult
 					searchResult={data}
 					addsong={(songObj) => model.addSong(songObj)}
-					disable={handleDisabledButtons}
-					disabledButtons={disabledButtons}
+					playlist={playlist}
+					//disable={handleDisabledButtons}
+					//disabledButtons={disabledButtons}
 					handleShowError={handleShowError}
 					showError={showError}
 				/>
