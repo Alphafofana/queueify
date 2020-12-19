@@ -1,7 +1,7 @@
 .currentSession {
 	display: flex;
 	flex-direction: row;
-	background:  #040404;
+	background: #121212;
 	padding-top: 70px;
 	padding-left: 175px;
 	width: 100%;
@@ -17,19 +17,22 @@
 	padding: 14px 56px 16px;
 	font-size: 17px;
 }
-.queue{
+.queue {
 	width: 90%;
 }
 .queue tbody {
 	font-size: 13px;
 }
 
-@media(max-width:580px){
-	.currentSession{
+.votes button {
+	margin-left: 3em;
+}
+
+@media (max-width: 580px) {
+	.currentSession {
 		padding-left: 0px;
 		margin: 0;
 		padding-top: 85px;
 		width: 100%;
-
 	}
 }

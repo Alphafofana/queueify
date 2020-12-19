@@ -156,10 +156,10 @@ class QueueifyModel {
 				this.currentSession = sessionID;
 				this.currentSessionName = sessionName;
 				this.currentPlaylistID = playlist.id;
-				return batch.commit().then(() => {
-					this.notifyObservers();
-					return this.currentSession;
-				});
+				this.notifyObservers();
+			})
+			.then(() => {
+				return batch.commit();
 			})
 			.catch((error) => {
 				console.log("Failed to create session: ", error);

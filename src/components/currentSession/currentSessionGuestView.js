@@ -43,7 +43,7 @@ const CurrentSessionGuestView = ({
 											<td>{index + 1}</td>
 											<td>{song.artist}</td>
 											<td>{song.title}</td>
-											<td>
+											<td className={css.votes}>
 												{song.votes}
 												<Button
 													variant="outline-light"
@@ -66,7 +66,7 @@ const CurrentSessionGuestView = ({
 														)
 													}
 												>
-													↑
+													<i className="far fa-heart"></i>
 												</Button>
 											</td>
 										</tr>

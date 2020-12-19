@@ -3,9 +3,7 @@ import css from "./sidebarView.module.css";
 import logo from "../../assets/queueify_logo1.svg";
 import { Nav, NavDropdown } from "react-bootstrap";
 
-const SidebarView = ({ location, session }) => {
-	console.log("current locaction: " + JSON.stringify(location));
-	console.log("locaction check: " + JSON.stringify(location));
+const SidebarView = ({ path, usertype }) => {
 	return (
 		<div className="sidebar">
 			<div className="logo">
@@ -16,18 +14,53 @@ const SidebarView = ({ location, session }) => {
 				className="flex-column sidebar-nav"
 				activeKey={window.location.pathname}
 			>
-				<Nav.Link href={`/session/${session}`}>
+				<Nav.Link
+					href={`/session/active`}
+					disabled={
+						path === "/session/active" || path === "/search"
+							? false
+							: true
+					}
+				>
 					{" "}
 					<i className="fas fa-home" /> Session
 				</Nav.Link>
-				<Nav.Link href="/session">
-					{" "}
-					<i className="fas fa-book" /> New Session
-				</Nav.Link>
-				<Nav.Link href="/search">
+				<Nav.Link
+					href="/search"
+					disabled={
+						path === "/session/active" || path === "/search"
+							? false
+							: true
+					}
+				>
 					{" "}
 					<i className="fas fa-search" /> Search
 				</Nav.Link>
+				{usertype === "host" ? (
+					<Nav.Link
+						href="/session"
+						disabled={
+							path === "/session/active" || path === "/search"
+								? false
+								: true
+						}
+					>
+						{" "}
+						<i className="fas fa-times" /> End Session
+					</Nav.Link>
+				) : (
+					<Nav.Link
+						href="/session"
+						disabled={
+							path === "/session/active" || path === "/search"
+								? false
+								: true
+						}
+					>
+						{" "}
+						<i className="fas fa-door-open" /> Leave Session
+					</Nav.Link>
+				)}
 			</Nav>
 		</div>
 	);

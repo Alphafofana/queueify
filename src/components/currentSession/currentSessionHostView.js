@@ -45,7 +45,7 @@ const CurrentSessionHostView = ({
 											<td>{song.artist.join(", ")}</td>
 											<td>{song.title}</td>
 											<td>
-												{song.votes}
+												{song.votes}{" "}
 												<Button
 													variant="outline-light"
 													size="sm"
@@ -67,7 +67,7 @@ const CurrentSessionHostView = ({
 														)
 													}
 												>
-													↑
+													<i className="far fa-heart" />
 												</Button>
 											</td>
 											<td>
