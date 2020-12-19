@@ -19,6 +19,7 @@ function CurrentSession({ model }) {
     return model.addObserver(obs);
   }, [model]);
   const [data, error] = usePromise(playlist);
+  console.log(playlist);
 
   return (
     <>
@@ -32,6 +33,7 @@ function CurrentSession({ model }) {
             target={target}
             playlist={data}
             vote={(songID) => model.upVote(songID)}
+            deleteSong={(songID) => model.deleteSong(songID)}
             sessionID={model.getModelProperty("currentSession")}
             sessionName={model.getModelProperty("currentSessionName")}
             playlistId={model.getModelProperty("currentPlaylist")}

@@ -34,8 +34,8 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const Spotify = new SpotifyWebApi({
   clientId: functions.config().spotify.client_id,
   clientSecret: functions.config().spotify.client_secret,
-  //redirectUri: `http://localhost:3000/login/popup`,
-  redirectUri: `https://test-queueify.herokuapp.com/login/popup`,
+  redirectUri: `http://localhost:3000/login/popup`,
+  //redirectUri: `https://test-queueify.herokuapp.com/login/popup`,
   //redirectUri: `https://queueify.herokuapp.com/login/popup`,
 });
 
@@ -147,6 +147,7 @@ exports.addSong = functions.firestore
       .catch((err) => console.err("could not retrieve the token", err));
 
     let setToken = token.then((data) => {
+      console.log(data);
       Spotify.setAccessToken(data.hostToken);
       return Spotify;
     });

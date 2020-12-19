@@ -18,6 +18,7 @@ const CurrentSessionHostView = ({
   target,
   playlist,
   vote,
+  deleteSong,
   sessionID,
   sessionName,
   playlistId,
@@ -91,8 +92,16 @@ const CurrentSessionHostView = ({
                     </Button>
                   </td>
                   <td>
-                    todo
-                    <Button variant="outline-light" size="sm">
+                    <Button
+                      variant="outline-light"
+                      size="sm"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        return deleteSong(song.id).catch((error) =>
+                          console.log(error)
+                        );
+                      }}
+                    >
                       x
                     </Button>
                   </td>
