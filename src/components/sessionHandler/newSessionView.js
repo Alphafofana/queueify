@@ -11,10 +11,13 @@ import {
   Tooltip,
 } from "react-bootstrap";
 
-const NewSessionView = ({ sessionName, sessionPin, submit, user }) => {
+const NewSessionView = ({ sessionName, sessionPin, submit, user, error }) => {
   return (
     <Container fluid className={css.sessionContainer}>
       <Col>
+	  <Col lg={{ span: 4, offset: 4 }}>
+          {error && <Alert variant="danger">{error}</Alert>}
+        </Col>
         <Jumbotron className={css.sessionJumbo}>
           <h1>Hello, @{user.displayName}!</h1>
           <p>

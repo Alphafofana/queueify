@@ -10,12 +10,16 @@ import {
   Form,
   OverlayTrigger,
   Tooltip,
+  Alert,
 } from "react-bootstrap";
 
-const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
+const JoinSessionView = ({ sessionName, sessionPin, submit, user, error }) => {
   return (
     <Container fluid className={css.sessionContainer}>
       <Col>
+        <Col lg={{ span: 4, offset: 4 }}>
+          {error && <Alert variant="danger">{error}</Alert>}
+        </Col>
         <Jumbotron className={css.sessionJumbo}>
           <h1>Hello, @{user.displayName}!</h1>
           <p>
@@ -39,7 +43,7 @@ const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
                 placeholder="Session Name"
                 onChange={(event) => sessionName(event.target.value)}
               ></Form.Control>
-			  <br></br>
+              <br></br>
               <Form.Group controlid="sessionPin">
                 <OverlayTrigger
                   placement="right"
