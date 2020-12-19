@@ -100,7 +100,7 @@ export const SearchViewResult = ({
           size="sm"
           show={showError}
           onHide={handleShowError}
-          animation={false}
+          animation={true}
           keyboard
         >
           <Modal.Header closeButton>
