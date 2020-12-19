@@ -13,6 +13,7 @@ import {
 const CurrentSessionHostView = ({
   user,
   error,
+  pin,
   showPin,
   setShowPin,
   target,
@@ -40,7 +41,7 @@ const CurrentSessionHostView = ({
             <Overlay target={target.current} show={showPin} placement="right">
               {(props) => (
                 <Tooltip id="overlay-example" {...props}>
-                  *session pin TODO*
+                  {pin}
                 </Tooltip>
               )}
             </Overlay>

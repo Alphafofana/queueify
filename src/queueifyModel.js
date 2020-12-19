@@ -13,12 +13,14 @@ const crypto = require("crypto");
 class QueueifyModel {
   constructor(
     currentSession = "",
-    currentSessionName = "",
+	currentSessionName = "",
+	currentSessionPin = "",
     currentPlaylist = "",
     subscribers = []
   ) {
     this.currentSession = currentSession;
-    this.currentSessionName = currentSessionName;
+	this.currentSessionName = currentSessionName;
+	this.currentSessionPin = currentSessionPin;
     this.currentPlaylist = currentPlaylist;
     this.subscribers = subscribers;
     this.saveToLocalStorage();
@@ -128,8 +130,9 @@ class QueueifyModel {
           playlistId: playlist.id,
         });
         this.currentSession = sessionID;
-        this.currentSessionName = sessionName;
-        this.currentPlaylist = playlist.id;
+		this.currentSessionName = sessionName;
+		this.currentSessionPin = sessionPin;
+		this.currentPlaylist = playlist.id;
         return batch.commit().then(() => {
           this.notifyObservers();
           this.firebaseSubscriber();
@@ -160,7 +163,7 @@ class QueueifyModel {
       .then(() => {
         const setUser = user.set({ sessionID: sessionID }, { merge: true });
         this.currentSession = sessionID;
-        this.currentSessionName = sessionName;
+		this.currentSessionName = sessionName;
         const getPlaylist = session
           .get()
           .then(

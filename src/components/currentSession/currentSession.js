@@ -27,6 +27,7 @@ function CurrentSession({ model }) {
           <CurrentSessionHostView
             user={currentUser}
             error={error}
+            pin={model.getModelProperty("currentSessionPin")}
             showPin={showPin}
             setShowPin={() => setShowPin(!showPin)}
             target={target}
