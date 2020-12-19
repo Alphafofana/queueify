@@ -19,7 +19,6 @@ function CurrentSession({ model }) {
     return model.addObserver(obs);
   }, [model]);
   const [data, error] = usePromise(playlist);
-  console.log(playlist);
 
   return (
     <>
@@ -43,7 +42,7 @@ function CurrentSession({ model }) {
           currentUser.providerData[0].providerId === "facebook.com") &&
           (PromiseNoData(playlist, data, error) || (
             <CurrentSessionGuestView
-              user={currentUser.providerData[0]}
+              user={currentUser}
               error={error}
               playlist={data}
               vote={(songID) => model.upVote(songID)}

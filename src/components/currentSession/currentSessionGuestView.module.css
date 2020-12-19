@@ -15,12 +15,17 @@
   margin: 5px;
 }
 
+.votes {
+  display: flex;
+  justify-content: space-between;
+}
+
 .queue {
-	width: 90%;
+  width: 90%;
 }
 
 .sessionInfo {
-	padding: 20px;
+  padding: 20px;
 }
 
 .sessionDetails {
@@ -34,15 +39,19 @@
 
 @media (max-width: 580px) {
   .currentSession {
-	padding-left: 30px;
-	padding-right: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
   }
 
   .spotifyButton {
-	padding: 10px;
-	font-size: 14px;
+    padding: 10px;
+    font-size: 14px;
   }
   .queue {
-	width: 100%;
-}
+    width: 100%;
+  }
+
+  .votes {
+    flex-direction: column;
+  }
 }
