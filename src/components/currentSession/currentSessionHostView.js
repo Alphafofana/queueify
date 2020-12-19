@@ -75,21 +75,27 @@ const CurrentSessionHostView = ({
                   <td>{index + 1}</td>
                   <td>{song.artist.join(", ")}</td>
                   <td>{song.title}</td>
-                  <td>
-                    {song.votes}
-                    <Button
-                      variant="outline-light"
-                      size="sm"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        vote(song.id).catch((error) => {
-                          console.error("Could not vote:"); //TODO: check errortype
-                          //handleShowError();
-                        });
-                      }}
-                    >
-                      ↑
-                    </Button>
+                  <td className={css.votes}>
+                    <p className={css.vote}>{song.votes}</p>
+                    {!song.voters || !song.voters.includes(user.uid) ? (
+                      <Button
+                        variant="outline-light"
+                        size="sm"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          vote(song.id).catch((error) => {
+                            console.error("Could not vote:"); //TODO: check errortype
+                            //handleShowError();
+                          });
+                        }}
+                      >
+                        Vote 👍
+                      </Button>
+                    ) : (
+                      <Button variant="outline-light" size="sm" disabled>
+                        You voted 👏
+                      </Button>
+                    )}
                   </td>
                   <td>
                     <Button

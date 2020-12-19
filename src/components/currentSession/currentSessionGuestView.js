@@ -51,16 +51,13 @@ const CurrentSessionGuestView = ({
                               });
                             }}
                           >
-                           Vote 👍
+                            Vote 👍
                           </Button>
-						  
-                        ) : <Button
-                            variant="outline-light"
-                            size="sm"
-							disabled
-                          >
+                        ) : (
+                          <Button variant="outline-light" size="sm" disabled>
                             You voted 👏
-                          </Button>}
+                          </Button>
+                        )}
                       </td>
                     </tr>
                   ))}
