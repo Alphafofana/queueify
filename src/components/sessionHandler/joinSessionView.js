@@ -57,7 +57,7 @@ const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
 								></Form.Control>
 							</Form.Group>
 							<Button variant="dark" type="submit">
-								Submit
+								Join
 							</Button>
 						</Form.Group>
 					</Form>

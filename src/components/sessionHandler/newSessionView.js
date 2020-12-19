@@ -58,7 +58,7 @@ const NewSessionView = ({ sessionName, sessionPin, submit, user }) => {
 
 							</Form.Group>
 							<Button variant="dark" type="submit">
-								Submit
+								Create session
 							</Button>
 						</Form.Group>
 					</Form>
