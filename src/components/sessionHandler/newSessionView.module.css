@@ -1,24 +1,23 @@
 .sessionContainer {
-	display: flex;
-	flex-direction: row;
-	padding: 0;
-	padding-top: 85px;
-	padding-left: 175px;
-	width: 100%;
-	min-height: 100vh;
-	background: #040404;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  padding-top: 85px;
+  padding-left: 175px;
+  width: 100%;
+  min-height: 100vh;
+  background: #040404;
 }
 
 .sessionJumbo {
-	margin-top: 25px;
-	min-width: 250px;
-	max-width: 600px;
-	margin-left: auto;
-	margin-right: auto;
+  margin-top: 25px;
+  min-width: 250px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
-@media(max-width:580px){
-	.sessionContainer{
-		padding-left: 0px;
-	}
-
+@media (max-width: 580px) {
+  .sessionContainer {
+    padding-left: 0px;
+  }
 }
