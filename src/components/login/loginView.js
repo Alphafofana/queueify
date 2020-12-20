@@ -53,6 +53,7 @@ const LoginView = ({
 					<Col>
 						<p>
 							<Button
+								className={css.loginButton}
 								disabled={loading}
 								variant="success"
 								onClick={handleShowGuesLogin}
@@ -62,6 +63,7 @@ const LoginView = ({
 						</p>
 						<p>
 							<Button
+								className={css.loginButton}
 								disabled={loading}
 								variant="success"
 								onClick={handleShowHostLogin}
@@ -128,9 +130,16 @@ const LoginView = ({
 					<Modal.Title>Login as Host</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					You will need a Spotify account to host a queueify session.
-					If you dont have one plese visit their website. Please sign
-					in below
+					You need a Spotify account to host a queueify session. If
+					you don't have one plese visit their{" "}
+					<a
+						target="_blank"
+						rel="noopener noreferrer"
+						href="https://www.spotify.com/"
+					>
+						website
+					</a>
+					. Please sign in below
 				</Modal.Body>
 				<Modal.Footer>
 					<Button

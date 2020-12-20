@@ -154,6 +154,7 @@ exports.addSong = functions.firestore
 			.catch((err) => console.err("could not retrieve the token", err));
 
 		let setToken = token.then((data) => {
+			console.log(data);
 			Spotify.setAccessToken(data.hostToken);
 			return Spotify;
 		});
@@ -162,6 +163,35 @@ exports.addSong = functions.firestore
 			.then((Spotify) => {
 				return Spotify.addTracksToPlaylist(playlist, [
 					"spotify:track:" + song,
+				]);
+			})
+			.catch((err) => console.error(err));
+	});
+
+exports.deleteSong = functions.firestore
+	.document("session/{sessionID}/{playlistID}/{songID}")
+	.onDelete(async (snap, context) => {
+		const session = context.params.sessionID;
+		const playlist = context.params.playlistID;
+		const song = context.params.songID;
+
+		const token = admin
+			.firestore()
+			.collection("session")
+			.doc(session)
+			.get()
+			.then((info) => info.data())
+			.catch((err) => console.err("could not retrieve the token", err));
+
+		let setToken = token.then((data) => {
+			Spotify.setAccessToken(data.hostToken);
+			return Spotify;
+		});
+
+		return setToken
+			.then((Spotify) => {
+				return Spotify.removeTracksFromPlaylist(playlist, [
+					{ uri: "spotify:track:" + song },
 				]);
 			})
 			.catch((err) => console.error(err));

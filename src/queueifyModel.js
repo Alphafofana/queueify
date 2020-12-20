@@ -14,11 +14,13 @@ class QueueifyModel {
 	constructor(
 		currentSession = "",
 		currentSessionName = "",
+		currentSessionPin = "",
 		currentPlaylistID = "",
 		subscribers = []
 	) {
 		this.currentSession = currentSession;
 		this.currentSessionName = currentSessionName;
+		this.currentSessionPin = currentSessionPin;
 		this.currentPlaylistID = currentPlaylistID;
 		this.subscribers = subscribers;
 		this.firebaseSubscription = false;
@@ -36,7 +38,10 @@ class QueueifyModel {
 				this.currentSessionName +
 				"\n" +
 				"currentPlaylistID: " +
-				this.currentPlaylistID
+				this.currentPlaylistID +
+				"\n" +
+				"currentSessionPin: " +
+				this.currentSessionPin
 		);
 	}
 
@@ -94,6 +99,7 @@ class QueueifyModel {
 					//Conversion from object to String (serialization)
 					currentSession: this.currentSession,
 					currentSessionName: this.currentSessionName,
+					currentSessionPin: this.currentSessionPin,
 					currentPlaylistID: this.currentPlaylistID,
 				})
 			);
@@ -155,6 +161,7 @@ class QueueifyModel {
 				});
 				this.currentSession = sessionID;
 				this.currentSessionName = sessionName;
+				this.currentSessionPin = sessionPin;
 				this.currentPlaylistID = playlist.id;
 				this.notifyObservers();
 			})
@@ -280,6 +287,16 @@ class QueueifyModel {
 				console.error("Could not add song:", error);
 				throw new Error(error);
 			});
+	}
+
+	deleteSong(songID) {
+		return db
+			.collection("session")
+			.doc(this.currentSession)
+			.collection(this.currentPlaylist)
+			.doc(songID)
+			.delete()
+			.then(() => console.log("deleted song successfully"));
 	}
 
 	upVote(songID) {

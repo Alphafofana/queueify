@@ -34,11 +34,11 @@ const SidebarView = ({ path, usertype }) => {
 					}
 				>
 					{" "}
-					<i className="fas fa-search" /> Search
+					<i className="fas fa-search" /> Add Songs
 				</Nav.Link>
 				{usertype === "host" ? (
 					<Nav.Link
-						href="/session"
+						href="/close" //TODO: Add correct Hrefs
 						disabled={
 							path === "/session/active" || path === "/search"
 								? false
@@ -50,7 +50,7 @@ const SidebarView = ({ path, usertype }) => {
 					</Nav.Link>
 				) : (
 					<Nav.Link
-						href="/session"
+						href="/close" //TODO: Add correct Hrefs
 						disabled={
 							path === "/session/active" || path === "/search"
 								? false

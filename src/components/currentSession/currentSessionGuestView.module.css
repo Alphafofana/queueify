@@ -1,38 +1,61 @@
 .currentSession {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	background: #121212;
-	padding-top: 70px;
-	padding-left: 175px;
+	padding-top: 100px;
+	padding-left: 190px;
 	width: 100%;
 	min-width: 410px;
 	min-height: 100vh;
 }
+
+.spotifyButton {
+	padding: 10px 20px;
+	font-size: 14px;
+	margin: 5px;
+}
+
+.votes {
+	display: flex;
+	justify-content: space-between;
+}
+
+.queue {
+	width: 90%;
+}
+
 .sessionInfo {
-	margin-top: 10px;
+	padding: 20px;
 }
 
 .sessionDetails {
 	color: white;
-	padding: 14px 56px 16px;
 	font-size: 17px;
 }
-.queue {
-	width: 90%;
-}
+
 .queue tbody {
 	font-size: 13px;
 }
 
-.votes button {
-	margin-left: 3em;
+.green {
+	color: #1db954;
 }
 
 @media (max-width: 580px) {
 	.currentSession {
-		padding-left: 0px;
-		margin: 0;
-		padding-top: 85px;
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+
+	.spotifyButton {
+		padding: 10px;
+		font-size: 14px;
+	}
+	.queue {
 		width: 100%;
+	}
+
+	.votes {
+		flex-direction: column;
 	}
 }

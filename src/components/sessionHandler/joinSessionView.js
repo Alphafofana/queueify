@@ -1,5 +1,7 @@
 import React from "react";
 import css from "./joinSessionView.module.css";
+import ReactCodeInput from "react-code-input";
+
 import {
 	Col,
 	Container,
@@ -7,13 +9,17 @@ import {
 	Jumbotron,
 	Form,
 	OverlayTrigger,
-	Tooltip
+	Tooltip,
+	Alert,
 } from "react-bootstrap";
 
-const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
+const JoinSessionView = ({ sessionName, sessionPin, submit, user, error }) => {
 	return (
 		<Container fluid className={css.sessionContainer}>
 			<Col>
+				<Col lg={{ span: 4, offset: 4 }}>
+					{error && <Alert variant="danger">{error}</Alert>}
+				</Col>
 				<Jumbotron className={css.sessionJumbo}>
 					<h1>Hello, @{user.displayName}!</h1>
 					<p>
@@ -22,13 +28,16 @@ const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
 					</p>
 					<Form onSubmit={submit}>
 						<Form.Group controlid="sessionName">
-						<OverlayTrigger
-     						 placement="right"
-     						 overlay={
-       						<Tooltip id={`tooltip-$"right"`}>
-         					 Enter the session name provided by your host
-      	 					</Tooltip>}>
-							<Form.Label>Session Name</Form.Label>
+							<OverlayTrigger
+								placement="right"
+								overlay={
+									<Tooltip id={`tooltip-$"right"`}>
+										Enter the session name provided by your
+										host
+									</Tooltip>
+								}
+							>
+								<Form.Label>Session Name</Form.Label>
 							</OverlayTrigger>
 							<Form.Control
 								type="text"
@@ -37,27 +46,29 @@ const JoinSessionView = ({ sessionName, sessionPin, submit, user }) => {
 									sessionName(event.target.value)
 								}
 							></Form.Control>
+							<br></br>
 							<Form.Group controlid="sessionPin">
-							<OverlayTrigger
-     						 placement="right"
-     						 overlay={
-       						<Tooltip id={`tooltip-$"right"`}>
-         					 Type in the pin or passphrase provided by
-									your host
-      	 					</Tooltip>}>
-								<Form.Label>Session Pin</Form.Label>
-								</OverlayTrigger>
-								<Form.Control
-									type="password"
-									autoComplete="on"
-									placeholder="Pin"
-									onChange={(event) =>
-										sessionPin(event.target.value)
+								<OverlayTrigger
+									placement="right"
+									overlay={
+										<Tooltip id={`tooltip-$"right"`}>
+											Type in the pin or passphrase
+											provided by your host
+										</Tooltip>
 									}
-								></Form.Control>
+								>
+									<Form.Label>Session Pin</Form.Label>
+								</OverlayTrigger>
+								<br></br>
+								<ReactCodeInput
+									type="password"
+									pattern="[0-9]"
+									fields={4}
+									onChange={(value) => sessionPin(value)}
+								></ReactCodeInput>
 							</Form.Group>
 							<Button variant="dark" type="submit">
-								Submit
+								Join
 							</Button>
 						</Form.Group>
 					</Form>

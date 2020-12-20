@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CurrentSessionGuestView from "./currentSessionGuestView";
 import CurrentSessionHostView from "./currentSessionHostView";
 import { useAuth } from "../../contexts/AuthContext";
@@ -8,13 +8,16 @@ import PromiseNoData from "../promiseNoData";
 function CurrentSession({ model }) {
 	const { currentUser } = useAuth();
 	const [playlist, setPlaylist] = useState();
+	const [showPin, setShowPin] = useState(false);
+	const target = useRef(null);
+	const [data, error] = usePromise(playlist);
+
 	useEffect(() => {
 		setPlaylist(model.getCurrentPlaylist());
 		//model.firebaseSubscriber();
 		const obs = () => setPlaylist(model.getCurrentPlaylist());
 		return model.addObserver(obs);
 	}, [model]);
-	const [data, error] = usePromise(playlist);
 
 	return (
 		<>
@@ -23,12 +26,18 @@ function CurrentSession({ model }) {
 					<CurrentSessionHostView
 						user={currentUser}
 						error={error}
+						pin={model.getModelProperty("currentSessionPin")}
+						showPin={showPin}
+						setShowPin={() => setShowPin(!showPin)}
+						target={target}
 						playlist={data}
 						vote={(songID) => model.upVote(songID)}
+						deleteSong={(songID) => model.deleteSong(songID)}
 						sessionID={model.getModelProperty("currentSession")}
 						sessionName={model.getModelProperty(
 							"currentSessionName"
 						)}
+						playlistId={model.getModelProperty("currentPlaylistID")}
 					/>
 				))) ||
 				((currentUser.providerData[0].providerId === "google.com" ||
@@ -36,7 +45,7 @@ function CurrentSession({ model }) {
 						"facebook.com") &&
 					(PromiseNoData(playlist, data, error) || (
 						<CurrentSessionGuestView
-							user={currentUser.providerData[0]}
+							user={currentUser}
 							error={error}
 							playlist={data}
 							vote={(songID) => model.upVote(songID)}
