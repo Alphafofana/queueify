@@ -11,17 +11,14 @@ export function useAuth() {
 export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState();
 	const [loading, setLoading] = useState(true);
-	const [setUserID] = useState();
 
 	function login(provider) {
 		const providers = {
 			google: firebase.auth.GoogleAuthProvider,
 			facebook: firebase.auth.FacebookAuthProvider,
 		};
-		//const provider = "google";
+
 		return auth.signInWithPopup(new providers[provider]());
-		//const provider = new firebase.auth.GoogleAuthProvider();
-		//return auth.signInWithPopup(provider);
 	}
 
 	function logout() {

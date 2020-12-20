@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import NewSessionView from "./newSessionView";
 import JoinSessionView from "./joinSessionView";
 import { useAuth } from "../../contexts/AuthContext";

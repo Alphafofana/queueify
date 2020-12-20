@@ -25,24 +25,6 @@ class QueueifyModel {
 		this.subscribers = subscribers;
 		this.firebaseSubscription = false;
 		this.saveToLocalStorage();
-
-		console.log(
-			"Print moddel : " +
-				"subscribers: " +
-				this.subscribers +
-				"\n" +
-				"currentSession: " +
-				this.currentSession +
-				"\n" +
-				"currentSessionName: " +
-				this.currentSessionName +
-				"\n" +
-				"currentPlaylistID: " +
-				this.currentPlaylistID +
-				"\n" +
-				"currentSessionPin: " +
-				this.currentSessionPin
-		);
 	}
 
 	getModelProperty(prop) {
@@ -55,12 +37,10 @@ class QueueifyModel {
 	 */
 	addObserver(obs) {
 		if (!this.firebaseSubscription) {
-			console.log("firebaseSubscriber!");
 			this.firebaseSubscription = this.firebaseSubscriber();
 		}
 
 		this.subscribers = this.subscribers.concat(obs);
-		console.log("addObserver: " + this.subscribers);
 		return () => this.removeObserver(obs);
 	}
 	/**
@@ -86,7 +66,6 @@ class QueueifyModel {
 					console.error("Error ", err, callback);
 				}
 			});
-		console.log("notify observers!");
 	}
 	/**
 	 * Add localStorage observer to Subscribe to the Model
@@ -104,25 +83,6 @@ class QueueifyModel {
 				})
 			);
 		});
-	}
-
-	//TODO: Remove this?
-	getFirebaseData(collection, document) {
-		if (auth.currentUser) {
-			let doc = db.collection(collection).doc(document);
-			return doc
-				.get()
-				.then((d) => {
-					if (d.exists) {
-						return d.data().spotifyToken;
-					} else {
-						console.log("The document does not exist.");
-					}
-				})
-				.catch((error) => {
-					console.log("Could not retrieve the document:", error);
-				});
-		}
 	}
 
 	//TODO: Do we want this in the DataSource?
@@ -169,7 +129,7 @@ class QueueifyModel {
 				return batch.commit();
 			})
 			.catch((error) => {
-				console.log("Failed to create session: ", error);
+				//console.log("Failed to create session: ", error);
 				throw new Error("Failed to create session" + error);
 			});
 	}
@@ -236,7 +196,7 @@ class QueueifyModel {
 				return playlist;
 			})
 			.catch(function (error) {
-				console.log("Error getting playlist:", error);
+				//console.log("Error getting playlist:", error);
 				throw new Error("Failed to get playlist " + error);
 			});
 	}
@@ -251,17 +211,8 @@ class QueueifyModel {
 	}
 
 	addSong(songObj) {
-		/*
-		if song does not already exist
-		add song to session playlist 
-		votes is 0 and position is last (-1)
-		*/
-		//console.log("Model, add song!");
-		//console.log("Model, songObj: ", songObj);
 		const { id: songID, artists: artistsObj, name: title } = songObj;
 		const artists = artistsObj.map((artist) => artist.name);
-		//console.log(songID, artists, title);
-		const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 		const song = db
 			.collection("session")
 			.doc(this.currentSession)
@@ -276,7 +227,6 @@ class QueueifyModel {
 				} else {
 					song.set({
 						artist: artists,
-						//position: -1, remove position
 						timestamp: new Date(),
 						title: title,
 						votes: 0,
@@ -293,14 +243,12 @@ class QueueifyModel {
 		return db
 			.collection("session")
 			.doc(this.currentSession)
-			.collection(this.currentPlaylist)
+			.collection(this.currentPlaylistID)
 			.doc(songID)
-			.delete()
-			.then(() => console.log("deleted song successfully"));
+			.delete();
 	}
 
 	upVote(songID) {
-		const session = db.collection("session").doc(this.currentSession);
 		const song = db
 			.collection("session")
 			.doc(this.currentSession)

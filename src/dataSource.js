@@ -37,7 +37,6 @@ const DataSource = {
 	},
 
 	searchSong(sessionID, query = "") {
-		//console.log("searchSong, sessionID: " + sessionID + " query: " + query);
 		if (query) {
 			let endpoint =
 				"https://api.spotify.com/v1/search?q=" + query + "&type=track";

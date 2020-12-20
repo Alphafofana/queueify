@@ -37,7 +37,7 @@ function Search({ model }) {
 		}
 	}, [model, history]);
 
-	const [playlist, playlistrror] = usePromise(playlistPromise);
+	const [playlist, playlistError] = usePromise(playlistPromise);
 
 	return (
 		<>
@@ -53,6 +53,7 @@ function Search({ model }) {
 					searchResult={data}
 					addsong={(songObj) => model.addSong(songObj)}
 					playlist={playlist}
+					error={playlistError}
 					//disable={handleDisabledButtons}
 					//disabledButtons={disabledButtons}
 					handleShowError={handleShowError}
