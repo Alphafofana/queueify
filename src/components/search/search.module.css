@@ -1,17 +1,14 @@
-
-
 :global(.searchJumbo) {
 	display: flex;
 	flex-direction: row;
-	background:  #040404;
-	padding:20px;
+	background: #121212;
+	padding: 20px;
 	padding-left: 175px;
 	padding-top: 0px;
 	width: 100%;
 	height: 100%;
 	min-width: 410px;
 	min-height: 100vh;
-
 }
 
 .searchMenu {
@@ -20,18 +17,14 @@
 	padding: 20px;
 	padding-top: 90px;
 	padding-left: 200px;
-	background: #040404;
-
+	background: #121212;
 }
 
-
-
-@media(max-width: 580px){
-	:global(.searchJumbo){
+@media (max-width: 580px) {
+	:global(.searchJumbo) {
 		padding-left: 20px;
 	}
-	.searchMenu{
+	.searchMenu {
 		padding-left: 20px;
 	}
-
 }

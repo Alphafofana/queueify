@@ -24,7 +24,7 @@ import {
 function App() {
 	const model = ReadModel();
 	return (
-		<BrowserRouter>
+		/* 		<BrowserRouter>
 			<AuthProvider>
 				<Switch>
 					<Route exact path="/">
@@ -36,30 +36,33 @@ function App() {
 					<Route exact path="/login/popup">
 						<Popup />
 					</Route>
-				<PrivateRoute>
-					<div className="sidebarCol">
-						<Sidebar className="sidebar" model={model} />
-						<div className="pageCol">
-							<Navbar />
-							<Switch>
-								<PrivateRoute exact path="/search">
-									<Search model={model} />
-								</PrivateRoute>
-								<PrivateRoute exact path="/session">
-									<SessionHandler model={model} />
-								</PrivateRoute>
-								<PrivateRoute exact path="/session/:sessionId">
-									<CurrentSession model={model} />
-								</PrivateRoute>
-							</Switch>
+					<PrivateRoute>
+						<div className="sidebarCol">
+							<Sidebar className="sidebar" model={model} />
+							<div className="pageCol">
+								<Navbar />
+								<Switch>
+									<PrivateRoute exact path="/search">
+										<Search model={model} />
+									</PrivateRoute>
+									<PrivateRoute exact path="/session">
+										<SessionHandler model={model} />
+									</PrivateRoute>
+									<PrivateRoute strict path="/session/active">
+										<CurrentSession model={model} />
+									</PrivateRoute>
+									<PrivateRoute>
+										<Redirect to="/session" />
+									</PrivateRoute>
+								</Switch>
+							</div>
 						</div>
-					</div>
-				</PrivateRoute>
+					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
-		</BrowserRouter>
+		</BrowserRouter> */
 
-		/* 		<BrowserRouter>
+		<BrowserRouter>
 			<AuthProvider>
 				<Switch>
 					<Route exact path="/">
@@ -84,7 +87,7 @@ function App() {
 							</Row>
 						</div>
 					</PrivateRoute>
-					<PrivateRoute exact path="/session/:sessionId">
+					<PrivateRoute exact path="/session/active">
 						<div className="pageContainer">
 							<Navbar model={model} />
 							<Row>
@@ -110,9 +113,12 @@ function App() {
 							</Row>
 						</div>
 					</PrivateRoute>
+					<PrivateRoute>
+						<Redirect to="/session" />
+					</PrivateRoute>
 				</Switch>
 			</AuthProvider>
-		</BrowserRouter> */
+		</BrowserRouter>
 	);
 }
 

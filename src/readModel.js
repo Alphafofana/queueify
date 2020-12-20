@@ -23,7 +23,8 @@ const ReadModel = () => {
 		return new QueueifyModel(
 			modelObject.currentSession,
 			modelObject.currentSessionName,
-			modelObject.currentPlaylist
+			modelObject.currentSessionPin,
+			modelObject.currentPlaylistID
 		);
 	}
 

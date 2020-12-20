@@ -1,9 +1,9 @@
 import React from "react";
 import css from "./sidebarView.module.css";
 import logo from "../../assets/queueify_logo1.svg";
-import { Nav , NavDropdown} from "react-bootstrap";
+import { Nav, Button } from "react-bootstrap";
 
-const SidebarView = ({ session }) => {
+const SidebarView = ({ path, usertype, leaveSession }) => {
 	return (
 		<div className="sidebar">
 			<div className="logo">
@@ -14,20 +14,62 @@ const SidebarView = ({ session }) => {
 				className="flex-column sidebar-nav"
 				activeKey={window.location.pathname}
 			>
-				<Nav.Link href={`/session/${session}`}>
+				<Nav.Link
+					href={`/session/active`}
+					disabled={
+						window.location.pathname === "/session/active" ||
+						window.location.pathname === "/search"
+							? false
+							: true
+					}
+				>
 					{" "}
 					<i className="fas fa-home" /> Session
 				</Nav.Link>
-				<Nav.Link href="/session">
+				<Nav.Link
+					href="/search"
+					disabled={
+						window.location.pathname === "/session/active" ||
+						window.location.pathname === "/search"
+							? false
+							: true
+					}
+				>
 					{" "}
-					<i className="fas fa-book" /> New Session
+					<i className="fas fa-search" /> Add Songs
 				</Nav.Link>
-				<Nav.Link href="/search">
-					{" "}
-					<i className="fas fa-search" /> Search
-				</Nav.Link>
+				{usertype === "host" ? (
+					<Button
+						onClick={leaveSession} //TODO:Add End session
+						variant="outline-light"
+						className={css.sidebarButton}
+						disabled={
+							window.location.pathname === "/session/active" ||
+							window.location.pathname === "/search"
+								? false
+								: true
+						}
+					>
+						{" "}
+						<i className="fas fa-door-open" /> Leave Session
+					</Button>
+				) : (
+					<Button
+						onClick={leaveSession}
+						variant="outline-light"
+						className={css.sidebarButton}
+						disabled={
+							window.location.pathname === "/session/active" ||
+							window.location.pathname === "/search"
+								? false
+								: true
+						}
+					>
+						{" "}
+						<i className="fas fa-door-open" /> Leave Session
+					</Button>
+				)}
 			</Nav>
-
 		</div>
 	);
 };

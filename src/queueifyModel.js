@@ -14,13 +14,16 @@ class QueueifyModel {
 	constructor(
 		currentSession = "",
 		currentSessionName = "",
-		currentPlaylist = "",
+		currentSessionPin = "",
+		currentPlaylistID = "",
 		subscribers = []
 	) {
 		this.currentSession = currentSession;
 		this.currentSessionName = currentSessionName;
-		this.currentPlaylist = currentPlaylist;
+		this.currentSessionPin = currentSessionPin;
+		this.currentPlaylistID = currentPlaylistID;
 		this.subscribers = subscribers;
+		this.firebaseSubscription = false;
 		this.saveToLocalStorage();
 	}
 
@@ -33,6 +36,10 @@ class QueueifyModel {
 	 * @param  {callback} obs - callback function
 	 */
 	addObserver(obs) {
+		if (!this.firebaseSubscription) {
+			this.firebaseSubscription = this.firebaseSubscriber();
+		}
+
 		this.subscribers = this.subscribers.concat(obs);
 		return () => this.removeObserver(obs);
 	}
@@ -42,6 +49,10 @@ class QueueifyModel {
 	 */
 	removeObserver(obs) {
 		this.subscribers = this.subscribers.filter((o) => o !== obs);
+		if (this.subscribers.length <= 1 && this.firebaseSubscription) {
+			this.firebaseSubscription();
+			this.firebaseSubscription = false;
+		}
 	}
 	/**
 	 * notify the models observers/subscribes
@@ -55,42 +66,23 @@ class QueueifyModel {
 					console.error("Error ", err, callback);
 				}
 			});
-		this.saveToLocalStorage();
 	}
 	/**
 	 * Add localStorage observer to Subscribe to the Model
 	 */
 	saveToLocalStorage() {
-		this.addObserver(() => {
+		this.subscribers.push(() => {
 			localStorage.setItem(
 				"queueifyModel",
 				JSON.stringify({
 					//Conversion from object to String (serialization)
 					currentSession: this.currentSession,
 					currentSessionName: this.currentSessionName,
-					currentPlaylist: this.currentPlaylist,
+					currentSessionPin: this.currentSessionPin,
+					currentPlaylistID: this.currentPlaylistID,
 				})
 			);
 		});
-	}
-
-	//TODO: Remove this?
-	getFirebaseData(collection, document) {
-		if (auth.currentUser) {
-			let doc = db.collection(collection).doc(document);
-			return doc
-				.get()
-				.then((d) => {
-					if (d.exists) {
-						return d.data().spotifyToken;
-					} else {
-						console.log("The document does not exist.");
-					}
-				})
-				.catch((error) => {
-					console.log("Could not retrieve the document:", error);
-				});
-		}
 	}
 
 	//TODO: Do we want this in the DataSource?
@@ -129,15 +121,15 @@ class QueueifyModel {
 				});
 				this.currentSession = sessionID;
 				this.currentSessionName = sessionName;
-				this.currentPlaylist = playlist.id;
-				return batch.commit().then(() => {
-					this.notifyObservers();
-					this.firebaseSubscriber();
-					return this.currentSession;
-				});
+				this.currentSessionPin = sessionPin;
+				this.currentPlaylistID = playlist.id;
+				this.notifyObservers();
+			})
+			.then(() => {
+				return batch.commit();
 			})
 			.catch((error) => {
-				console.log("Failed to create session: ", error);
+				//console.log("Failed to create session: ", error);
 				throw new Error("Failed to create session" + error);
 			});
 	}
@@ -170,17 +162,16 @@ class QueueifyModel {
 					.get()
 					.then(
 						(session) =>
-							(this.currentPlaylist = session.data().playlistId)
+							(this.currentPlaylistID = session.data().playlistId)
 					);
 
 				return Promise.all([setUser, getPlaylist]).then(() => {
 					this.notifyObservers();
-					this.firebaseSubscriber();
 					return this.currentSession;
 				});
 			})
 			.catch(function (error) {
-				console.log("Error getting document:", error);
+				//console.log("Error getting document:", error);
 				throw new Error("Failed to join session" + error);
 			});
 	}
@@ -191,7 +182,7 @@ class QueueifyModel {
 		return db
 			.collection("session")
 			.doc(this.currentSession)
-			.collection(this.currentPlaylist)
+			.collection(this.currentPlaylistID)
 			.get()
 			.then((res) =>
 				res.forEach((doc) => {
@@ -205,7 +196,7 @@ class QueueifyModel {
 				return playlist;
 			})
 			.catch(function (error) {
-				console.log("Error getting playlist:", error);
+				//console.log("Error getting playlist:", error);
 				throw new Error("Failed to get playlist " + error);
 			});
 	}
@@ -214,27 +205,18 @@ class QueueifyModel {
 		if (a.votes === b.votes) {
 			if (a.timestamp < b.timestamp) return -1;
 			else if (a.timestamp > b.timestamp) return 1;
-		  } else if (a.votes > b.votes) return -1;
-		  else if (a.votes < b.votes) return 1;
-		  return 0;
+		} else if (a.votes > b.votes) return -1;
+		else if (a.votes < b.votes) return 1;
+		return 0;
 	}
 
 	addSong(songObj) {
-		/*
-		if song does not already exist
-		add song to session playlist 
-		votes is 0 and position is last (-1)
-		*/
-		//console.log("Model, add song!");
-		//console.log("Model, songObj: ", songObj);
 		const { id: songID, artists: artistsObj, name: title } = songObj;
 		const artists = artistsObj.map((artist) => artist.name);
-		//console.log(songID, artists, title);
-		const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 		const song = db
 			.collection("session")
 			.doc(this.currentSession)
-			.collection(this.currentPlaylist)
+			.collection(this.currentPlaylistID)
 			.doc(songID);
 
 		return song
@@ -245,8 +227,7 @@ class QueueifyModel {
 				} else {
 					song.set({
 						artist: artists,
-						//position: -1, remove position
-						timestamp: timestamp,
+						timestamp: new Date(),
 						title: title,
 						votes: 0,
 					});
@@ -258,12 +239,20 @@ class QueueifyModel {
 			});
 	}
 
+	deleteSong(songID) {
+		return db
+			.collection("session")
+			.doc(this.currentSession)
+			.collection(this.currentPlaylistID)
+			.doc(songID)
+			.delete();
+	}
+
 	upVote(songID) {
-		const session = db.collection("session").doc(this.currentSession);
 		const song = db
 			.collection("session")
 			.doc(this.currentSession)
-			.collection(this.currentPlaylist)
+			.collection(this.currentPlaylistID)
 			.doc(songID);
 		const increment = firebase.firestore.FieldValue.increment(1);
 		const user = firebase.firestore.FieldValue.arrayUnion(
@@ -280,9 +269,9 @@ class QueueifyModel {
 						votes: increment,
 						voters: user,
 					});
-					session.update({
-						totalVotes: increment,
-					});
+					// session.update({
+					// 	totalVotes: increment,
+					// });
 				} else {
 					throw new Error("already voted!");
 				}
@@ -294,14 +283,14 @@ class QueueifyModel {
 	}
 
 	firebaseSubscriber() {
-		const session = db.collection("session").doc(this.currentSession);
+		//const session = db.collection("session").doc(this.currentSession);
 		const playlist = db
 			.collection("session")
 			.doc(this.currentSession)
 			//TODO: Subscribe on session instead to ensure notifications
-			.collection(this.currentPlaylist);
+			.collection(this.currentPlaylistID);
 
-		session.onSnapshot(
+		/* 		const sessionUnsub = session.onSnapshot(
 			{
 				// Listen for document metadata changes
 				includeMetadataChanges: true,
@@ -310,17 +299,21 @@ class QueueifyModel {
 				console.log("onSnapshot, session: " + this.currentSession);
 				this.notifyObservers();
 			}
-		);
-		playlist.onSnapshot(
+		); */
+		const playlistUnsub = playlist.onSnapshot(
 			{
 				// Listen for document metadata changes
-				includeMetadataChanges: true,
+				includeMetadataChanges: false,
 			},
 			(doc) => {
-				console.log("onSnapshot: playlist: " + this.currentPlaylist);
+				//console.log("onSnapshot: playlist: " + this.currentPlaylistID);
 				this.notifyObservers();
 			}
 		);
+		return () => {
+			//sessionUnsub();
+			playlistUnsub();
+		};
 	}
 	/*
 	Firebase functions will look for changes in playlists.

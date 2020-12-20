@@ -1,16 +1,31 @@
 import React from "react";
-import { Col, Container, Button, Nav, Navbar, Dropdown, DropdownButton} from "react-bootstrap";
+import {
+	Col,
+	Container,
+	Button,
+	Nav,
+	Navbar,
+	Dropdown,
+	DropdownButton,
+} from "react-bootstrap";
 import css from "./navbar.module.css";
 
-const Navibar = ({ user, logout }) => {
+const Navibar = ({ user, logout, isTop }) => {
 	return (
-		<Navbar className={css.navbar} fixed="top" variant="dark">
+		<Navbar
+			className={css.navbar}
+			fixed="top"
+			variant="dark"
+			bg={isTop ? "transparent" : "gradient"}
+		>
 			<Container className="largenavbar">
 				<Col lg="7" md="5" className="largenavbar">
 					<Nav className="mrs-auto"></Nav>
 				</Col>
 				<Col lg="2" md="2" className="largenavbar">
-					<Navbar.Text className="mrs-auto">User: {user.displayName}</Navbar.Text>
+					<Navbar.Text className="mrs-auto">
+						User: {user.displayName}
+					</Navbar.Text>
 				</Col>
 				<Col lg="1" md="1" className="largenavbar">
 					<Navbar.Text className="mrs-auto">
@@ -26,7 +41,7 @@ const Navibar = ({ user, logout }) => {
 						) : (
 							<i className="fas fa-user"></i>
 						)}
-					</Navbar.Text >
+					</Navbar.Text>
 				</Col>
 				<Col lg="2" md="2" className="largenavbar">
 					<Navbar.Text className="mrs-auto">
@@ -37,36 +52,32 @@ const Navibar = ({ user, logout }) => {
 				</Col>
 			</Container>
 
-			<DropdownButton 
-			menuAlign="right"
-			title="Menu" 
-			className="smallmenu"
-			variant="outline-light"
-			> 
-			
-        		<Dropdown.Item href="/session/:sessionId">
+			<DropdownButton
+				menuAlign="right"
+				title="Menu"
+				className="smallmenu"
+				variant="outline-light"
+			>
+				<Dropdown.Item href="/session/:sessionId">
 					{" "}
 					<i className="fas fa-home" /> Session
-					</Dropdown.Item>
-   				<Dropdown.Item href='/session'>
+				</Dropdown.Item>
+				<Dropdown.Item href="/session">
 					{" "}
 					<i className="fas fa-book" /> New Session
-					</Dropdown.Item>
-				<Dropdown.Item href='/search'>
+				</Dropdown.Item>
+				<Dropdown.Item href="/search">
 					{" "}
 					<i className="fas fa-search" /> Search
-					</Dropdown.Item>
-					<Dropdown.Divider />
-					<Dropdown.Item disabled>
-					User: {user.displayName}
-					</Dropdown.Item>
+				</Dropdown.Item>
+				<Dropdown.Divider />
+				<Dropdown.Item disabled>User: {user.displayName}</Dropdown.Item>
 				<Dropdown.Item>
 					<Button onClick={logout} variant="dark">
-							Log out
-						</Button>
-					</Dropdown.Item>
-
-     			 </DropdownButton>
+						Log out
+					</Button>
+				</Dropdown.Item>
+			</DropdownButton>
 		</Navbar>
 	);
 };
