@@ -51,7 +51,7 @@ const SidebarView = ({ path, usertype, leaveSession }) => {
 						}
 					>
 						{" "}
-						<i className="fas fa-door-open" /> End Session
+						<i className="fas fa-door-open" /> Leave Session
 					</Button>
 				) : (
 					<Button

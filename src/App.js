@@ -87,7 +87,7 @@ function App() {
 							</Row>
 						</div>
 					</PrivateRoute>
-					<PrivateRoute exact path="/session/:sessionId">
+					<PrivateRoute exact path="/session/active">
 						<div className="pageContainer">
 							<Navbar model={model} />
 							<Row>
@@ -112,6 +112,9 @@ function App() {
 								</Col>
 							</Row>
 						</div>
+					</PrivateRoute>
+					<PrivateRoute>
+						<Redirect to="/session" />
 					</PrivateRoute>
 				</Switch>
 			</AuthProvider>

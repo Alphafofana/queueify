@@ -65,7 +65,20 @@ const CurrentSessionGuestView = ({
 														)
 													}
 												>
-													<i className="far fa-heart"></i>
+													{song.voters &&
+													song.voters.includes(
+														user.uid
+													) ? (
+														<i
+															className={`${css.green} fas fa-heart`}
+														/>
+													) : (
+														<i
+															className={
+																"far fa-heart"
+															}
+														/>
+													)}
 												</Button>
 											</td>
 										</tr>
