@@ -18,7 +18,10 @@ function SessionHandler({ model }) {
 			.createSession(sessionName, sessionPin)
 			.then((sessionID) => history.push("session/active"))
 			.catch((error) => {
-				setError("Failed to create new session due to following error: " + error);
+				setError(
+					"Failed to create new session due to following error: " +
+						error
+				);
 			});
 	}
 
@@ -27,9 +30,13 @@ function SessionHandler({ model }) {
 		setError("");
 		model
 			.joinSession(sessionName, sessionPin)
-			.then(history.push("session/active"))
+			.then(() => {
+				history.push("session/active");
+			})
 			.catch((error) => {
-				setError("Failed to join new session! Make sure you type in the correct session name and pin.");
+				setError(
+					"Failed to join new session! Make sure you type in the correct session name and pin."
+				);
 			});
 	}
 

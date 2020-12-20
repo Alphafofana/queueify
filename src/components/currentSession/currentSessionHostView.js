@@ -24,13 +24,44 @@ const CurrentSessionHostView = ({
 	sessionName,
 	playlistId,
 }) => {
-	/* 	return (
+	return (
 		<Container fluid className={css.currentSession}>
 			<Container className={css.sessionInfo}>
 				<Row>
 					<Col className={css.sessionDetails}>
 						<p>Session Name: {sessionName}</p>
-						<p>Session ID: {sessionID}</p>
+						<Button
+							className={css.spotifyButton}
+							variant="outline-success"
+							ref={target}
+							onClick={setShowPin}
+						>
+							Show Pin
+						</Button>
+						<Overlay
+							target={target.current}
+							show={showPin}
+							placement="right"
+						>
+							{(props) => (
+								<Tooltip id="overlay-example" {...props}>
+									{pin}
+								</Tooltip>
+							)}
+						</Overlay>
+					</Col>
+					<Col>
+						<Button
+							className={css.spotifyButton}
+							variant="success"
+							href={
+								"https://open.spotify.com/playlist/" +
+								playlistId
+							}
+							target="_blank"
+						>
+							Open playlist with Spotify
+						</Button>
 					</Col>
 				</Row>
 				<Row>
@@ -114,8 +145,8 @@ const CurrentSessionHostView = ({
 				</Row>
 			</Container>
 		</Container>
-	); */
-	return (
+	);
+	/* return (
 		<Container fluid className={css.currentSession}>
 			<Container className={css.sessionInfo}>
 				<Row sm={2} xs={1}>
@@ -233,7 +264,7 @@ const CurrentSessionHostView = ({
 				</Table>
 			</Row>
 		</Container>
-	);
+	); */
 };
 
 export default CurrentSessionHostView;

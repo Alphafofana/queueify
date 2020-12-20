@@ -79,7 +79,7 @@ const LoginView = ({
 				dialogClassName={css.modal}
 				show={showGuestLogin}
 				onHide={handleShowGuesLogin}
-				animation={false}
+				animation={true}
 				keyboard
 			>
 				<Modal.Header closeButton>
@@ -124,7 +124,7 @@ const LoginView = ({
 				size="sm"
 				show={showHostLogin}
 				onHide={handleShowHostLogin}
-				animation={false}
+				animation={true}
 			>
 				<Modal.Header closeButton>
 					<Modal.Title>Login as Host</Modal.Title>

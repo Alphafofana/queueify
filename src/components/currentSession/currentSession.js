@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import CurrentSessionGuestView from "./currentSessionGuestView";
 import CurrentSessionHostView from "./currentSessionHostView";
+import { useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import usePromise from "../usePromise";
 import PromiseNoData from "../promiseNoData";
@@ -11,13 +12,17 @@ function CurrentSession({ model }) {
 	const [showPin, setShowPin] = useState(false);
 	const target = useRef(null);
 	const [data, error] = usePromise(playlist);
-
+	const history = useHistory();
 	useEffect(() => {
-		setPlaylist(model.getCurrentPlaylist());
-		//model.firebaseSubscriber();
-		const obs = () => setPlaylist(model.getCurrentPlaylist());
-		return model.addObserver(obs);
-	}, [model]);
+		if (model.getModelProperty("currentSession")) {
+			setPlaylist(model.getCurrentPlaylist());
+			//model.firebaseSubscriber();
+			const obs = () => setPlaylist(model.getCurrentPlaylist());
+			return model.addObserver(obs);
+		} else {
+			history.push("/session");
+		}
+	}, [model, history]);
 
 	return (
 		<>

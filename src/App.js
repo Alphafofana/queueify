@@ -24,7 +24,7 @@ import {
 function App() {
 	const model = ReadModel();
 	return (
-		<BrowserRouter>
+		/* 		<BrowserRouter>
 			<AuthProvider>
 				<Switch>
 					<Route exact path="/">
@@ -56,6 +56,61 @@ function App() {
 									</PrivateRoute>
 								</Switch>
 							</div>
+						</div>
+					</PrivateRoute>
+				</Switch>
+			</AuthProvider>
+		</BrowserRouter> */
+
+		<BrowserRouter>
+			<AuthProvider>
+				<Switch>
+					<Route exact path="/">
+						<Redirect to="/login" />
+					</Route>
+					<Route exact path="/login">
+						<Login />
+					</Route>
+					<Route exact path="/login/popup">
+						<Popup />
+					</Route>
+					<PrivateRoute exact path="/session">
+						<div className="pageContainer">
+							<Navbar model={model} />
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar model={model} />
+								</Col>
+								<Col className="pageCol">
+									<SessionHandler model={model} />
+								</Col>
+							</Row>
+						</div>
+					</PrivateRoute>
+					<PrivateRoute exact path="/session/:sessionId">
+						<div className="pageContainer">
+							<Navbar model={model} />
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar model={model} />
+								</Col>
+								<Col className="pageCol">
+									<CurrentSession model={model} />
+								</Col>
+							</Row>
+						</div>
+					</PrivateRoute>
+					<PrivateRoute exact path="/search">
+						<div className="pageContainer">
+							<Navbar />
+							<Row>
+								<Col lg="auto" className="sidebarCol">
+									<Sidebar model={model} />
+								</Col>
+								<Col className="pageCol">
+									<Search model={model} />
+								</Col>
+							</Row>
 						</div>
 					</PrivateRoute>
 				</Switch>

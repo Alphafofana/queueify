@@ -1,9 +1,9 @@
 import React from "react";
 import css from "./sidebarView.module.css";
 import logo from "../../assets/queueify_logo1.svg";
-import { Nav, NavDropdown } from "react-bootstrap";
+import { Nav, Button } from "react-bootstrap";
 
-const SidebarView = ({ path, usertype }) => {
+const SidebarView = ({ path, usertype, leaveSession }) => {
 	return (
 		<div className="sidebar">
 			<div className="logo">
@@ -17,7 +17,8 @@ const SidebarView = ({ path, usertype }) => {
 				<Nav.Link
 					href={`/session/active`}
 					disabled={
-						path === "/session/active" || path === "/search"
+						window.location.pathname === "/session/active" ||
+						window.location.pathname === "/search"
 							? false
 							: true
 					}
@@ -28,7 +29,8 @@ const SidebarView = ({ path, usertype }) => {
 				<Nav.Link
 					href="/search"
 					disabled={
-						path === "/session/active" || path === "/search"
+						window.location.pathname === "/session/active" ||
+						window.location.pathname === "/search"
 							? false
 							: true
 					}
@@ -37,29 +39,35 @@ const SidebarView = ({ path, usertype }) => {
 					<i className="fas fa-search" /> Add Songs
 				</Nav.Link>
 				{usertype === "host" ? (
-					<Nav.Link
-						href="/close" //TODO: Add correct Hrefs
+					<Button
+						onClick={leaveSession} //TODO:Add End session
+						variant="outline-light"
+						className={css.sidebarButton}
 						disabled={
-							path === "/session/active" || path === "/search"
+							window.location.pathname === "/session/active" ||
+							window.location.pathname === "/search"
 								? false
 								: true
 						}
 					>
 						{" "}
-						<i className="fas fa-times" /> End Session
-					</Nav.Link>
+						<i className="fas fa-door-open" /> End Session
+					</Button>
 				) : (
-					<Nav.Link
-						href="/close" //TODO: Add correct Hrefs
+					<Button
+						onClick={leaveSession}
+						variant="outline-light"
+						className={css.sidebarButton}
 						disabled={
-							path === "/session/active" || path === "/search"
+							window.location.pathname === "/session/active" ||
+							window.location.pathname === "/search"
 								? false
 								: true
 						}
 					>
 						{" "}
 						<i className="fas fa-door-open" /> Leave Session
-					</Nav.Link>
+					</Button>
 				)}
 			</Nav>
 		</div>

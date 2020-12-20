@@ -211,7 +211,7 @@ class QueueifyModel {
 				});
 			})
 			.catch(function (error) {
-				console.log("Error getting document:", error);
+				//console.log("Error getting document:", error);
 				throw new Error("Failed to join session" + error);
 			});
 	}

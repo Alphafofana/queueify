@@ -3,6 +3,11 @@
 	margin-top: 10px;
 }
 
+.sidebarButton {
+	margin-top: 1rem;
+	padding-left: 6px;
+	padding-right: 6px;
+}
 :global(.sidebar) {
 	width: 180px;
 	background: #000000;

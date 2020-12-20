@@ -60,7 +60,7 @@ const NewSessionView = ({ sessionName, sessionPin, submit, user, error }) => {
 								</OverlayTrigger>
 								<br></br>
 								<ReactCodeInput
-									type="password"
+									//type="password"
 									pattern="[0-9]"
 									fields={4}
 									onChange={(value) => sessionPin(value)}

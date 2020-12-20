@@ -8,6 +8,7 @@
 
 import React, { useState, useEffect } from "react";
 import SearchViewForm, { SearchViewResult } from "./searchView";
+import { useHistory } from "react-router-dom";
 import DataSource from "../../dataSource";
 import usePromise from "../usePromise";
 import PromiseNoData from "../promiseNoData";
@@ -26,10 +27,15 @@ function Search({ model }) {
 	// const handleDisabledButtons = (disable) =>
 	// 	setDisabled([...disabledButtons, disable]);
 	const [playlistPromise, setPlaylist] = useState();
+	const history = useHistory();
 	useEffect(() => {
-		const obs = () => setPlaylist(model.getCurrentPlaylist());
-		return model.addObserver(obs);
-	}, [model]);
+		if (model.getModelProperty("currentSession")) {
+			const obs = () => setPlaylist(model.getCurrentPlaylist());
+			return model.addObserver(obs);
+		} else {
+			history.push("/session");
+		}
+	}, [model, history]);
 
 	const [playlist, playlistrror] = usePromise(playlistPromise);
 
